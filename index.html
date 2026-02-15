@@ -6,310 +6,379 @@
     <title>Race Replay: Skye at The Circuit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #111827; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0F172A; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; overflow-y: auto; }
         
-        /* Track Oval Styles */
-        .track-container {
-            position: relative;
-            width: 100%;
-            height: 400px; /* Fixed height for the oval */
-            background-color: #1F2937;
+        /* Layout Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px; /* Track takes space, Panel fixed width */
+            gap: 1rem;
+            min-height: 100vh; /* Allow growing */
+            padding: 1rem;
+        }
+
+        /* Track Container */
+        .track-wrapper {
+            background-color: #1E293B;
             border-radius: 12px;
-            overflow: hidden;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            min-height: 620px; /* Ensure space for track */
         }
 
         .oval-track {
             position: relative;
-            width: 800px;
-            height: 350px;
-            /* Scaling for responsiveness */
+            width: 350px;
+            height: 600px;
             transform-origin: center;
         }
 
         /* SVG Styling */
         .track-surface {
-            fill: #991B1B; /* Armory Red */
-            stroke: white;
+            fill: #B91C1C;
+            stroke: rgba(255,255,255,0.8);
             stroke-width: 2px;
         }
         .track-infield {
-            fill: #374151; /* Dark Grey Infield */
+            fill: #1E293B; /* Match container bg for seamless look */
         }
         .start-finish-line {
             stroke: white;
             stroke-width: 4px;
         }
+        .split-line {
+            stroke: rgba(255,255,255,0.3);
+            stroke-width: 2px;
+            stroke-dasharray: 4 4;
+        }
 
         /* Runner Dot */
         .runner-dot {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             position: absolute;
             top: 0;
             left: 0;
-            /* Centering the dot on the coordinate */
             transform: translate(-50%, -50%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: bold;
             color: white;
             box-shadow: 0 0 5px rgba(0,0,0,0.8);
             z-index: 10;
-            transition: transform 0.1s linear; /* Smooth movement handled via JS, this is for scale */
+            transition: transform 0.1s linear, box-shadow 0.2s;
         }
         
+        /* Highlight Indicator */
+        .focus-indicator {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #FACC15; /* Yellow */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.3s, top 0.1s linear, left 0.1s linear;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+        }
+        .focus-indicator.active {
+            opacity: 1;
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
         .runner-label {
             position: absolute;
-            top: -18px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 10px;
+            font-weight: bold;
             white-space: nowrap;
             text-shadow: 0 1px 2px black;
+            background-color: rgba(0,0,0,0.6);
+            padding: 1px 4px;
+            border-radius: 4px;
             pointer-events: none;
         }
 
-        @media (max-width: 850px) {
-            .oval-track { transform: scale(0.6); }
-            .track-container { height: 250px; }
+        /* Panel Styling */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            /* Allow panel to just flow naturally */
         }
-        @media (max-width: 500px) {
-            .oval-track { transform: scale(0.4); }
-            .track-container { height: 200px; }
+
+        .card {
+            background-color: #1E293B;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid #334155;
+        }
+
+        /* Scrollbar for Start List */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Lap Dots */
+        .lap-dots {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            margin-top: 4px;
+        }
+        .lap-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #334155;
+            transition: background-color 0.3s;
+        }
+        .lap-dot.active {
+            background-color: #3B82F6;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto; /* Track then Panel */
+                height: auto;
+                overflow-y: auto;
+            }
+            .track-wrapper { height: 500px; min-height: 500px; }
+            .oval-track { transform: scale(0.75); }
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-6 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold text-blue-400">The Circuit: 800m Replay</h1>
-                <p class="text-gray-400 text-sm">Heat Analysis | Skye: 3:04.27 (New PR) | Track: 200m Banked</p>
-            </div>
-            <div class="text-right">
-                <div class="text-4xl font-mono text-white" id="timer">0:00.00</div>
-                <div class="text-xs text-gray-500">Race Time</div>
-                <div class="text-xs text-blue-400 font-bold" id="lapCounter">Lap 1 of 4</div>
-            </div>
-        </header>
-
-        <!-- Controls -->
-        <div class="bg-gray-800 p-4 rounded-lg mb-6 flex gap-4 items-center flex-wrap">
-            <button onclick="startRace()" id="btnStart" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold transition">START RACE</button>
-            <button onclick="resetRace()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition">Reset</button>
-            
-            <div class="flex items-center gap-2 ml-auto">
-                <span class="text-sm text-gray-400">Speed:</span>
-                <input type="range" id="speedRange" min="1" max="50" value="20" class="w-32">
-                <span id="speedLabel" class="text-sm font-mono">20x</span>
-            </div>
-        </div>
-
-        <!-- Track Visualization Area -->
-        <div class="track-container border border-gray-700">
+    <div class="dashboard-grid">
+        <!-- LEFT: Track Visualization -->
+        <div class="track-wrapper">
             <div class="oval-track" id="ovalTrack">
-                <!-- SVG Track Background -->
-                <svg width="800" height="350" viewBox="0 0 800 350" class="absolute top-0 left-0">
+                <!-- Vertical Track SVG -->
+                <svg width="350" height="600" viewBox="0 0 350 600" class="absolute top-0 left-0">
                     <!-- Outer Lane Border -->
-                    <rect x="150" y="25" width="500" height="300" rx="150" ry="150" class="track-surface" />
+                    <path d="M 25 150 L 25 400 A 150 150 0 1 0 325 400 L 325 150 A 150 150 0 1 0 25 150" fill="#B91C1C" stroke="white" stroke-width="2"/>
+                    
                     <!-- Inner Infield -->
-                    <rect x="150" y="75" width="500" height="200" rx="100" ry="100" class="track-infield" style="stroke:white; stroke-width:2px;" />
-                    
-                    <!-- Lane Lines (Decorative) -->
-                    <path d="M 150 50 L 650 50 A 125 125 0 0 1 650 300 L 150 300 A 125 125 0 0 1 150 50" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
-                    
-                    <!-- Finish Line (Bottom Right of Straight) -->
-                    <line x1="550" y1="275" x2="550" y2="325" class="start-finish-line" />
-                    <text x="545" y="340" fill="white" font-size="12" text-anchor="middle">FINISH</text>
+                    <path d="M 75 150 L 75 400 A 100 100 0 1 0 275 400 L 275 150 A 100 100 0 1 0 75 150" fill="#1E293B" stroke="white" stroke-width="2"/>
 
-                    <!-- 200m Start (Same as Finish usually for 800m waterfall cut-in logic simplification) -->
+                    <!-- Finish Line (Right side, near top of straight) -->
+                    <line x1="275" y1="200" x2="325" y2="200" class="start-finish-line" />
+                    <text x="335" y="205" fill="white" font-size="10" font-weight="bold" text-anchor="start">FINISH</text>
+
+                    <!-- 100m / Backstretch Mark -->
+                    <line x1="25" y1="200" x2="75" y2="200" class="split-line" />
+                    <text x="15" y="205" fill="rgba(255,255,255,0.5)" font-size="10" text-anchor="end">100m</text>
+
+                    <!-- 150m Mark (Top Curve Apex) -->
+                    <line x1="175" y1="25" x2="175" y2="75" class="split-line" />
+                    
+                    <!-- 50m Mark (Bottom Curve Apex) -->
+                    <line x1="175" y1="475" x2="175" y2="525" class="split-line" />
+
                 </svg>
-
-                <!-- Runners Container -->
+                
+                <!-- Runners Layer -->
                 <div id="runnersLayer" class="absolute top-0 left-0 w-full h-full">
-                    <!-- Runners injected by JS -->
+                    <div id="focusIndicator" class="focus-indicator"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Legend / Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-orange-500">
-                <h3 class="font-bold text-orange-400 mb-2">Skye's "Diesel" Splits</h3>
-                <div class="grid grid-cols-4 gap-2 text-center text-sm">
-                    <div class="bg-gray-700 p-2 rounded">
-                        <div class="text-gray-400">0-200</div>
-                        <div class="font-bold">41.5s</div>
-                    </div>
-                    <div class="bg-gray-700 p-2 rounded">
-                        <div class="text-gray-400">200-400</div>
-                        <div class="font-bold">47.0s</div>
-                    </div>
-                    <div class="bg-gray-700 p-2 rounded">
-                        <div class="text-gray-400">400-600</div>
-                        <div class="font-bold text-green-400">48.2s</div>
-                    </div>
-                    <div class="bg-gray-700 p-2 rounded">
-                        <div class="text-gray-400">600-800</div>
-                        <div class="font-bold">47.4s</div>
+        <!-- RIGHT: Dashboard Panel -->
+        <div class="control-panel">
+            
+            <!-- 1. Header & Timer -->
+            <div class="card text-center relative overflow-hidden shrink-0">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+                <div class="flex justify-between items-center px-4 pt-4 pb-2">
+                    <h1 class="text-lg font-bold text-gray-300">The Circuit: 800m</h1>
+                    <span class="text-[10px] bg-blue-900/50 px-2 py-0.5 rounded text-blue-300 border border-blue-800">200m Banked | 4 Laps</span>
+                </div>
+                <div class="text-5xl font-mono text-white tracking-widest mt-2" id="timer">0:00.00</div>
+                <div class="text-xs text-gray-500 mb-2">Elapsed / <span class="text-gray-400">3:26.00</span></div>
+                
+                <!-- Lap Indicators -->
+                <div class="flex flex-col items-center pb-2">
+                    <div class="text-xs font-bold text-blue-400 uppercase tracking-wider" id="lapCounter">Lap 1 of 4</div>
+                    <div class="lap-dots" id="lapDots">
+                        <div class="lap-dot active"></div>
+                        <div class="lap-dot"></div>
+                        <div class="lap-dot"></div>
+                        <div class="lap-dot"></div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-400 mt-2">Note the consistency. Less than 1.5s variance between laps 2, 3, and 4.</p>
             </div>
 
-            <div class="bg-gray-800 p-4 rounded-lg">
-                <h3 class="font-bold text-blue-400 mb-2">Race Dynamics</h3>
-                <ul class="text-sm space-y-2 text-gray-300">
-                    <li>🔵 <strong>Leaders:</strong> Running a different race (2:21-2:30).</li>
-                    <li>🟠 <strong>Skye (Rank 8):</strong> Ran her own race. Isolated but steady.</li>
-                    <li>⚪ <strong>The Threat:</strong> Margeaux (#9) closed in 46.6s, but Skye's consistent middle laps built enough gap to hold her off.</li>
-                </ul>
+            <!-- 2. Race Recap (Commentary) -->
+            <div class="card border-l-4 border-blue-500 bg-gray-800">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="text-xs text-gray-400 uppercase font-bold">Race Recap</div>
+                    <div class="text-xs text-green-400">● REPLAY</div>
+                </div>
+                <div id="commentaryBox" class="text-lg font-medium text-white italic leading-snug min-h-[80px] flex items-center">
+                    Runners at the line...
+                </div>
             </div>
+
+            <!-- 3. Controls -->
+            <div class="card">
+                <div class="flex gap-2 justify-center mb-4">
+                    <button onclick="startRace()" id="btnStart" class="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded font-bold transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                        START
+                    </button>
+                    <button onclick="resetRace()" class="bg-gray-600 hover:bg-gray-700 text-white w-1/3 py-3 rounded font-bold transition">
+                        Reset
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-between px-2">
+                    <span class="text-xs text-gray-400 uppercase">Playback Speed</span>
+                    <div class="flex items-center gap-2">
+                        <input type="range" id="speedRange" min="1" max="50" value="1" class="w-32 accent-blue-500">
+                        <span id="speedLabel" class="text-sm font-mono bg-gray-700 px-2 py-1 rounded text-white min-w-[3rem] text-center">1x</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Stats / Legend -->
+            <div class="card">
+                <h3 class="text-xs text-gray-400 uppercase font-bold mb-3">Live Splits</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between items-center p-2 bg-gray-700/50 rounded border-l-2 border-blue-500">
+                        <span class="text-gray-300">Leader (Ashford #2)</span>
+                        <span class="font-mono font-bold text-blue-400">2:21.58</span>
+                    </div>
+                    <div class="flex justify-between items-center p-2 bg-gray-700/50 rounded border-l-2 border-orange-500">
+                        <span class="text-gray-300">Skye (Rank 8 / #10)</span>
+                        <span class="font-mono font-bold text-orange-400">3:04.27</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-1 mt-2 text-center text-xs text-gray-500">
+                        <div>0-200<br><span class="text-white">41.5</span></div>
+                        <div>200-400<br><span class="text-white">47.0</span></div>
+                        <div>400-600<br><span class="text-white">48.3</span></div>
+                        <div>600-800<br><span class="text-white">47.4</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Start List -->
+            <div class="card flex-grow">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-xs text-gray-400 uppercase font-bold">Start List</h3>
+                    <span class="text-[10px] text-gray-500"># = Hip/Bib</span>
+                </div>
+                <div class="space-y-2 text-xs overflow-y-auto max-h-40 pr-2 custom-scrollbar" id="startListContainer">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
         </div>
     </div>
 
 <script>
-    // Runner Data based on provided splits
+    // Runner Data: Skye's 800m with Bib Numbers
     const runners = [
-        { id: 1, name: "MA", color: "#3B82F6", splits: [0, 32.94, 68.67, 105.05, 141.58] }, // 1st
-        { id: 2, name: "PD", color: "#60A5FA", splits: [0, 33.86, 70.82, 108.62, 146.73] }, // 2nd
-        { id: 3, name: "RM", color: "#93C5FD", splits: [0, 33.63, 71.49, 111.25, 149.88] }, // 3rd
-        { id: 4, name: "EH", color: "#93C5FD", splits: [0, 34.52, 72.14, 110.78, 150.00] }, // 4th
-        { id: 5, name: "UD", color: "#6B7280", splits: [0, 35.31, 76.86, 122.48, 168.78] }, // 5th
-        { id: 6, name: "DW", color: "#6B7280", splits: [0, 38.74, 85.49, 135.17, 174.25] }, // 6th
-        { id: 7, name: "JR", color: "#6B7280", splits: [0, 34.85, 76.55, 125.96, 178.73] }, // 7th
-        { id: 8, name: "SF", color: "#F97316", splits: [0, 41.53, 88.55, 136.83, 184.27], highlight: true }, // SKYE
-        { id: 9, name: "MS", color: "#9CA3AF", splits: [0, 42.87, 91.37, 144.00, 190.71] }, // 9th
-        { id: 10,name: "CH", color: "#9CA3AF", splits: [0, 42.25, 91.72, 144.35, 192.25] }, // 10th
-        { id: 11,name: "EM", color: "#4B5563", splits: [0, 41.91, 92.76, 148.49, 206.00] }  // 11th
+        { id: 1, name: "MA", fullName: "Melodi Ashford", team: "Unattached", age: 13, bib: 2, color: "#3B82F6", splits: [0, 32.94, 68.67, 105.05, 141.58] }, // 1st
+        { id: 2, name: "PD", fullName: "Parvati Dabral", team: "Westchester Wolves", age: 13, bib: 3, color: "#60A5FA", splits: [0, 33.86, 70.82, 108.62, 146.73] }, // 2nd
+        { id: 3, name: "RM", fullName: "Reid Macari", team: "Prospect Park", age: 13, bib: 5, color: "#93C5FD", splits: [0, 33.63, 71.49, 111.25, 149.88] }, // 3rd
+        { id: 4, name: "EH", fullName: "Ephie Hagen", team: "Unattached", age: 14, bib: 4, color: "#93C5FD", splits: [0, 34.52, 72.14, 110.78, 150.00] }, // 4th
+        { id: 5, name: "UD", fullName: "Uma Dabral", team: "Westchester Wolves", age: 13, bib: 6, color: "#6B7280", splits: [0, 35.31, 76.86, 122.48, 168.78] }, // 5th
+        { id: 6, name: "DW", fullName: "Demi Wilson", team: "Chelsea Greyhounds", age: 13, bib: 8, color: "#6B7280", splits: [0, 38.74, 85.49, 135.17, 174.25] }, // 6th
+        { id: 7, name: "JR", fullName: "Jahzara Roberts", team: "Medgar Evers", age: 11, bib: 7, color: "#6B7280", splits: [0, 34.85, 76.55, 125.96, 178.73] }, // 7th
+        { id: 8, name: "SF", fullName: "Skye Fayerman", team: "Flyers XC & Track Club", age: 10, bib: 10, color: "#F97316", splits: [0, 41.53, 88.55, 136.83, 184.27], highlight: true }, // SKYE
+        { id: 9, name: "MS", fullName: "Margeaux Siriban", team: "V-Tesse Track Club", age: 10, bib: 9, color: "#9CA3AF", splits: [0, 42.87, 91.37, 144.00, 190.71] }, // 9th
+        { id: 10, name: "CH", fullName: "Cato Heijmenberg", team: "Prospect Park", age: 10, bib: 11, color: "#9CA3AF", splits: [0, 42.25, 91.72, 144.35, 192.25] }, // 10th
+        { id: 11, name: "EM", fullName: "Emma Macena", team: "V-Tesse Track Club", age: 10, bib: 12, color: "#4B5563", splits: [0, 41.91, 92.76, 148.49, 206.00] }  // 11th
+    ];
+
+    // Commentary Data Points with Subject ID for Highlight
+    const commentaryEvents = [
+        { time: 0, text: "Runners are at the line... The gun goes off! Clean start.", subjectId: null },
+        { time: 8, text: "Ashford (#2) getting out aggressively early on!", subjectId: 1 },
+        { time: 32, text: "Ashford (#2) hits the 200m mark in a blistering 32.9!", subjectId: 1 },
+        { time: 41.5, text: "Skye Fayerman (#10) through the first 200 in 41.5, staying calm.", subjectId: 8 },
+        { time: 60, text: "Approaching the 400m mark. Ashford extending the lead.", subjectId: 1 },
+        { time: 68, text: "Ashford hits the bell lap in 1:08! Field spreading out.", subjectId: 1 },
+        { time: 88, text: "Fayerman (#10) through 400m in 1:28.5. Perfect positioning in 8th.", subjectId: 8 },
+        { time: 105, text: "Ashford through 600m in 1:45. Dominating performance!", subjectId: 1 },
+        { time: 130, text: "Skye (#10) making her move! The endurance is kicking in.", subjectId: 8 },
+        { time: 136, text: "Skye hits 600m in 2:16.8. Holding form while others fade.", subjectId: 8 },
+        { time: 141, text: "Melodi Ashford (#2) crosses the line! 2:21.58! Winner!", subjectId: 1 },
+        { time: 165, text: "Skye winding it up for the finish! Look at that kick!", subjectId: 8 },
+        { time: 184, text: "Skye (#10) stops the clock at 3:04.27! A massive New PR!", subjectId: 8 },
+        { time: 191, text: "Siriban (#9) finishes in 3:10. Great racing.", subjectId: 9 }
     ];
 
     let raceTime = 0;
-    let speed = 20;
+    let speed = 1;
     let isRunning = false;
 
-    // Track Geometry Constants
-    const STRAIGHT_LEN = 400; // Visual pixels for straight
-    const RADIUS_X = 125;     // Visual pixels for curve radius
-    const RADIUS_Y = 125;
-    const CENTER_X = 400;     // Center of entire SVG
-    const CENTER_Y = 175;
-    const LEFT_CENTER_X = 275; // Center of left curve (150 + 125)
-    const RIGHT_CENTER_X = 525; // Center of right curve (650 - 125) ?? 
-    // Re-calculating based on SVG coords:
-    // SVG: Rect 150,25, width 500. 
-    // Left arc center: x=150+125=275, y=175.
-    // Right arc center: x=150+500-125=525, y=175.
-    // Straight length = 525 - 275 = 250px * 2 = 500px... no.
-    // Let's use path logic.
-    // Start at Finish Line: (550, 300) -> approx bottom right straight.
-    // 1. Run Left to Right on Bottom Straight? No, Counter Clockwise.
-    // Finish Line is usually end of home straight.
-    // Home straight (bottom) runs Left -> Right.
-    // So Finish line is at x=550.
-    // Path:
-    // 1. Finish Line (550, 300) -> Curve 1 Start (650, 300) [Dist: 100px]
-    // 2. Curve 1 (Right): (650, 300) -> (650, 50) [Arc: PI*125 = 392px]
-    // 3. Back Straight (Top): (650, 50) -> (150, 50) [Dist: 500px]
-    // 4. Curve 2 (Left): (150, 50) -> (150, 300) [Arc: 392px]
-    // 5. Home Straight: (150, 300) -> Finish Line (550, 300) [Dist: 400px]
-    
-    // Total Visual Loop = 100 + 392 + 500 + 392 + 400 = 1784 units.
-    // 1 Lap = 200m. Scale Factor = 1784 / 200 = 8.92 units/meter.
-
-    const SCALE = 8.92;
-    // Segments defs [length, type, startX, startY, ...args]
-    // Types: 0=Linear Right, 1=Arc Up-Left, 2=Linear Left, 3=Arc Down-Right
-    
-    // Simpler Geometry for Code:
-    // 0. Finish(550, 300) to Right_Tangent(650, 300) -> Length 100
-    // 1. Right Curve -> Center(650, 175). Radius 125. Angle 90 to 270 (-90). Length 392.
-    // 2. Top Straight -> (650, 50) to (150, 50). Length 500.
-    // 3. Left Curve -> Center(150, 175). Radius 125. Angle 270 (-90) to 450 (90). Length 392.
-    // 4. Bottom Straight -> (150, 300) to Finish(550, 300). Length 400.
-    
-    // Wait, SVG rect width 500. Rx 150.
-    // Actually, let's use the visual values from SVG:
-    // Left Curve Center: x=150+125 = 275.
-    // Right Curve Center: x=150+500-125 = 525.
-    // Straight Y Top: 50. Bottom: 300.
-    // Straight Length: 525 - 275 = 250px.
-    // Curve Radius: 125px.
-    // Curve Length: PI * 125 = 392.7px.
-    // Total Loop = 250 + 392.7 + 250 + 392.7 = 1285.4px.
-    
-    // Finish Line x=550? That's past the right center (525).
-    // Let's place finish line at x=450 (mid-right).
-    
-    // Corrected Path (Counter-Clockwise):
-    // Start at x=450, y=300.
-    // 1. Bottom Straight: 450 -> 525 (Right Center). Len: 75px.
-    // 2. Right Curve: Center(525, 175). Angle PI/2 to -PI/2. Len: 392.7px.
-    // 3. Top Straight: 525 -> 275 (Left Center). Len: 250px.
-    // 4. Left Curve: Center(275, 175). Angle -PI/2 to PI/2 (via left). Len: 392.7px.
-    // 5. Bottom Straight: 275 -> 450. Len: 175px.
-    
+    // Vertical Track Geometry Logic
     const LAP_PIXELS = 1285.4;
     const PIXELS_PER_METER = LAP_PIXELS / 200;
 
     function getTrackCoordinates(meters) {
-        // Normalize to one lap
         let d = (meters % 200) * PIXELS_PER_METER;
-        
-        // 1. Bottom Straight Part 1 (75px) - from 450 to 525
-        if (d < 75) {
-            return { x: 450 + d, y: 300 };
-        }
-        d -= 75;
-
-        // 2. Right Curve (392.7px)
+        if (d < 50) return { x: 300, y: 200 - d }; // Right Straight 1
+        d -= 50;
         const curveLen = Math.PI * 125;
-        if (d < curveLen) {
-            const angle = (Math.PI / 2) - (d / curveLen) * Math.PI; // 90 down to -90
-            return {
-                x: 525 + 125 * Math.cos(angle),
-                y: 175 + 125 * Math.sin(angle)
-            };
+        if (d < curveLen) { // Top Curve
+            const angle = 0 - (d / curveLen) * Math.PI;
+            return { x: 175 + 125 * Math.cos(angle), y: 150 + 125 * Math.sin(angle) };
         }
         d -= curveLen;
-
-        // 3. Top Straight (250px) - from 525 to 275
-        if (d < 250) {
-            return { x: 525 - d, y: 50 };
-        }
+        if (d < 250) return { x: 50, y: 150 + d }; // Left Straight
         d -= 250;
-
-        // 4. Left Curve (392.7px)
-        if (d < curveLen) {
-            const angle = -(Math.PI / 2) - (d / curveLen) * Math.PI; // -90 down to -270
-            return {
-                x: 275 + 125 * Math.cos(angle),
-                y: 175 + 125 * Math.sin(angle)
-            };
+        if (d < curveLen) { // Bottom Curve
+            const angle = Math.PI - (d / curveLen) * Math.PI;
+            return { x: 175 + 125 * Math.cos(angle), y: 400 + 125 * Math.sin(angle) };
         }
         d -= curveLen;
-
-        // 5. Bottom Straight Part 2 (Remaining) - from 275 to 450
-        return { x: 275 + d, y: 300 };
+        return { x: 300, y: 400 - d }; // Right Straight 2
     }
 
     // Initialize DOM
     const runnersLayer = document.getElementById('runnersLayer');
+    const startListContainer = document.getElementById('startListContainer');
+    const focusIndicator = document.getElementById('focusIndicator');
+
     runners.forEach((r, index) => {
+        // Track Dots
         const dot = document.createElement('div');
         dot.className = "runner-dot";
         dot.style.backgroundColor = r.color;
         
-        // Add random lane offset so dots don't perfectly overlap
-        // Lane width approx 10px. 
-        const laneOffset = (index % 3) * 6 - 3; 
+        const laneOffset = (index % 3) * 8 - 4; 
         dot.dataset.offset = laneOffset;
 
         if(r.highlight) {
@@ -318,20 +387,35 @@
             dot.style.transform = "translate(-50%, -50%) scale(1.3)";
         }
         dot.id = `runner-${r.id}`;
-        dot.innerText = index + 1; // Rank
+        // Use BIB number for the dot text
+        dot.innerText = r.bib;
         
-        // Name Label
         if (r.highlight) {
             const label = document.createElement('div');
             label.className = "runner-label";
-            label.innerText = r.name;
+            label.innerText = "Skye";
             dot.appendChild(label);
         }
-
         runnersLayer.appendChild(dot);
+
+        // Start List Entry
+        const entry = document.createElement('div');
+        entry.className = `flex items-center gap-2 p-1.5 rounded hover:bg-gray-700/50 transition ${r.highlight ? 'bg-orange-500/20' : ''}`;
+        entry.innerHTML = `
+            <div class="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[9px] font-bold text-white" style="background-color: ${r.color}">
+                ${r.bib}
+            </div>
+            <div class="flex-grow min-w-0">
+                <div class="font-bold truncate text-white ${r.highlight ? 'text-orange-400' : ''}">${r.fullName}</div>
+                <div class="text-gray-400 truncate text-[10px]">${r.team} | Age ${r.age}</div>
+            </div>
+            <div class="text-right text-gray-500 font-mono text-[10px]">
+                ${r.splits[4] ? formatTime(r.splits[4]) : '--:--'}
+            </div>
+        `;
+        startListContainer.appendChild(entry);
     });
 
-    // Speed Slider
     document.getElementById('speedRange').addEventListener('input', (e) => {
         speed = e.target.value;
         document.getElementById('speedLabel').innerText = speed + "x";
@@ -339,16 +423,12 @@
 
     function getDistanceAtTime(splits, currentTime) {
         if (currentTime <= 0) return 0;
-        if (currentTime >= splits[4]) return 800;
-
-        // Find segment
-        for (let i = 0; i < 4; i++) {
+        if (currentTime >= splits[splits.length-1]) return 800; 
+        for (let i = 0; i < splits.length - 1; i++) {
             if (currentTime >= splits[i] && currentTime < splits[i+1]) {
                 const segmentTime = splits[i+1] - splits[i];
                 const timeInSegment = currentTime - splits[i];
-                const segmentDist = 200; // Each split is 200m
-                const fraction = timeInSegment / segmentTime;
-                return (i * 200) + (fraction * 200);
+                return (i * 200) + (timeInSegment / segmentTime * 200);
             }
         }
         return 800;
@@ -360,29 +440,49 @@
         raceTime += (1/60) * speed;
         document.getElementById('timer').innerText = formatTime(raceTime);
         
-        // Update Lap Counter based on Skye's position
         const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
-        const lap = Math.min(4, Math.floor(skyeDist / 200) + 1);
-        document.getElementById('lapCounter').innerText = `Lap ${lap} of 4`;
+        const currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
+        document.getElementById('lapCounter').innerText = `Lap ${currentLap} of 4`;
+
+        // Update Lap Dots
+        const lapDots = document.querySelectorAll('.lap-dot');
+        lapDots.forEach((dot, idx) => {
+            if (idx < currentLap) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+
+        // Update Commentary & Indicator
+        const currentComment = commentaryEvents.filter(e => e.time <= raceTime).pop();
+        if (currentComment) {
+            const box = document.getElementById('commentaryBox');
+            if (box.innerText !== currentComment.text) {
+                box.innerText = currentComment.text;
+                box.parentElement.classList.add("ring-2", "ring-blue-500");
+                setTimeout(() => box.parentElement.classList.remove("ring-2", "ring-blue-500"), 300);
+            }
+
+            // Sync Indicator
+            if (currentComment.subjectId) {
+                const targetRunner = document.getElementById(`runner-${currentComment.subjectId}`);
+                if (targetRunner) {
+                    focusIndicator.style.top = targetRunner.style.top;
+                    focusIndicator.style.left = targetRunner.style.left;
+                    focusIndicator.classList.add('active');
+                }
+            } else {
+                focusIndicator.classList.remove('active');
+            }
+        }
 
         let finishedCount = 0;
-
         runners.forEach(r => {
             const dist = getDistanceAtTime(r.splits, raceTime);
             const coords = getTrackCoordinates(dist);
-            
-            // Apply lane offset normal vector logic roughly
-            // For simplicity, just add to Y on straights, X on curves? 
-            // Or just generic offset. Let's do generic Y offset, works okay for top-down
             const dot = document.getElementById(`runner-${r.id}`);
             const offset = parseFloat(dot.dataset.offset);
             
-            // Simple lane offset logic (imperfect on curves but visual enough)
-            // On straights (y approx 50 or 300) -> modify y
-            // On curves -> modify radius distance from center
-            
-            dot.style.left = `${coords.x}px`;
-            dot.style.top = `${coords.y + offset}px`; // Simplified offset
+            dot.style.left = `${coords.x + offset}px`;
+            dot.style.top = `${coords.y}px`;
             
             if (dist >= 800) {
                 dot.style.opacity = "0.3"; 
@@ -407,14 +507,15 @@
     function startRace() {
         if (isRunning) return;
         isRunning = true;
-        document.getElementById('btnStart').innerText = "Running...";
+        document.getElementById('btnStart').innerHTML = "RUNNING...";
         document.getElementById('btnStart').classList.add('opacity-50');
         requestAnimationFrame(updatePositions);
     }
 
     function stopRace() {
         isRunning = false;
-        document.getElementById('btnStart').innerText = "Race Finished";
+        document.getElementById('btnStart').innerText = "FINISHED";
+        focusIndicator.classList.remove('active');
     }
 
     function resetRace() {
@@ -422,21 +523,30 @@
         raceTime = 0;
         document.getElementById('timer').innerText = "0:00.00";
         document.getElementById('lapCounter').innerText = "Lap 1 of 4";
-        document.getElementById('btnStart').innerText = "START RACE";
+        document.getElementById('btnStart').innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+            START`;
+        document.getElementById('commentaryBox').innerText = "Runners at the line...";
         document.getElementById('btnStart').classList.remove('opacity-50');
+        focusIndicator.classList.remove('active');
         
-        // Reset positions
+        // Reset dots
+        const lapDots = document.querySelectorAll('.lap-dot');
+        lapDots.forEach((dot, idx) => {
+            if(idx === 0) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+        
         runners.forEach(r => {
             const coords = getTrackCoordinates(0);
             const dot = document.getElementById(`runner-${r.id}`);
             const offset = parseFloat(dot.dataset.offset);
-            dot.style.left = `${coords.x}px`;
-            dot.style.top = `${coords.y + offset}px`;
+            dot.style.left = `${coords.x + offset}px`;
+            dot.style.top = `${coords.y}px`;
             dot.style.opacity = "1";
         });
     }
     
-    // Initial Position
     resetRace();
 </script>
 
