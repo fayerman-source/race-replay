@@ -1,0 +1,103 @@
+{
+  "model": "gemini-2.5-flash-preview-tts",
+  "personality": "excited_announcer",
+  "voice": "Puck",
+  "files": [
+    {
+      "index": 0,
+      "time": 0,
+      "text": "Runners are at the line... The gun goes off! Clean start.",
+      "filename": "commentary_00_0.0s_Runners_are_at_the_line_The.mp3",
+      "duration_sec": 4.971,
+      "subjectId": null
+    },
+    {
+      "index": 1,
+      "time": 8,
+      "text": "Melodi getting out aggressively early on!",
+      "filename": "commentary_01_8.0s_Melodi_getting_out_aggressivel.mp3",
+      "duration_sec": 3.291,
+      "subjectId": 1
+    },
+    {
+      "index": 2,
+      "time": 32,
+      "text": "Melodi hits the 200 meter mark in a blistering 32.9!",
+      "filename": "commentary_02_32.0s_Melodi_hits_the_200_meter_mark.mp3",
+      "duration_sec": 5.611,
+      "subjectId": 1
+    },
+    {
+      "index": 4,
+      "time": 60,
+      "text": "Approaching the 400 meter mark. Melodi extending the lead.",
+      "filename": "commentary_04_60.0s_Approaching_the_400_meter_mark.mp3",
+      "duration_sec": 5.171,
+      "subjectId": 1
+    },
+    {
+      "index": 5,
+      "time": 68,
+      "text": "Melodi hits the bell lap in 1:08! Field spreading out.",
+      "filename": "commentary_05_68.0s_Melodi_hits_the_bell_lap_in_1.mp3",
+      "duration_sec": 4.611,
+      "subjectId": 1
+    },
+    {
+      "index": 6,
+      "time": 88,
+      "text": "Skye through 400 meters in 1:28.5. Perfect positioning in 8th.",
+      "filename": "commentary_06_88.0s_Skye_through_400_meters_in_12.mp3",
+      "duration_sec": 5.931,
+      "subjectId": 8
+    },
+    {
+      "index": 7,
+      "time": 105,
+      "text": "Melodi through 600 meters in 1:45. Dominating performance!",
+      "filename": "commentary_07_105.0s_Melodi_through_600_meters_in_1.mp3",
+      "duration_sec": 5.971,
+      "subjectId": 1
+    },
+    {
+      "index": 8,
+      "time": 130,
+      "text": "Skye making her move! The endurance is kicking in.",
+      "filename": "commentary_08_130.0s_Skye_making_her_move_The_endu.mp3",
+      "duration_sec": 4.691,
+      "subjectId": 8
+    },
+    {
+      "index": 9,
+      "time": 136,
+      "text": "Skye hits 600 meters in 2:16.8. Holding form while others fade.",
+      "filename": "commentary_09_136.0s_Skye_hits_600_meters_in_2168.mp3",
+      "duration_sec": 6.931,
+      "subjectId": 8
+    },
+    {
+      "index": 11,
+      "time": 165,
+      "text": "Skye winding it up for the finish! Look at that kick!",
+      "filename": "commentary_11_165.0s_Skye_winding_it_up_for_the_fin.mp3",
+      "duration_sec": 4.011,
+      "subjectId": 8
+    },
+    {
+      "index": 12,
+      "time": 184,
+      "text": "Skye stops the clock at 3:04.27! A massive new personal record!",
+      "filename": "commentary_12_184.0s_Skye_stops_the_clock_at_3042.mp3",
+      "duration_sec": 7.091,
+      "subjectId": 8
+    },
+    {
+      "index": 13,
+      "time": 191,
+      "text": "Margeaux finishes in 3:10. Great racing.",
+      "filename": "commentary_13_191.0s_Margeaux_finishes_in_310_Gre.mp3",
+      "duration_sec": 4.251,
+      "subjectId": 9
+    }
+  ]
+}
