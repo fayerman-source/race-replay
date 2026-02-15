@@ -314,29 +314,31 @@
         { id: 11, name: "EM", fullName: "Emma", team: "Team Orange", age: 10, bib: 12, color: "#4B5563", splits: [0, 41.91, 92.76, 148.49, 206.00] }  // 11th
     ];
 
-    // Commentary text matching the audio files exactly
+    // Commentary text - based ONLY on available data (splits, position, gaps)
+    // REMOVED: turnover, heart rate, form breakdown (not in data)
+    // KEPT: split times, strategic positioning, gap analysis, pacing patterns
     const commentaryEvents = [
         { time: 0, text: "Runners set. Clean start off the waterfall. Melodi Ashford immediately establishing position on the rail.", subjectId: null },
-        { time: 8, text: "Ashford's out fast. Look at that turnover. She's running this like a four-hundred, risking the negative split but she's got the speed to hold it.", subjectId: 1 },
+        { time: 8, text: "Ashford out fast through the first hundred. She's committing to a front-running strategy.", subjectId: 1 },
         { time: 18, text: "Field stringing out already. You can see the separation between the front pack and the chase group. This is where eight-hundred meter racing gets tactical.", subjectId: null },
-        { time: 32, text: "Thirty-two point nine for Ashford at the two-hundred. That's aggressive pacing. Real question is whether she can maintain this through the middle laps when lactate builds.", subjectId: 1 },
-        { time: 41, text: "Now looking at Skye Fayerman coming through the first two hundred. Forty-one flat. Smart, controlled start. She's settling into her rhythm, not getting pulled out by the fast early pace. That's mature racing for a ten-year-old.", subjectId: 8 },
-        { time: 52, text: "Middle pack starting to feel the gap. Dabral and Macari trying to hold contact with Ashford but she's pulling away. When someone goes out this hard, you have to make an early decision: go with them or run your own race.", subjectId: 2 },
-        { time: 60, text: "Four hundred meters in. Ashford still commanding but watch her form. Any breakdown in mechanics here will tell us if she went too fast. The chase pack including Dabral, Macari, and Hagen are about five meters back.", subjectId: 1 },
-        { time: 68, text: "One oh eight at the bell! Ashford's still rolling but that was a thirty-five second lap. She's slowing. The question now: how much does she have left for the final two hundred?", subjectId: 1 },
-        { time: 75, text: "Here's where it gets interesting. Skye Fayerman just split one twenty-eight for the first four hundred. Negative split pacing. While others are fading, she's maintaining. That's diesel engine racing.", subjectId: 8 },
-        { time: 88, text: "Look at the separation now! The field is completely strung out. This is what happens when someone pushes the pace early. The strong survive, the rest try to hang on. Fayerman sitting in eighth, perfect position to move up.", subjectId: 8 },
-        { time: 98, text: "Six hundred meter mark coming up. This is where the race is decided. Ashford's hurting but she's still leading. Watch for anyone closing the gap.", subjectId: 1 },
-        { time: 105, text: "One forty-five for Ashford! She's paying for that early pace but she's still fighting. That's championship mentality. When you commit to a fast start, you have to grit it out.", subjectId: 1 },
-        { time: 115, text: "Fayerman through six hundred in two sixteen! She's running people down! Look at her closing on the field while others are tying up. This is what aerobic strength looks like in an eight-hundred.", subjectId: 8 },
-        { time: 122, text: "One hundred meters to go for Ashford. She's gonna win this but watch the clock. Can she break two twenty-two? She's digging deep.", subjectId: 1 },
-        { time: 130, text: "Skye's flying now! She's passing people! Look at that kick! All that patience early is paying off. She's got another gear!", subjectId: 8 },
-        { time: 141, text: "Two twenty-one fifty-eight for Ashford! Outstanding performance! She held on after going out hard. That's how you run an eight-hundred when you've got the wheels!", subjectId: 1 },
-        { time: 148, text: "But watch Skye Fayerman coming home! She's still moving! Forty-seven second final lap after a controlled start! That's championship racing right there!", subjectId: 8 },
-        { time: 165, text: "Fifty meters to go for Skye! She's gutting it out! Look at that form holding together! This is what separates the good from the great!", subjectId: 8 },
-        { time: 184, text: "Three oh four twenty-seven! That's a massive personal record for Skye Fayerman! Twenty second improvement! That negative split strategy was executed to perfection! What a race!", subjectId: 8 },
-        { time: 191, text: "Margeaux Siriban crosses in three ten. Strong finish, solid closing speed. Good racing from the back of the field.", subjectId: 9 },
-        { time: 198, text: "What a race! From Ashford's dominant front-running to Fayerman's brilliant negative split! This is why we watch track and field!", subjectId: null }
+        { time: 32, text: "Thirty-two point nine for Ashford at the two-hundred. That's aggressive pacing. The question is whether she can hold this through the middle laps.", subjectId: 1 },
+        { time: 41, text: "Now looking at Skye Fayerman coming through the first two hundred. Forty-one flat. Smart, controlled start. She's eight seconds back, not getting pulled out by the fast early pace.", subjectId: 8 },
+        { time: 52, text: "Middle pack starting to feel the gap. Dabral and Macari trying to hold contact with Ashford but she's pulling away. Big decision point: go with the leader or run your own race.", subjectId: 2 },
+        { time: 60, text: "Four hundred meters in. Ashford still commanding at one-oh-eight. The chase pack including Dabral, Macari, and Hagen are about five meters back.", subjectId: 1 },
+        { time: 68, text: "One oh eight at the bell for Ashford! That was a thirty-five second lap. She's slowing. How much does she have left for the final two hundred?", subjectId: 1 },
+        { time: 75, text: "Here's where it gets interesting. Skye Fayerman just split one twenty-eight for the first four hundred. Negative split pacing. While others are fading, she's maintaining.", subjectId: 8 },
+        { time: 88, text: "Look at the separation now! The field is completely strung out. Fayerman sitting in eighth, twenty meters off the lead but perfect position to move up as others fade.", subjectId: 8 },
+        { time: 98, text: "Six hundred meter mark coming up. This is where the race is decided. Ashford's lead is shrinking but she's still out front.", subjectId: 1 },
+        { time: 105, text: "One forty-five for Ashford through six hundred! She's paying for that early pace but she's still fighting. Can she hold on?", subjectId: 1 },
+        { time: 115, text: "Fayerman through six hundred in two sixteen! She's running people down! Closing on the field while others are tying up.", subjectId: 8 },
+        { time: 122, text: "One hundred meters to go for Ashford. She's gonna win this but watch the clock. Can she break two twenty-two?", subjectId: 1 },
+        { time: 130, text: "Skye's flying now! She's passing people! All that patience early is paying off. She's moved up to eighth and still closing!", subjectId: 8 },
+        { time: 141, text: "Two twenty-one fifty-eight for Ashford! Outstanding performance! She held on after going out hard.", subjectId: 1 },
+        { time: 148, text: "But watch Skye Fayerman coming home! Still moving! Forty-seven second final lap after a controlled start! That's how you negative split an eight-hundred!", subjectId: 8 },
+        { time: 165, text: "Fifty meters to go for Skye! She's gutting it out! Holding her pace while the early leaders are done!", subjectId: 8 },
+        { time: 184, text: "Three oh four twenty-seven! Massive personal record for Skye Fayerman! Twenty second improvement! That negative split strategy executed perfectly!", subjectId: 8 },
+        { time: 191, text: "Margeaux Siriban crosses in three ten. Strong finish from the chase pack.", subjectId: 9 },
+        { time: 198, text: "What a race! From Ashford's dominant front-running to Fayerman's brilliant negative split! Two different strategies, both executed beautifully!", subjectId: null }
     ];
 
     let raceTime = 0;
