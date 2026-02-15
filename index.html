@@ -252,9 +252,10 @@
             <!-- 3. Controls -->
             <div class="card">
                 <div class="flex gap-2 justify-center mb-4">
-                    <button onclick="startRace()" id="btnStart" class="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded font-bold transition flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                        START
+                    <button onclick="toggleRace()" id="btnStart" class="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded font-bold transition flex items-center justify-center gap-2">
+                        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                        <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        <span id="btnText">START</span>
                     </button>
                     <button onclick="resetRace()" class="bg-gray-600 hover:bg-gray-700 text-white w-1/3 py-3 rounded font-bold transition">
                         Reset
@@ -565,17 +566,53 @@
         return `${m}:${s < 10 ? '0' : ''}${s}.${ms < 10 ? '0' : ''}${ms}`;
     }
 
+    function toggleRace() {
+        if (isRunning) {
+            pauseRace();
+        } else {
+            startRace();
+        }
+    }
+
     function startRace() {
         if (isRunning) return;
         isRunning = true;
-        document.getElementById('btnStart').innerHTML = "RUNNING...";
-        document.getElementById('btnStart').classList.add('opacity-50');
+        
+        // Update button to show PAUSE state
+        document.getElementById('playIcon').classList.add('hidden');
+        document.getElementById('pauseIcon').classList.remove('hidden');
+        document.getElementById('btnText').innerText = "PAUSE";
+        document.getElementById('btnStart').classList.remove('bg-green-600', 'hover:bg-green-700');
+        document.getElementById('btnStart').classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+        
         requestAnimationFrame(updatePositions);
+    }
+
+    function pauseRace() {
+        isRunning = false;
+        
+        // Update button to show START/RESUME state
+        document.getElementById('playIcon').classList.remove('hidden');
+        document.getElementById('pauseIcon').classList.add('hidden');
+        document.getElementById('btnText').innerText = raceTime > 0 ? "RESUME" : "START";
+        document.getElementById('btnStart').classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+        document.getElementById('btnStart').classList.add('bg-green-600', 'hover:bg-green-700');
+        
+        // Pause any currently playing audio
+        Object.values(audioElements).forEach(audio => {
+            if (!audio.paused) {
+                audio.pause();
+            }
+        });
     }
 
     function stopRace() {
         isRunning = false;
-        document.getElementById('btnStart').innerText = "FINISHED";
+        document.getElementById('btnText').innerText = "FINISHED";
+        document.getElementById('playIcon').classList.remove('hidden');
+        document.getElementById('pauseIcon').classList.add('hidden');
+        document.getElementById('btnStart').classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+        document.getElementById('btnStart').classList.add('bg-gray-600');
         focusIndicator.classList.remove('active');
     }
 
@@ -590,14 +627,19 @@
             audio.pause();
             audio.currentTime = 0;
         });
+        
+        // Reset UI
         document.getElementById('timer').innerText = "0:00.00";
         document.getElementById('lapCounter').innerText = "Lap 1 of 4";
-        document.getElementById('btnStart').innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-            START`;
         document.getElementById('commentaryBox').innerText = "Runners at the line...";
-        document.getElementById('btnStart').classList.remove('opacity-50');
         focusIndicator.classList.remove('active');
+        
+        // Reset button to START state
+        document.getElementById('playIcon').classList.remove('hidden');
+        document.getElementById('pauseIcon').classList.add('hidden');
+        document.getElementById('btnText').innerText = "START";
+        document.getElementById('btnStart').classList.remove('bg-yellow-600', 'hover:bg-yellow-700', 'bg-gray-600');
+        document.getElementById('btnStart').classList.add('bg-green-600', 'hover:bg-green-700');
 
         // Reset dots
         const lapDots = document.querySelectorAll('.lap-dot');
