@@ -1,8 +1,8 @@
-# 🏃‍♀️ Circuit Race Replay
+# 🏃‍♀️ Race Replay
 
 > **Transforming static race results into immersive, real-time visual experiences.**
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://fayerman-source.github.io/circuit-race-replay/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://fayerman-source.github.io/race-replay/)
 
 ## The Problem with Traditional Race Results
 
@@ -25,7 +25,7 @@ This demonstration showcases a **live, animated replay system** that transforms 
 | Text-based recaps | 🎙️ **Synced commentary** highlighting key moments |
 | No visual context | 🟡 **Focus indicators** showing who to watch |
 | Guessing positioning | 📍 **Real-time track positioning** |
-| One-size-fits-all | ⚡ **User-controlled playback speed** (1x to 50x) |
+| One-size-fits-all | ⚡ **Real-time playback** with pause/resume |
 
 ---
 
@@ -57,7 +57,7 @@ This demonstration showcases a **live, animated replay system** that transforms 
 
 This demo uses **anonymized sample data** to illustrate the technology. All runner names are first-name only, and team affiliations are generic placeholders.
 
-**[→ Experience the Live Replay](https://fayerman-source.github.io/circuit-race-replay/)**
+**[→ Experience the Live Replay](https://fayerman-source.github.io/race-replay/)**
 
 ---
 
