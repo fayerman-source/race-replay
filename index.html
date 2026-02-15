@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race Replay: Skye at The Circuit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #111827; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Track Oval Styles */
+        .track-container {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Fixed height for the oval */
+            background-color: #1F2937;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .oval-track {
+            position: relative;
+            width: 800px;
+            height: 350px;
+            /* Scaling for responsiveness */
+            transform-origin: center;
+        }
+
+        /* SVG Styling */
+        .track-surface {
+            fill: #991B1B; /* Armory Red */
+            stroke: white;
+            stroke-width: 2px;
+        }
+        .track-infield {
+            fill: #374151; /* Dark Grey Infield */
+        }
+        .start-finish-line {
+            stroke: white;
+            stroke-width: 4px;
+        }
+
+        /* Runner Dot */
+        .runner-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* Centering the dot on the coordinate */
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+            z-index: 10;
+            transition: transform 0.1s linear; /* Smooth movement handled via JS, this is for scale */
+        }
+        
+        .runner-label {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            white-space: nowrap;
+            text-shadow: 0 1px 2px black;
+            pointer-events: none;
+        }
+
+        @media (max-width: 850px) {
+            .oval-track { transform: scale(0.6); }
+            .track-container { height: 250px; }
+        }
+        @media (max-width: 500px) {
+            .oval-track { transform: scale(0.4); }
+            .track-container { height: 200px; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-blue-400">The Circuit: 800m Replay</h1>
+                <p class="text-gray-400 text-sm">Heat Analysis | Skye: 3:04.27 (New PR) | Track: 200m Banked</p>
+            </div>
+            <div class="text-right">
+                <div class="text-4xl font-mono text-white" id="timer">0:00.00</div>
+                <div class="text-xs text-gray-500">Race Time</div>
+                <div class="text-xs text-blue-400 font-bold" id="lapCounter">Lap 1 of 4</div>
+            </div>
+        </header>
+
+        <!-- Controls -->
+        <div class="bg-gray-800 p-4 rounded-lg mb-6 flex gap-4 items-center flex-wrap">
+            <button onclick="startRace()" id="btnStart" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold transition">START RACE</button>
+            <button onclick="resetRace()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition">Reset</button>
+            
+            <div class="flex items-center gap-2 ml-auto">
+                <span class="text-sm text-gray-400">Speed:</span>
+                <input type="range" id="speedRange" min="1" max="50" value="20" class="w-32">
+                <span id="speedLabel" class="text-sm font-mono">20x</span>
+            </div>
+        </div>
+
+        <!-- Track Visualization Area -->
+        <div class="track-container border border-gray-700">
+            <div class="oval-track" id="ovalTrack">
+                <!-- SVG Track Background -->
+                <svg width="800" height="350" viewBox="0 0 800 350" class="absolute top-0 left-0">
+                    <!-- Outer Lane Border -->
+                    <rect x="150" y="25" width="500" height="300" rx="150" ry="150" class="track-surface" />
+                    <!-- Inner Infield -->
+                    <rect x="150" y="75" width="500" height="200" rx="100" ry="100" class="track-infield" style="stroke:white; stroke-width:2px;" />
+                    
+                    <!-- Lane Lines (Decorative) -->
+                    <path d="M 150 50 L 650 50 A 125 125 0 0 1 650 300 L 150 300 A 125 125 0 0 1 150 50" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+                    
+                    <!-- Finish Line (Bottom Right of Straight) -->
+                    <line x1="550" y1="275" x2="550" y2="325" class="start-finish-line" />
+                    <text x="545" y="340" fill="white" font-size="12" text-anchor="middle">FINISH</text>
+
+                    <!-- 200m Start (Same as Finish usually for 800m waterfall cut-in logic simplification) -->
+                </svg>
+
+                <!-- Runners Container -->
+                <div id="runnersLayer" class="absolute top-0 left-0 w-full h-full">
+                    <!-- Runners injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend / Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div class="bg-gray-800 p-4 rounded-lg border-l-4 border-orange-500">
+                <h3 class="font-bold text-orange-400 mb-2">Skye's "Diesel" Splits</h3>
+                <div class="grid grid-cols-4 gap-2 text-center text-sm">
+                    <div class="bg-gray-700 p-2 rounded">
+                        <div class="text-gray-400">0-200</div>
+                        <div class="font-bold">41.5s</div>
+                    </div>
+                    <div class="bg-gray-700 p-2 rounded">
+                        <div class="text-gray-400">200-400</div>
+                        <div class="font-bold">47.0s</div>
+                    </div>
+                    <div class="bg-gray-700 p-2 rounded">
+                        <div class="text-gray-400">400-600</div>
+                        <div class="font-bold text-green-400">48.2s</div>
+                    </div>
+                    <div class="bg-gray-700 p-2 rounded">
+                        <div class="text-gray-400">600-800</div>
+                        <div class="font-bold">47.4s</div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Note the consistency. Less than 1.5s variance between laps 2, 3, and 4.</p>
+            </div>
+
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h3 class="font-bold text-blue-400 mb-2">Race Dynamics</h3>
+                <ul class="text-sm space-y-2 text-gray-300">
+                    <li>🔵 <strong>Leaders:</strong> Running a different race (2:21-2:30).</li>
+                    <li>🟠 <strong>Skye (Rank 8):</strong> Ran her own race. Isolated but steady.</li>
+                    <li>⚪ <strong>The Threat:</strong> Margeaux (#9) closed in 46.6s, but Skye's consistent middle laps built enough gap to hold her off.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Runner Data based on provided splits
+    const runners = [
+        { id: 1, name: "MA", color: "#3B82F6", splits: [0, 32.94, 68.67, 105.05, 141.58] }, // 1st
+        { id: 2, name: "PD", color: "#60A5FA", splits: [0, 33.86, 70.82, 108.62, 146.73] }, // 2nd
+        { id: 3, name: "RM", color: "#93C5FD", splits: [0, 33.63, 71.49, 111.25, 149.88] }, // 3rd
+        { id: 4, name: "EH", color: "#93C5FD", splits: [0, 34.52, 72.14, 110.78, 150.00] }, // 4th
+        { id: 5, name: "UD", color: "#6B7280", splits: [0, 35.31, 76.86, 122.48, 168.78] }, // 5th
+        { id: 6, name: "DW", color: "#6B7280", splits: [0, 38.74, 85.49, 135.17, 174.25] }, // 6th
+        { id: 7, name: "JR", color: "#6B7280", splits: [0, 34.85, 76.55, 125.96, 178.73] }, // 7th
+        { id: 8, name: "SF", color: "#F97316", splits: [0, 41.53, 88.55, 136.83, 184.27], highlight: true }, // SKYE
+        { id: 9, name: "MS", color: "#9CA3AF", splits: [0, 42.87, 91.37, 144.00, 190.71] }, // 9th
+        { id: 10,name: "CH", color: "#9CA3AF", splits: [0, 42.25, 91.72, 144.35, 192.25] }, // 10th
+        { id: 11,name: "EM", color: "#4B5563", splits: [0, 41.91, 92.76, 148.49, 206.00] }  // 11th
+    ];
+
+    let raceTime = 0;
+    let speed = 20;
+    let isRunning = false;
+
+    // Track Geometry Constants
+    const STRAIGHT_LEN = 400; // Visual pixels for straight
+    const RADIUS_X = 125;     // Visual pixels for curve radius
+    const RADIUS_Y = 125;
+    const CENTER_X = 400;     // Center of entire SVG
+    const CENTER_Y = 175;
+    const LEFT_CENTER_X = 275; // Center of left curve (150 + 125)
+    const RIGHT_CENTER_X = 525; // Center of right curve (650 - 125) ?? 
+    // Re-calculating based on SVG coords:
+    // SVG: Rect 150,25, width 500. 
+    // Left arc center: x=150+125=275, y=175.
+    // Right arc center: x=150+500-125=525, y=175.
+    // Straight length = 525 - 275 = 250px * 2 = 500px... no.
+    // Let's use path logic.
+    // Start at Finish Line: (550, 300) -> approx bottom right straight.
+    // 1. Run Left to Right on Bottom Straight? No, Counter Clockwise.
+    // Finish Line is usually end of home straight.
+    // Home straight (bottom) runs Left -> Right.
+    // So Finish line is at x=550.
+    // Path:
+    // 1. Finish Line (550, 300) -> Curve 1 Start (650, 300) [Dist: 100px]
+    // 2. Curve 1 (Right): (650, 300) -> (650, 50) [Arc: PI*125 = 392px]
+    // 3. Back Straight (Top): (650, 50) -> (150, 50) [Dist: 500px]
+    // 4. Curve 2 (Left): (150, 50) -> (150, 300) [Arc: 392px]
+    // 5. Home Straight: (150, 300) -> Finish Line (550, 300) [Dist: 400px]
+    
+    // Total Visual Loop = 100 + 392 + 500 + 392 + 400 = 1784 units.
+    // 1 Lap = 200m. Scale Factor = 1784 / 200 = 8.92 units/meter.
+
+    const SCALE = 8.92;
+    // Segments defs [length, type, startX, startY, ...args]
+    // Types: 0=Linear Right, 1=Arc Up-Left, 2=Linear Left, 3=Arc Down-Right
+    
+    // Simpler Geometry for Code:
+    // 0. Finish(550, 300) to Right_Tangent(650, 300) -> Length 100
+    // 1. Right Curve -> Center(650, 175). Radius 125. Angle 90 to 270 (-90). Length 392.
+    // 2. Top Straight -> (650, 50) to (150, 50). Length 500.
+    // 3. Left Curve -> Center(150, 175). Radius 125. Angle 270 (-90) to 450 (90). Length 392.
+    // 4. Bottom Straight -> (150, 300) to Finish(550, 300). Length 400.
+    
+    // Wait, SVG rect width 500. Rx 150.
+    // Actually, let's use the visual values from SVG:
+    // Left Curve Center: x=150+125 = 275.
+    // Right Curve Center: x=150+500-125 = 525.
+    // Straight Y Top: 50. Bottom: 300.
+    // Straight Length: 525 - 275 = 250px.
+    // Curve Radius: 125px.
+    // Curve Length: PI * 125 = 392.7px.
+    // Total Loop = 250 + 392.7 + 250 + 392.7 = 1285.4px.
+    
+    // Finish Line x=550? That's past the right center (525).
+    // Let's place finish line at x=450 (mid-right).
+    
+    // Corrected Path (Counter-Clockwise):
+    // Start at x=450, y=300.
+    // 1. Bottom Straight: 450 -> 525 (Right Center). Len: 75px.
+    // 2. Right Curve: Center(525, 175). Angle PI/2 to -PI/2. Len: 392.7px.
+    // 3. Top Straight: 525 -> 275 (Left Center). Len: 250px.
+    // 4. Left Curve: Center(275, 175). Angle -PI/2 to PI/2 (via left). Len: 392.7px.
+    // 5. Bottom Straight: 275 -> 450. Len: 175px.
+    
+    const LAP_PIXELS = 1285.4;
+    const PIXELS_PER_METER = LAP_PIXELS / 200;
+
+    function getTrackCoordinates(meters) {
+        // Normalize to one lap
+        let d = (meters % 200) * PIXELS_PER_METER;
+        
+        // 1. Bottom Straight Part 1 (75px) - from 450 to 525
+        if (d < 75) {
+            return { x: 450 + d, y: 300 };
+        }
+        d -= 75;
+
+        // 2. Right Curve (392.7px)
+        const curveLen = Math.PI * 125;
+        if (d < curveLen) {
+            const angle = (Math.PI / 2) - (d / curveLen) * Math.PI; // 90 down to -90
+            return {
+                x: 525 + 125 * Math.cos(angle),
+                y: 175 + 125 * Math.sin(angle)
+            };
+        }
+        d -= curveLen;
+
+        // 3. Top Straight (250px) - from 525 to 275
+        if (d < 250) {
+            return { x: 525 - d, y: 50 };
+        }
+        d -= 250;
+
+        // 4. Left Curve (392.7px)
+        if (d < curveLen) {
+            const angle = -(Math.PI / 2) - (d / curveLen) * Math.PI; // -90 down to -270
+            return {
+                x: 275 + 125 * Math.cos(angle),
+                y: 175 + 125 * Math.sin(angle)
+            };
+        }
+        d -= curveLen;
+
+        // 5. Bottom Straight Part 2 (Remaining) - from 275 to 450
+        return { x: 275 + d, y: 300 };
+    }
+
+    // Initialize DOM
+    const runnersLayer = document.getElementById('runnersLayer');
+    runners.forEach((r, index) => {
+        const dot = document.createElement('div');
+        dot.className = "runner-dot";
+        dot.style.backgroundColor = r.color;
+        
+        // Add random lane offset so dots don't perfectly overlap
+        // Lane width approx 10px. 
+        const laneOffset = (index % 3) * 6 - 3; 
+        dot.dataset.offset = laneOffset;
+
+        if(r.highlight) {
+            dot.style.border = "3px solid white";
+            dot.style.zIndex = "50";
+            dot.style.transform = "translate(-50%, -50%) scale(1.3)";
+        }
+        dot.id = `runner-${r.id}`;
+        dot.innerText = index + 1; // Rank
+        
+        // Name Label
+        if (r.highlight) {
+            const label = document.createElement('div');
+            label.className = "runner-label";
+            label.innerText = r.name;
+            dot.appendChild(label);
+        }
+
+        runnersLayer.appendChild(dot);
+    });
+
+    // Speed Slider
+    document.getElementById('speedRange').addEventListener('input', (e) => {
+        speed = e.target.value;
+        document.getElementById('speedLabel').innerText = speed + "x";
+    });
+
+    function getDistanceAtTime(splits, currentTime) {
+        if (currentTime <= 0) return 0;
+        if (currentTime >= splits[4]) return 800;
+
+        // Find segment
+        for (let i = 0; i < 4; i++) {
+            if (currentTime >= splits[i] && currentTime < splits[i+1]) {
+                const segmentTime = splits[i+1] - splits[i];
+                const timeInSegment = currentTime - splits[i];
+                const segmentDist = 200; // Each split is 200m
+                const fraction = timeInSegment / segmentTime;
+                return (i * 200) + (fraction * 200);
+            }
+        }
+        return 800;
+    }
+
+    function updatePositions() {
+        if (!isRunning) return;
+        
+        raceTime += (1/60) * speed;
+        document.getElementById('timer').innerText = formatTime(raceTime);
+        
+        // Update Lap Counter based on Skye's position
+        const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
+        const lap = Math.min(4, Math.floor(skyeDist / 200) + 1);
+        document.getElementById('lapCounter').innerText = `Lap ${lap} of 4`;
+
+        let finishedCount = 0;
+
+        runners.forEach(r => {
+            const dist = getDistanceAtTime(r.splits, raceTime);
+            const coords = getTrackCoordinates(dist);
+            
+            // Apply lane offset normal vector logic roughly
+            // For simplicity, just add to Y on straights, X on curves? 
+            // Or just generic offset. Let's do generic Y offset, works okay for top-down
+            const dot = document.getElementById(`runner-${r.id}`);
+            const offset = parseFloat(dot.dataset.offset);
+            
+            // Simple lane offset logic (imperfect on curves but visual enough)
+            // On straights (y approx 50 or 300) -> modify y
+            // On curves -> modify radius distance from center
+            
+            dot.style.left = `${coords.x}px`;
+            dot.style.top = `${coords.y + offset}px`; // Simplified offset
+            
+            if (dist >= 800) {
+                dot.style.opacity = "0.3"; 
+                finishedCount++;
+            }
+        });
+
+        if (finishedCount === runners.length) {
+            stopRace();
+        } else {
+            requestAnimationFrame(updatePositions);
+        }
+    }
+
+    function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        const ms = Math.floor((seconds % 1) * 100);
+        return `${m}:${s < 10 ? '0' : ''}${s}.${ms < 10 ? '0' : ''}${ms}`;
+    }
+
+    function startRace() {
+        if (isRunning) return;
+        isRunning = true;
+        document.getElementById('btnStart').innerText = "Running...";
+        document.getElementById('btnStart').classList.add('opacity-50');
+        requestAnimationFrame(updatePositions);
+    }
+
+    function stopRace() {
+        isRunning = false;
+        document.getElementById('btnStart').innerText = "Race Finished";
+    }
+
+    function resetRace() {
+        isRunning = false;
+        raceTime = 0;
+        document.getElementById('timer').innerText = "0:00.00";
+        document.getElementById('lapCounter').innerText = "Lap 1 of 4";
+        document.getElementById('btnStart').innerText = "START RACE";
+        document.getElementById('btnStart').classList.remove('opacity-50');
+        
+        // Reset positions
+        runners.forEach(r => {
+            const coords = getTrackCoordinates(0);
+            const dot = document.getElementById(`runner-${r.id}`);
+            const offset = parseFloat(dot.dataset.offset);
+            dot.style.left = `${coords.x}px`;
+            dot.style.top = `${coords.y + offset}px`;
+            dot.style.opacity = "1";
+        });
+    }
+    
+    // Initial Position
+    resetRace();
+</script>
+
+</body>
+</html>
