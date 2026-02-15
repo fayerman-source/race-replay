@@ -343,18 +343,21 @@
     let speed = 1;
     let isRunning = false;
     let lastPlayedCommentary = -1;
+    let currentPlayingAudio = null;
 
-    // Commentary audio files mapping (indices 3 and 10 failed to generate)
+    // Commentary audio files mapping (indices 3 and 10 failed initially - will regenerate)
     const commentaryAudio = {
         0: "commentary_audio/commentary_00_0.0s_Runners_are_at_the_line_The.mp3",
         1: "commentary_audio/commentary_01_8.0s_Melodi_getting_out_aggressivel.mp3",
         2: "commentary_audio/commentary_02_32.0s_Melodi_hits_the_200_meter_mark.mp3",
+        3: "commentary_audio/commentary_03_41.5s_Skye_through_the_first_200_in.mp3",
         4: "commentary_audio/commentary_04_60.0s_Approaching_the_400_meter_mark.mp3",
         5: "commentary_audio/commentary_05_68.0s_Melodi_hits_the_bell_lap_in_1.mp3",
         6: "commentary_audio/commentary_06_88.0s_Skye_through_400_meters_in_12.mp3",
         7: "commentary_audio/commentary_07_105.0s_Melodi_through_600_meters_in_1.mp3",
         8: "commentary_audio/commentary_08_130.0s_Skye_making_her_move_The_endu.mp3",
         9: "commentary_audio/commentary_09_136.0s_Skye_hits_600_meters_in_2168.mp3",
+        10: "commentary_audio/commentary_10_141.0s_Melodi_crosses_the_line_2215.mp3",
         11: "commentary_audio/commentary_11_165.0s_Skye_winding_it_up_for_the_fin.mp3",
         12: "commentary_audio/commentary_12_184.0s_Skye_stops_the_clock_at_3042.mp3",
         13: "commentary_audio/commentary_13_191.0s_Margeaux_finishes_in_310_Gre.mp3"
@@ -488,9 +491,16 @@
                 setTimeout(() => box.parentElement.classList.remove("ring-2", "ring-blue-500"), 300);
                 
                 // Play audio commentary if available and not already played
+                // Stop any currently playing audio first to prevent overlap
+                if (currentPlayingAudio && !currentPlayingAudio.paused) {
+                    currentPlayingAudio.pause();
+                    currentPlayingAudio.currentTime = 0;
+                }
+                
                 if (audioElements[commentIndex] && lastPlayedCommentary !== commentIndex) {
                     audioElements[commentIndex].currentTime = 0;
                     audioElements[commentIndex].play().catch(e => console.log("Audio play failed:", e));
+                    currentPlayingAudio = audioElements[commentIndex];
                     lastPlayedCommentary = commentIndex;
                 }
             }
@@ -557,11 +567,12 @@
         raceTime = 0;
         lastPlayedCommentary = -1;
         
-        // Stop all audio
-        Object.values(audioElements).forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-        });
+        // Stop all audio and reset
+        if (currentPlayingAudio) {
+            currentPlayingAudio.pause();
+            currentPlayingAudio.currentTime = 0;
+            currentPlayingAudio = null;
+        }
         document.getElementById('timer').innerText = "0:00.00";
         document.getElementById('lapCounter').innerText = "Lap 1 of 4";
         document.getElementById('btnStart').innerHTML = `
