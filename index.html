@@ -345,30 +345,31 @@
     let currentPlayingAudio = null;
     let currentAudioEndTime = -1; // When the current clip will finish
 
-    // Commentary timing with durations - ensures no overlap
+    // Commentary timing with ACTUAL durations - ensures no overlap
     // Format: [triggerTime, filename, durationSeconds, subjectId]
+    // Durations measured from actual MP3 files
     const commentaryTiming = [
-        [0,   "commentary_audio_v2/commentary_00_0.0s.mp3", 4.97, null],
-        [8,   "commentary_audio_v2/commentary_01_8.0s.mp3", 3.29, 1],
-        [18,  "commentary_audio_v2/commentary_02_18.0s.mp3", 5.61, 1],
-        [32,  "commentary_audio_v2/commentary_03_32.0s.mp3", 5.93, 1],
-        [41,  "commentary_audio_v2/commentary_04_41.0s.mp3", 5.93, 8],
-        [52,  "commentary_audio_v2/commentary_05_52.0s.mp3", 5.17, 2],
-        [60,  "commentary_audio_v2/commentary_06_60.0s.mp3", 5.93, 1],
-        [68,  "commentary_audio_v2/commentary_07_68.0s.mp3", 4.61, 1],
-        [75,  "commentary_audio_v2/commentary_08_75.0s.mp3", 5.93, 8],
-        [88,  "commentary_audio_v2/commentary_09_88.0s.mp3", 5.97, 8],
-        [98,  "commentary_audio_v2/commentary_10_98.0s.mp3", 4.69, 1],
-        [105, "commentary_audio_v2/commentary_11_105.0s.mp3", 5.97, 1],
-        [115, "commentary_audio_v2/commentary_12_115.0s.mp3", 4.69, 8],
-        [122, "commentary_audio_v2/commentary_13_122.0s.mp3", 6.93, 1],
-        [130, "commentary_audio_v2/commentary_14_130.0s.mp3", 5.01, 8],
-        [141, "commentary_audio_v2/commentary_15_141.0s.mp3", 4.01, 1],
-        [148, "commentary_audio_v2/commentary_16_148.0s.mp3", 7.09, 8],
-        [165, "commentary_audio_v2/commentary_17_165.0s.mp3", 4.25, 8],
-        [184, "commentary_audio_v2/commentary_18_184.0s.mp3", 7.09, 8],
-        [191, "commentary_audio_v2/commentary_19_191.0s.mp3", 4.25, 9],
-        [198, "commentary_audio_v2/commentary_20_198.0s.mp3", 4.25, null]
+        [0,   "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],
+        [8,   "commentary_audio_v2/commentary_01_8.0s.mp3", 8.41, 1],
+        [18,  "commentary_audio_v2/commentary_02_18.0s.mp3", 9.09, 1],
+        [32,  "commentary_audio_v2/commentary_03_32.0s.mp3", 9.41, 1],
+        [41,  "commentary_audio_v2/commentary_04_41.0s.mp3", 14.81, 8],
+        [52,  "commentary_audio_v2/commentary_05_52.0s.mp3", 12.89, 2],
+        [60,  "commentary_audio_v2/commentary_06_60.0s.mp3", 12.93, 1],
+        [68,  "commentary_audio_v2/commentary_07_68.0s.mp3", 11.53, 1],
+        [75,  "commentary_audio_v2/commentary_08_75.0s.mp3", 11.25, 8],
+        [88,  "commentary_audio_v2/commentary_09_88.0s.mp3", 13.73, 8],
+        [98,  "commentary_audio_v2/commentary_10_98.0s.mp3", 7.69, 1],
+        [105, "commentary_audio_v2/commentary_11_105.0s.mp3", 9.81, 1],
+        [115, "commentary_audio_v2/commentary_12_115.0s.mp3", 10.41, 8],
+        [122, "commentary_audio_v2/commentary_13_122.0s.mp3", 8.05, 1],
+        [130, "commentary_audio_v2/commentary_14_130.0s.mp3", 8.17, 8],
+        [141, "commentary_audio_v2/commentary_15_141.0s.mp3", 10.01, 1],
+        [148, "commentary_audio_v2/commentary_16_148.0s.mp3", 11.05, 8],
+        [165, "commentary_audio_v2/commentary_17_165.0s.mp3", 6.25, 8],
+        [184, "commentary_audio_v2/commentary_18_184.0s.mp3", 11.37, 8],
+        [191, "commentary_audio_v2/commentary_19_191.0s.mp3", 8.81, 9],
+        [198, "commentary_audio_v2/commentary_20_198.0s.mp3", 9.53, null]
     ];
 
     // Build audio lookup
