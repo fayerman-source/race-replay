@@ -313,7 +313,7 @@
         { id: 11, name: "EM", fullName: "Emma", team: "Team Orange", age: 10, bib: 12, color: "#4B5563", splits: [0, 41.91, 92.76, 148.49, 206.00] }  // 11th
     ];
 
-    // Elite Sportscaster Commentary - 21 clips with building excitement
+    // Commentary text matching the audio files exactly
     const commentaryEvents = [
         { time: 0, text: "Runners set. Clean start off the waterfall. Melodi Ashford immediately establishing position on the rail.", subjectId: null },
         { time: 8, text: "Ashford's out fast. Look at that turnover. She's running this like a four-hundred, risking the negative split but she's got the speed to hold it.", subjectId: 1 },
@@ -348,20 +348,27 @@
     // Commentary timing with durations - ensures no overlap
     // Format: [triggerTime, filename, durationSeconds, subjectId]
     const commentaryTiming = [
-        [0,   "commentary_audio_v2/commentary_00_0.0s_Runners_are_at_the_line_The.mp3", 4.97, null],
-        [8,   "commentary_audio_v2/commentary_01_8.0s_Melodi_getting_out_aggressivel.mp3", 3.29, 1],
-        [32,  "commentary_audio_v2/commentary_02_32.0s_Melodi_hits_the_200_meter_mark.mp3", 5.61, 1],
-        [41,  "commentary_audio_v2/commentary_03_41.0s_Skye_through_the_first_200_in.mp3", 5.93, 8],
-        [60,  "commentary_audio_v2/commentary_04_60.0s_Approaching_the_400_meter_mark.mp3", 5.17, 1],
-        [68,  "commentary_audio_v2/commentary_05_68.0s_Melodi_hits_the_bell_lap_in_1.mp3", 4.61, 1],
-        [88,  "commentary_audio_v2/commentary_06_88.0s_Skye_through_400_meters_in_12.mp3", 5.93, 8],
-        [105, "commentary_audio_v2/commentary_07_105.0s_Melodi_through_600_meters_in_1.mp3", 5.97, 1],
-        [130, "commentary_audio_v2/commentary_08_130.0s_Skye_making_her_move_The_endu.mp3", 4.69, 8],
-        [136, "commentary_audio_v2/commentary_09_136.0s_Skye_hits_600_meters_in_2168.mp3", 6.93, 8],
-        [141, "commentary_audio_v2/commentary_10_141.0s_Melodi_crosses_the_line_2215.mp3", 5.01, 1],
-        [165, "commentary_audio_v2/commentary_11_165.0s_Skye_winding_it_up_for_the_fin.mp3", 4.01, 8],
-        [184, "commentary_audio_v2/commentary_12_184.0s_Skye_stops_the_clock_at_3042.mp3", 7.09, 8],
-        [191, "commentary_audio_v2/commentary_13_191.0s_Margeaux_finishes_in_310_Gre.mp3", 4.25, 9]
+        [0,   "commentary_audio_v2/commentary_00_0.0s.mp3", 4.97, null],
+        [8,   "commentary_audio_v2/commentary_01_8.0s.mp3", 3.29, 1],
+        [18,  "commentary_audio_v2/commentary_02_18.0s.mp3", 5.61, 1],
+        [32,  "commentary_audio_v2/commentary_03_32.0s.mp3", 5.93, 1],
+        [41,  "commentary_audio_v2/commentary_04_41.0s.mp3", 5.93, 8],
+        [52,  "commentary_audio_v2/commentary_05_52.0s.mp3", 5.17, 2],
+        [60,  "commentary_audio_v2/commentary_06_60.0s.mp3", 5.93, 1],
+        [68,  "commentary_audio_v2/commentary_07_68.0s.mp3", 4.61, 1],
+        [75,  "commentary_audio_v2/commentary_08_75.0s.mp3", 5.93, 8],
+        [88,  "commentary_audio_v2/commentary_09_88.0s.mp3", 5.97, 8],
+        [98,  "commentary_audio_v2/commentary_10_98.0s.mp3", 4.69, 1],
+        [105, "commentary_audio_v2/commentary_11_105.0s.mp3", 5.97, 1],
+        [115, "commentary_audio_v2/commentary_12_115.0s.mp3", 4.69, 8],
+        [122, "commentary_audio_v2/commentary_13_122.0s.mp3", 6.93, 1],
+        [130, "commentary_audio_v2/commentary_14_130.0s.mp3", 5.01, 8],
+        [141, "commentary_audio_v2/commentary_15_141.0s.mp3", 4.01, 1],
+        [148, "commentary_audio_v2/commentary_16_148.0s.mp3", 7.09, 8],
+        [165, "commentary_audio_v2/commentary_17_165.0s.mp3", 4.25, 8],
+        [184, "commentary_audio_v2/commentary_18_184.0s.mp3", 7.09, 8],
+        [191, "commentary_audio_v2/commentary_19_191.0s.mp3", 4.25, 9],
+        [198, "commentary_audio_v2/commentary_20_198.0s.mp3", 4.25, null]
     ];
 
     // Build audio lookup
