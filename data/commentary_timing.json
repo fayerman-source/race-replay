@@ -1,0 +1,109 @@
+{
+  "commentaryTiming": [
+    {
+      "index": 0,
+      "filename": "commentary_00_0.0s.mp3",
+      "duration": 8.73
+    },
+    {
+      "index": 1,
+      "filename": "commentary_01_8.0s.mp3",
+      "duration": 8.41
+    },
+    {
+      "index": 2,
+      "filename": "commentary_02_18.0s.mp3",
+      "duration": 9.09
+    },
+    {
+      "index": 3,
+      "filename": "commentary_03_32.0s.mp3",
+      "duration": 9.41
+    },
+    {
+      "index": 4,
+      "filename": "commentary_04_41.0s.mp3",
+      "duration": 14.81
+    },
+    {
+      "index": 5,
+      "filename": "commentary_05_52.0s.mp3",
+      "duration": 12.89
+    },
+    {
+      "index": 6,
+      "filename": "commentary_06_60.0s.mp3",
+      "duration": 12.93
+    },
+    {
+      "index": 7,
+      "filename": "commentary_07_68.0s.mp3",
+      "duration": 11.53
+    },
+    {
+      "index": 8,
+      "filename": "commentary_08_75.0s.mp3",
+      "duration": 11.25
+    },
+    {
+      "index": 9,
+      "filename": "commentary_09_88.0s.mp3",
+      "duration": 13.73
+    },
+    {
+      "index": 10,
+      "filename": "commentary_10_98.0s.mp3",
+      "duration": 7.69
+    },
+    {
+      "index": 11,
+      "filename": "commentary_11_105.0s.mp3",
+      "duration": 9.81
+    },
+    {
+      "index": 12,
+      "filename": "commentary_12_115.0s.mp3",
+      "duration": 10.41
+    },
+    {
+      "index": 13,
+      "filename": "commentary_13_122.0s.mp3",
+      "duration": 8.05
+    },
+    {
+      "index": 14,
+      "filename": "commentary_14_130.0s.mp3",
+      "duration": 8.17
+    },
+    {
+      "index": 15,
+      "filename": "commentary_15_141.0s.mp3",
+      "duration": 10.01
+    },
+    {
+      "index": 16,
+      "filename": "commentary_16_148.0s.mp3",
+      "duration": 11.05
+    },
+    {
+      "index": 17,
+      "filename": "commentary_17_165.0s.mp3",
+      "duration": 6.25
+    },
+    {
+      "index": 18,
+      "filename": "commentary_18_184.0s.mp3",
+      "duration": 11.37
+    },
+    {
+      "index": 19,
+      "filename": "commentary_19_191.0s.mp3",
+      "duration": 8.81
+    },
+    {
+      "index": 20,
+      "filename": "commentary_20_198.0s.mp3",
+      "duration": 9.53
+    }
+  ]
+}
