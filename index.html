@@ -228,7 +228,7 @@
 
                 <!-- Lap Indicators -->
                 <div class="flex flex-col items-center pb-2">
-                    <div class="text-xs font-bold text-blue-400 uppercase tracking-wider" id="lapCounter">Lap 1 of 4</div>
+                    <div class="text-xs font-bold text-blue-400 uppercase tracking-wider" id="lapCounter">Ready</div>
                     <div class="lap-dots" id="lapDots">
                         <div class="lap-dot active"></div>
                         <div class="lap-dot"></div>
@@ -318,6 +318,13 @@
     // REMOVED: turnover, heart rate, form breakdown (not in data)
     // KEPT: split times, strategic positioning, gap analysis, pacing patterns
     const commentaryEvents = [
+        // PRE-RACE INTRODUCTION
+        { time: -15, text: "Welcome to the Armory in New York City for The Circuit's eight hundred meter championship heat.", subjectId: null },
+        { time: -10, text: "Eleven runners on the line today, ranging from ten to fourteen years old. Big developmental spread in this field.", subjectId: null },
+        { time: -6, text: "Watch for Melodi Ashford in bib two. She's the top seed looking to run sub-two-twenty-two.", subjectId: 1 },
+        { time: -3, text: "Also keep an eye on Skye Fayerman, bib ten. Just ten years old, running up against middle schoolers. She's targeting a personal best today.", subjectId: 8 },
+        
+        // RACE ACTION
         { time: 0, text: "Runners set. Clean start off the waterfall. Melodi Ashford immediately establishing position on the rail.", subjectId: null },
         { time: 8, text: "Ashford out fast through the first hundred. She's committing to a front-running strategy.", subjectId: 1 },
         { time: 18, text: "Field stringing out already. You can see the separation between the front pack and the chase group. This is where eight-hundred meter racing gets tactical.", subjectId: null },
@@ -348,10 +355,17 @@
     let currentPlayingAudio = null;
     let currentAudioEndTime = -1; // When the current clip will finish
 
-    // Commentary timing with ACTUAL durations - ensures no overlap
-    // Format: [triggerTime, filename, durationSeconds, subjectId]
-    // Durations measured from actual MP3 files
+    // Commentary timing with ACTUAL durations - includes pre-race introduction
+    // Pre-race: 4 clips before the gun (times -15, -10, -6, -3)
+    // Race: clips from gun onward
     const commentaryTiming = [
+        // PRE-RACE (introduction)
+        [-15,  "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],  // Placeholder - will need new audio
+        [-10,  "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],  // Placeholder
+        [-6,   "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],  // Placeholder  
+        [-3,   "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],  // Placeholder
+        
+        // RACE ACTION
         [0,   "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],
         [8,   "commentary_audio_v2/commentary_01_8.0s.mp3", 8.41, 1],
         [18,  "commentary_audio_v2/commentary_02_18.0s.mp3", 9.09, 1],
@@ -492,9 +506,14 @@
         raceTime += (1/60) * speed;
         document.getElementById('timer').innerText = formatTime(raceTime);
 
-        const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
-        const currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
-        document.getElementById('lapCounter').innerText = `Lap ${currentLap} of 4`;
+        // Show lap info only after race starts (time >= 0)
+        if (raceTime < 0) {
+            document.getElementById('lapCounter').innerText = "Pre-Race";
+        } else {
+            const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
+            const currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
+            document.getElementById('lapCounter').innerText = `Lap ${currentLap} of 4`;
+        }
 
         // Update Lap Dots
         const lapDots = document.querySelectorAll('.lap-dot');
@@ -562,10 +581,13 @@
     }
 
     function formatTime(seconds) {
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
-        const ms = Math.floor((seconds % 1) * 100);
-        return `${m}:${s < 10 ? '0' : ''}${s}.${ms < 10 ? '0' : ''}${ms}`;
+        const isNegative = seconds < 0;
+        const absSeconds = Math.abs(seconds);
+        const m = Math.floor(absSeconds / 60);
+        const s = Math.floor(absSeconds % 60);
+        const ms = Math.floor((absSeconds % 1) * 100);
+        const sign = isNegative ? "-" : "";
+        return `${sign}${m}:${s < 10 ? '0' : ''}${s}.${ms < 10 ? '0' : ''}${ms}`;
     }
 
     function toggleRace() {
@@ -579,6 +601,11 @@
     function startRace() {
         if (isRunning) return;
         isRunning = true;
+        
+        // Start at pre-race time (-15s) if at beginning
+        if (raceTime === 0) {
+            raceTime = -15;
+        }
         
         // Update button to show PAUSE state
         document.getElementById('playIcon').classList.add('hidden');
@@ -596,7 +623,7 @@
         // Update button to show START/RESUME state
         document.getElementById('playIcon').classList.remove('hidden');
         document.getElementById('pauseIcon').classList.add('hidden');
-        document.getElementById('btnText').innerText = raceTime > 0 ? "RESUME" : "START";
+        document.getElementById('btnText').innerText = raceTime >= 0 ? "RESUME" : "START";
         document.getElementById('btnStart').classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
         document.getElementById('btnStart').classList.add('bg-green-600', 'hover:bg-green-700');
         
