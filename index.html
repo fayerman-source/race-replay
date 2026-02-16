@@ -347,6 +347,12 @@
     const audioElements = {};
     let isAudioPlaying = false; // Track if any audio is currently playing
     
+    // Race state variables
+    let raceTime = 0;
+    let speed = 1;
+    let isRunning = false;
+    let lastPlayedCommentary = -1;
+    
     commentaryTiming.forEach(([time, filename, duration, subjectId, text], index) => {
         const audio = new Audio(filename);
         audio.preload = "auto";
@@ -622,7 +628,6 @@
         isRunning = false;
         raceTime = 0;
         lastPlayedCommentary = -1;
-        isAudioPlaying = false;
         isAudioPlaying = false;
 
         // Stop all audio and reset
