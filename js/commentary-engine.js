@@ -1,4 +1,4 @@
-import { deepClone, getDistanceAtTime } from "./utils.js";
+import { deepClone, getDistanceAtTime, getTimeAtDistance } from "./utils.js";
 
 export class CommentaryEngine {
   constructor({ runners, audioClips, runnerCheckpointTemplate, globalEventsTemplate }) {
@@ -32,8 +32,10 @@ export class CommentaryEngine {
   nextEvent({ raceTime, isAudioPlaying }) {
     if (isAudioPlaying) return null;
 
-    // 1) Global events first (time/distance based)
+    const dueEvents = [];
     const leaderDist = this.getLeaderDistance(raceTime);
+
+    // 1) Collect due GLOBAL events
     for (const event of this.globalEvents) {
       if (event.played) continue;
 
@@ -41,21 +43,23 @@ export class CommentaryEngine {
         (event.type === "time" && raceTime >= event.trigger) ||
         (event.type === "distance" && leaderDist >= event.trigger);
 
-      if (shouldTrigger) {
-        event.played = true;
-        const clip = this.audioClips[event.audioIdx];
-        return {
-          audioIdx: event.audioIdx,
-          subjectId: clip.subjectId,
-          text: clip.text,
-        };
-      }
+      if (!shouldTrigger) continue;
+
+      // For ordering, assign a deterministic dueTime
+      const dueTime =
+        event.type === "time"
+          ? event.trigger
+          : Math.min(...this.runners.map((runner) => getTimeAtDistance(runner.splits, event.trigger)));
+
+      dueEvents.push({
+        kind: "global",
+        ref: event,
+        dueTime,
+        audioIdx: event.audioIdx,
+      });
     }
 
-    // 2) Runner-specific checkpoint events
-    let nextCheckpoint = null;
-    let earliestDistance = Infinity;
-
+    // 2) Collect due RUNNER checkpoint events
     for (const [runnerId, checkpoints] of Object.entries(this.runnerCheckpoints)) {
       const runner = this.runners.find((r) => String(r.id) === String(runnerId));
       if (!runner) continue;
@@ -64,24 +68,31 @@ export class CommentaryEngine {
 
       for (const checkpoint of checkpoints) {
         if (checkpoint.played) continue;
+        if (currentDist < checkpoint.distance) continue;
 
-        if (currentDist >= checkpoint.distance && checkpoint.distance < earliestDistance) {
-          earliestDistance = checkpoint.distance;
-          nextCheckpoint = { runnerId, checkpoint };
-        }
+        dueEvents.push({
+          kind: "checkpoint",
+          ref: checkpoint,
+          runnerId: Number(runnerId),
+          dueTime: getTimeAtDistance(runner.splits, checkpoint.distance),
+          audioIdx: checkpoint.audioIdx,
+        });
       }
     }
 
-    if (nextCheckpoint) {
-      nextCheckpoint.checkpoint.played = true;
-      const clip = this.audioClips[nextCheckpoint.checkpoint.audioIdx];
-      return {
-        audioIdx: nextCheckpoint.checkpoint.audioIdx,
-        subjectId: clip.subjectId ?? Number(nextCheckpoint.runnerId),
-        text: clip.text,
-      };
-    }
+    if (!dueEvents.length) return null;
 
-    return null;
+    // Oldest-due event wins (chronological order), then lower audioIdx as tiebreaker
+    dueEvents.sort((a, b) => a.dueTime - b.dueTime || a.audioIdx - b.audioIdx);
+    const selected = dueEvents[0];
+
+    selected.ref.played = true;
+    const clip = this.audioClips[selected.audioIdx];
+
+    return {
+      audioIdx: selected.audioIdx,
+      subjectId: clip.subjectId ?? selected.runnerId ?? null,
+      text: clip.text,
+    };
   }
 }

@@ -15,6 +15,7 @@ const state = {
   isAudioPlaying: false,
   currentFocusRunnerId: null,
   lastAudioIdx: -1,
+  lastFrameTs: null,
 };
 
 const commentaryEngine = new CommentaryEngine({
@@ -216,10 +217,17 @@ function stopAllAudio() {
   state.isAudioPlaying = false;
 }
 
-function updatePositions() {
+function updatePositions(timestampMs) {
   if (!state.isRunning) return;
 
-  state.raceTime += (1 / 60) * state.speed;
+  if (state.lastFrameTs == null) {
+    state.lastFrameTs = timestampMs;
+  }
+
+  const deltaSeconds = Math.max(0, (timestampMs - state.lastFrameTs) / 1000);
+  state.lastFrameTs = timestampMs;
+
+  state.raceTime += deltaSeconds * state.speed;
   timerEl.innerText = formatTime(state.raceTime);
 
   updateLapUI();
@@ -250,11 +258,13 @@ export function startRace() {
   }
 
   setButtonToPauseState();
+  state.lastFrameTs = null;
   requestAnimationFrame(updatePositions);
 }
 
 export function pauseRace() {
   state.isRunning = false;
+  state.lastFrameTs = null;
   setButtonToStartResumeState();
   stopAllAudio();
   state.currentFocusRunnerId = null;
@@ -263,6 +273,7 @@ export function pauseRace() {
 
 export function stopRace() {
   state.isRunning = false;
+  state.lastFrameTs = null;
   setButtonToFinishedState();
   focusIndicator.classList.remove("active");
 }
@@ -273,6 +284,7 @@ export function resetRace() {
   state.lastAudioIdx = -1;
   state.isAudioPlaying = false;
   state.currentFocusRunnerId = null;
+  state.lastFrameTs = null;
 
   commentaryEngine.reset();
   stopAllAudio();

@@ -16,6 +16,22 @@ export function getDistanceAtTime(splits, currentTime) {
   return 800;
 }
 
+export function getTimeAtDistance(splits, targetDistance) {
+  if (targetDistance <= 0) return 0;
+  if (targetDistance >= 800) return splits[splits.length - 1];
+
+  const segment = Math.floor(targetDistance / 200);
+  const segmentStartDistance = segment * 200;
+  const distanceInSegment = targetDistance - segmentStartDistance;
+  const segmentRatio = distanceInSegment / 200;
+
+  const segmentStartTime = splits[segment];
+  const segmentEndTime = splits[segment + 1];
+  const segmentDuration = segmentEndTime - segmentStartTime;
+
+  return segmentStartTime + segmentRatio * segmentDuration;
+}
+
 export function getTrackCoordinates(meters) {
   let d = (meters % 200) * PIXELS_PER_METER;
   if (d < 50) return { x: 300, y: 200 - d }; // Right Straight 1
