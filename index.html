@@ -466,13 +466,16 @@
         raceTime += (1/60) * speed;
         document.getElementById('timer').innerText = formatTime(raceTime);
 
+        // Calculate current lap for display and dots
+        let currentLap = 1;
+        
         // Show countdown during pre-race intro
         if (raceTime < 0) {
             const secondsToStart = Math.ceil(Math.abs(raceTime));
             document.getElementById('lapCounter').innerText = `Race starts in ${secondsToStart}...`;
         } else {
             const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
-            const currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
+            currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
             document.getElementById('lapCounter').innerText = `Lap ${currentLap} of 4`;
         }
 
