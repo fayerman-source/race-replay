@@ -346,9 +346,12 @@
     let currentPlayingAudio = null;
     let currentAudioEndTime = -1; // When the current clip will finish
 
-    // Commentary timing with ACTUAL durations
-    // Using existing 21 audio files (removed pre-race placeholders)
+    // Commentary timing - now with 5 second pre-race intro
     const commentaryTiming = [
+        // PRE-RACE INTRO (5 seconds)
+        [-5, "intro", 5.0, null, "Welcome to the 800m championship heat. Eleven runners on the line. Watch for Melodi Ashford, bib 2, the top seed. And Skye Fayerman, bib 10, just 10 years old racing against middle schoolers."],
+        
+        // RACE ACTION (existing clips)
         [0,   "commentary_audio_v2/commentary_00_0.0s.mp3", 8.73, null],
         [8,   "commentary_audio_v2/commentary_01_8.0s.mp3", 8.41, 1],
         [18,  "commentary_audio_v2/commentary_02_18.0s.mp3", 9.09, 1],
@@ -374,17 +377,25 @@
 
     // Build audio lookup
     const audioElements = {};
-    commentaryTiming.forEach(([time, filename, duration, subjectId], index) => {
-        const audio = new Audio(filename);
-        audio.preload = "auto";
-        audioElements[index] = audio;
+    let isAudioPlaying = false; // Track if any audio is currently playing
+    
+    commentaryTiming.forEach(([time, filename, duration, subjectId, text], index) => {
+        if (filename !== "intro") {
+            const audio = new Audio(filename);
+            audio.preload = "auto";
+            // Mark not playing when this audio ends
+            audio.onended = () => {
+                isAudioPlaying = false;
+            };
+            audioElements[index] = audio;
+        }
     });
 
-    // Find next commentary that should play (respecting durations)
+    // Find next commentary that should play (event-based, no overlap)
     function getNextCommentaryIndex() {
-        // Check if current audio is still playing
-        if (raceTime < currentAudioEndTime) {
-            return -1; // Still playing, don't start new one
+        // If audio is currently playing, don't start new one
+        if (isAudioPlaying) {
+            return -1;
         }
 
         // Find the next commentary based on trigger time
@@ -489,9 +500,15 @@
         raceTime += (1/60) * speed;
         document.getElementById('timer').innerText = formatTime(raceTime);
 
-        const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
-        const currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
-        document.getElementById('lapCounter').innerText = `Lap ${currentLap} of 4`;
+        // Show countdown during pre-race intro
+        if (raceTime < 0) {
+            const secondsToStart = Math.ceil(Math.abs(raceTime));
+            document.getElementById('lapCounter').innerText = `Race starts in ${secondsToStart}...`;
+        } else {
+            const skyeDist = getDistanceAtTime(runners[7].splits, raceTime);
+            const currentLap = Math.min(4, Math.floor(skyeDist / 200) + 1);
+            document.getElementById('lapCounter').innerText = `Lap ${currentLap} of 4`;
+        }
 
         // Update Lap Dots
         const lapDots = document.querySelectorAll('.lap-dot');
@@ -500,25 +517,28 @@
             else dot.classList.remove('active');
         });
 
-        // Update Commentary & Indicator (Duration-Aware)
+        // Update Commentary & Indicator (Event-based, no overlap)
         const nextCommentaryIndex = getNextCommentaryIndex();
         if (nextCommentaryIndex !== -1) {
-            const [triggerTime, filename, duration, subjectId] = commentaryTiming[nextCommentaryIndex];
+            const [triggerTime, filename, duration, subjectId, introText] = commentaryTiming[nextCommentaryIndex];
             
             // Update text display
             const box = document.getElementById('commentaryBox');
-            const commentaryText = commentaryEvents[nextCommentaryIndex]?.text || "";
+            const commentaryText = introText || commentaryEvents[nextCommentaryIndex - 1]?.text || "";
             if (box.innerText !== commentaryText) {
                 box.innerText = commentaryText;
                 box.parentElement.classList.add("ring-2", "ring-blue-500");
                 setTimeout(() => box.parentElement.classList.remove("ring-2", "ring-blue-500"), 300);
             }
             
-            // Play audio and track end time
-            if (audioElements[nextCommentaryIndex]) {
+            // Play audio if available (skip intro for now - no audio file)
+            if (audioElements[nextCommentaryIndex] && filename !== "intro") {
+                isAudioPlaying = true;
                 audioElements[nextCommentaryIndex].currentTime = 0;
-                audioElements[nextCommentaryIndex].play().catch(e => console.log("Audio play failed:", e));
-                currentAudioEndTime = raceTime + duration;
+                audioElements[nextCommentaryIndex].play().catch(e => {
+                    console.log("Audio play failed:", e);
+                    isAudioPlaying = false;
+                });
                 lastPlayedCommentary = nextCommentaryIndex;
                 
                 // Sync Indicator
@@ -532,12 +552,22 @@
                 } else {
                     focusIndicator.classList.remove('active');
                 }
+            } else {
+                // For intro (no audio), just mark as played after a delay
+                if (filename === "intro") {
+                    setTimeout(() => {
+                        isAudioPlaying = false;
+                    }, 100);
+                }
+                lastPlayedCommentary = nextCommentaryIndex;
             }
         }
 
         let finishedCount = 0;
         runners.forEach(r => {
-            const dist = getDistanceAtTime(r.splits, raceTime);
+            // Keep runners at start during pre-race intro (time < 0)
+            const effectiveTime = raceTime < 0 ? 0 : raceTime;
+            const dist = getDistanceAtTime(r.splits, effectiveTime);
             const coords = getTrackCoordinates(dist);
             const dot = document.getElementById(`runner-${r.id}`);
             const offset = parseFloat(dot.dataset.offset);
@@ -559,6 +589,12 @@
     }
 
     function formatTime(seconds) {
+        if (seconds < 0) {
+            const absSeconds = Math.abs(seconds);
+            const s = Math.floor(absSeconds);
+            const ms = Math.floor((absSeconds % 1) * 100);
+            return `-${s}.${ms < 10 ? '0' : ''}${ms}`;
+        }
         const m = Math.floor(seconds / 60);
         const s = Math.floor(seconds % 60);
         const ms = Math.floor((seconds % 1) * 100);
@@ -577,6 +613,11 @@
         if (isRunning) return;
         isRunning = true;
         
+        // Start at -5s (pre-race intro) if at beginning
+        if (raceTime === 0) {
+            raceTime = -5;
+        }
+        
         // Update button to show PAUSE state
         document.getElementById('playIcon').classList.add('hidden');
         document.getElementById('pauseIcon').classList.remove('hidden');
@@ -593,7 +634,8 @@
         // Update button to show START/RESUME state
         document.getElementById('playIcon').classList.remove('hidden');
         document.getElementById('pauseIcon').classList.add('hidden');
-        document.getElementById('btnText').innerText = raceTime > 0 ? "RESUME" : "START";
+        // Show START if in intro, RESUME if race has started
+        document.getElementById('btnText').innerText = raceTime >= 0 ? "RESUME" : "START";
         document.getElementById('btnStart').classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
         document.getElementById('btnStart').classList.add('bg-green-600', 'hover:bg-green-700');
         
@@ -603,6 +645,7 @@
                 audio.pause();
             }
         });
+        isAudioPlaying = false;
     }
 
     function stopRace() {
@@ -620,6 +663,7 @@
         raceTime = 0;
         lastPlayedCommentary = -1;
         currentAudioEndTime = -1;
+        isAudioPlaying = false;
 
         // Stop all audio and reset
         Object.values(audioElements).forEach(audio => {
