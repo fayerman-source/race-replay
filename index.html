@@ -316,8 +316,8 @@
 
     // Commentary timing with text and audio paths (anonymized - first names only)
     const commentaryTiming = [
-        // PRE-RACE INTRO (5 seconds)
-        [-5,  "commentary_anonymized/commentary_00_-5s.mp3",  18.0,  null,  "Welcome to the 800 meter championship heat. Eleven runners on the line, ages 10 to 14. Watch for Melodi, bib 2, the top seed. And Skye, bib 10, just 10 years old racing against older athletes."],
+        // PRE-RACE INTRO (46 seconds before race start - intro plays from -46 to -28)
+        [-46, "commentary_anonymized/commentary_00_-5s.mp3", 18.0,  null,  "Welcome to the 800 meter championship heat. Eleven runners on the line, ages 10 to 14. Watch for Melodi, bib 2, the top seed. And Skye, bib 10, just 10 years old racing against older athletes."],
         
         // RACE ACTION (anonymized audio - first names only)
         [0,   "commentary_anonymized/commentary_01_0s.mp3",   5.5,  null,  "Runners set. Clean start. Melodi immediately establishing position on the rail."],
@@ -579,9 +579,9 @@
         if (isRunning) return;
         isRunning = true;
         
-        // Start at -5s (pre-race intro) if at beginning
+        // Start at -46s (pre-race intro) if at beginning
         if (raceTime === 0) {
-            raceTime = -5;
+            raceTime = -46;
         }
         
         // Update button to show PAUSE state
