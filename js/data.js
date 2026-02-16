@@ -16,28 +16,29 @@ export const RUNNERS = [
 ];
 
 // Audio clip metadata (indexed by audioIdx)
+// Bib numbers: Melodi=2, Parvati=3, Reid=5, Skye=10, Margeaux=9
 export const AUDIO_CLIPS = [
-  { file: "commentary_anonymized/commentary_00_-5s.mp3", text: "Welcome to the 800 meter championship heat. Eleven runners on the line, ages 10 to 14. Watch for Melodi, bib 2, the top seed. And Skye, bib 10, just 10 years old racing against older athletes.", subjectId: null },
-  { file: "commentary_anonymized/commentary_01_0s.mp3", text: "Runners set. Clean start. Melodi immediately establishing position on the rail.", subjectId: null },
-  { file: "commentary_anonymized/commentary_02_8s.mp3", text: "Melodi out fast through the first hundred. Committing to a front-running strategy.", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_00_-5s.mp3", text: "Welcome to the 800 meter championship heat. Eleven runners on the line, ages 10 to 14. Watch for Melodi (2), the top seed. And Skye (10), just 10 years old racing against older athletes.", subjectId: null },
+  { file: "commentary_anonymized/commentary_01_0s.mp3", text: "Runners set. Clean start. Melodi (2) immediately establishing position on the rail.", subjectId: null },
+  { file: "commentary_anonymized/commentary_02_8s.mp3", text: "Melodi (2) out fast through the first hundred. Committing to a front-running strategy.", subjectId: 1 },
   { file: "commentary_anonymized/commentary_03_18s.mp3", text: "Field stringing out. Separation between front pack and chase group. This is where tactical decisions matter.", subjectId: null },
-  { file: "commentary_anonymized/commentary_04_32s.mp3", text: "Thirty-two nine for Melodi at the two hundred. Aggressive pacing. The question is whether she can hold this through the middle.", subjectId: 1 },
-  { file: "commentary_anonymized/commentary_05_41s.mp3", text: "Now Skye coming through the first two hundred. Forty-one flat. Smart controlled start. Eight seconds back, not pulled out by the fast early pace.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_06_52s.mp3", text: "Middle pack feeling the gap. Parvati and Reid trying to hold contact with Melodi but she's pulling away. Decision point: go with the leader or run your own race.", subjectId: 2 },
-  { file: "commentary_anonymized/commentary_07_60s.mp3", text: "Four hundred meters. Melodi still commanding at one oh eight. The chase pack about five meters back.", subjectId: 1 },
-  { file: "commentary_anonymized/commentary_08_68s.mp3", text: "One oh eight at the bell for Melodi. That was a thirty-five second lap. She's slowing. How much does she have left?", subjectId: 1 },
-  { file: "commentary_anonymized/commentary_09_75s.mp3", text: "Here's where it gets interesting. Skye just split one twenty-eight for the first four hundred. Negative split pacing. While others fade, she's maintaining.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_10_88s.mp3", text: "Look at the separation. The field is completely strung out. Skye sitting in eighth, twenty meters off the lead but perfect position to move up.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_04_32s.mp3", text: "Thirty-two nine for Melodi (2) at the two hundred. Aggressive pacing. The question is whether she can hold this through the middle.", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_05_41s.mp3", text: "Now Skye (10) coming through the first two hundred. Forty-one flat. Smart controlled start. Eight seconds back, not pulled out by the fast early pace.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_06_52s.mp3", text: "Middle pack feeling the gap. Parvati (3) and Reid (5) trying to hold contact with Melodi (2) but she's pulling away. Decision point: go with the leader or run your own race.", subjectId: 2 },
+  { file: "commentary_anonymized/commentary_07_60s.mp3", text: "Four hundred meters. Melodi (2) still commanding at one oh eight. The chase pack about five meters back.", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_08_68s.mp3", text: "One oh eight at the bell for Melodi (2). That was a thirty-five second lap. She's slowing. How much does she have left?", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_09_75s.mp3", text: "Here's where it gets interesting. Skye (10) just split one twenty-eight for the first four hundred. Negative split pacing. While others fade, she's maintaining.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_10_88s.mp3", text: "Look at the separation. The field is completely strung out. Skye (10) sitting in eighth, twenty meters off the lead but perfect position to move up.", subjectId: 8 },
   { file: "commentary_anonymized/commentary_11_98s.mp3", text: "Six hundred meter mark. This is where the race is decided. Melodi's lead shrinking but she's still out front.", subjectId: null },
-  { file: "commentary_anonymized/commentary_12_105s.mp3", text: "One forty-five for Melodi through six hundred. She's paying for that early pace but still fighting. Can she hold on?", subjectId: 1 },
-  { file: "commentary_anonymized/commentary_13_115s.mp3", text: "Skye through six hundred in two sixteen. She's running people down. Closing on the field while others are tying up.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_14_122s.mp3", text: "One hundred meters to go for Melodi. She's going to win this but watch the clock. Can she break two twenty-two?", subjectId: 1 },
-  { file: "commentary_anonymized/commentary_15_130s.mp3", text: "Skye flying now. Passing people. All that patience early is paying off. Moved up to eighth and still closing.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_16_141s.mp3", text: "Two twenty-one fifty-eight for Melodi. Outstanding performance. She held on after going out hard.", subjectId: 1 },
-  { file: "commentary_anonymized/commentary_17_148s.mp3", text: "But watch Skye coming home. Still moving. Forty-seven second final lap after a controlled start. That's how you negative split an eight hundred.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_18_165s.mp3", text: "Fifty meters to go for Skye. She's gutting it out. Holding her pace while the early leaders are done.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_19_184s.mp3", text: "Three oh four twenty-seven. Massive personal record for Skye. Twenty second improvement. That negative split strategy executed perfectly.", subjectId: 8 },
-  { file: "commentary_anonymized/commentary_20_191s.mp3", text: "Margeaux crosses in three ten. Strong finish from the chase pack.", subjectId: 9 },
+  { file: "commentary_anonymized/commentary_12_105s.mp3", text: "One forty-five for Melodi (2) through six hundred. She's paying for that early pace but still fighting. Can she hold on?", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_13_115s.mp3", text: "Skye (10) through six hundred in two sixteen. She's running people down. Closing on the field while others are tying up.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_14_122s.mp3", text: "One hundred meters to go for Melodi (2). She's going to win this but watch the clock. Can she break two twenty-two?", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_15_130s.mp3", text: "Skye (10) flying now. Passing people. All that patience early is paying off. Moved up to eighth and still closing.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_16_141s.mp3", text: "Two twenty-one fifty-eight for Melodi (2). Outstanding performance. She held on after going out hard.", subjectId: 1 },
+  { file: "commentary_anonymized/commentary_17_148s.mp3", text: "But watch Skye (10) coming home. Still moving. Forty-seven second final lap after a controlled start. That's how you negative split an eight hundred.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_18_165s.mp3", text: "Fifty meters to go for Skye (10). She's gutting it out. Holding her pace while the early leaders are done.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_19_184s.mp3", text: "Three oh four twenty-seven. Massive personal record for Skye (10). Twenty second improvement. That negative split strategy executed perfectly.", subjectId: 8 },
+  { file: "commentary_anonymized/commentary_20_191s.mp3", text: "Margeaux (9) crosses in three ten. Strong finish from the chase pack.", subjectId: 9 },
   { file: "commentary_anonymized/commentary_21_198s.mp3", text: "What a race. From Melodi's dominant front-running to Skye's brilliant negative split. Two different strategies, both executed beautifully.", subjectId: null }
 ];
 

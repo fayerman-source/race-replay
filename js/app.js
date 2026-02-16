@@ -7,15 +7,24 @@ import {
 } from "./data.js";
 import { formatTime, getDistanceAtTime, getTrackCoordinates } from "./utils.js";
 import { CommentaryEngine } from "./commentary-engine.js";
+import { AudioManager } from "./audio-manager.js";
+import { SfxManager } from "./sfx-manager.js";
+
+const CONFIG = {
+  audioEnabled: false,  // Toggle commentary audio on/off here
+  sfxEnabled: true,     // Toggle sound effects on/off here
+};
 
 const state = {
   raceTime: 0,
   speed: 1,
   isRunning: false,
-  isAudioPlaying: false,
   currentFocusRunnerId: null,
-  lastAudioIdx: -1,
   lastFrameTs: null,
+  // SFX tracking
+  startHornPlayed: false,
+  lastLapBellDistance: 0,
+  finishPlayed: false,
 };
 
 const commentaryEngine = new CommentaryEngine({
@@ -25,15 +34,9 @@ const commentaryEngine = new CommentaryEngine({
   globalEventsTemplate: GLOBAL_EVENTS_TEMPLATE,
 });
 
-const audioElements = {};
-AUDIO_CLIPS.forEach((clip, idx) => {
-  const audio = new Audio(clip.file);
-  audio.preload = "auto";
-  audio.onended = () => {
-    state.isAudioPlaying = false;
-  };
-  audioElements[idx] = audio;
-});
+const audioManager = new AudioManager(AUDIO_CLIPS, { enabled: CONFIG.audioEnabled });
+const sfxManager = new SfxManager();
+if (CONFIG.sfxEnabled) sfxManager.init();
 
 const runnersLayer = document.getElementById("runnersLayer");
 const startListContainer = document.getElementById("startListContainer");
@@ -98,6 +101,15 @@ function getSkye() {
   return RUNNERS.find((r) => r.highlight) || RUNNERS[7];
 }
 
+function getLeaderDistance() {
+  let maxDist = 0;
+  RUNNERS.forEach((runner) => {
+    const dist = getDistanceAtTime(runner.splits, state.raceTime);
+    if (dist > maxDist) maxDist = dist;
+  });
+  return maxDist;
+}
+
 function updateLapUI() {
   let currentLap = 1;
 
@@ -117,7 +129,31 @@ function updateLapUI() {
   });
 }
 
-function playCommentaryEvent(event) {
+function highlightMentionedRunners(text) {
+  document.querySelectorAll(".runner-dot.mentioned").forEach((dot) => {
+    dot.classList.remove("mentioned");
+  });
+
+  const mentionedIds = [];
+
+  RUNNERS.forEach((runner) => {
+    const nameRegex = new RegExp(`\\b${runner.fullName}\\b`, "i");
+    const bibRegex = new RegExp(`\\(${runner.bib}\\)`);
+
+    if (nameRegex.test(text) || bibRegex.test(text)) {
+      mentionedIds.push(runner.id);
+      const dot = document.getElementById(`runner-${runner.id}`);
+      if (dot) {
+        dot.classList.add("mentioned");
+        setTimeout(() => dot.classList.remove("mentioned"), 1600);
+      }
+    }
+  });
+
+  return mentionedIds;
+}
+
+function updateCommentary(event) {
   if (!event) return;
 
   const { audioIdx, subjectId, text } = event;
@@ -128,26 +164,22 @@ function playCommentaryEvent(event) {
     setTimeout(() => commentaryBoxEl.parentElement.classList.remove("ring-2", "ring-blue-500"), 300);
   }
 
-  const audio = audioElements[audioIdx];
-  if (!audio) return;
+  highlightMentionedRunners(text);
 
-  state.isAudioPlaying = true;
-  audio.currentTime = 0;
-  audio.play().catch((e) => {
-    console.log("Audio play failed:", e);
-    state.isAudioPlaying = false;
-  });
-
-  state.lastAudioIdx = audioIdx;
-  state.currentFocusRunnerId = subjectId || null;
+  if (CONFIG.audioEnabled && audioManager) {
+    audioManager.play(audioIdx);
+  }
 
   if (!subjectId) {
     focusIndicator.classList.remove("active");
+    state.currentFocusRunnerId = null;
+  } else {
+    state.currentFocusRunnerId = subjectId;
   }
 }
 
 function updateFocusIndicator() {
-  if (state.currentFocusRunnerId && state.isAudioPlaying) {
+  if (state.currentFocusRunnerId) {
     const targetRunner = document.getElementById(`runner-${state.currentFocusRunnerId}`);
     if (targetRunner) {
       focusIndicator.style.top = targetRunner.style.top;
@@ -157,7 +189,7 @@ function updateFocusIndicator() {
     }
   }
 
-  if (!state.isAudioPlaying) {
+  if (!audioManager.isCurrentlyPlaying()) {
     state.currentFocusRunnerId = null;
   }
   focusIndicator.classList.remove("active");
@@ -209,14 +241,6 @@ function setButtonToFinishedState() {
   document.getElementById("btnStart").classList.add("bg-gray-600");
 }
 
-function stopAllAudio() {
-  Object.values(audioElements).forEach((audio) => {
-    if (!audio.paused) audio.pause();
-    audio.currentTime = 0;
-  });
-  state.isAudioPlaying = false;
-}
-
 function updatePositions(timestampMs) {
   if (!state.isRunning) return;
 
@@ -230,17 +254,41 @@ function updatePositions(timestampMs) {
   state.raceTime += deltaSeconds * state.speed;
   timerEl.innerText = formatTime(state.raceTime);
 
+  // SFX: Start horn at race start
+  if (state.raceTime >= 0 && state.raceTime < 0.5 && !state.startHornPlayed) {
+    sfxManager.playStartHorn();
+    state.startHornPlayed = true;
+  }
+
+  // SFX: Lap bells at 400m and 600m
+  const leaderDist = getLeaderDistance();
+  if (leaderDist >= 400 && state.lastLapBellDistance < 400) {
+    sfxManager.playLapBell();
+  }
+  if (leaderDist >= 600 && state.lastLapBellDistance < 600) {
+    sfxManager.playLapBell();
+  }
+  state.lastLapBellDistance = leaderDist;
+
   updateLapUI();
 
   const event = commentaryEngine.nextEvent({
     raceTime: state.raceTime,
-    isAudioPlaying: state.isAudioPlaying,
+    isAudioPlaying: audioManager.isCurrentlyPlaying(),
   });
-  playCommentaryEvent(event);
+  updateCommentary(event);
 
   updateFocusIndicator();
 
   const finishedCount = updateRunnerPositions();
+  
+  // SFX: Finish whistle when first runner crosses
+  if (finishedCount > 0 && !state.finishPlayed) {
+    sfxManager.playFinishWhistle();
+    sfxManager.playCrowdCheer();
+    state.finishPlayed = true;
+  }
+
   if (finishedCount === RUNNERS.length) {
     stopRace();
   } else {
@@ -254,7 +302,7 @@ export function startRace() {
   state.isRunning = true;
 
   if (state.raceTime === 0) {
-    state.raceTime = PRE_RACE_START_SECONDS;
+    state.raceTime = 0;
   }
 
   setButtonToPauseState();
@@ -266,7 +314,7 @@ export function pauseRace() {
   state.isRunning = false;
   state.lastFrameTs = null;
   setButtonToStartResumeState();
-  stopAllAudio();
+  audioManager.stopAll();
   state.currentFocusRunnerId = null;
   focusIndicator.classList.remove("active");
 }
@@ -281,13 +329,14 @@ export function stopRace() {
 export function resetRace() {
   state.isRunning = false;
   state.raceTime = 0;
-  state.lastAudioIdx = -1;
-  state.isAudioPlaying = false;
   state.currentFocusRunnerId = null;
   state.lastFrameTs = null;
+  state.startHornPlayed = false;
+  state.lastLapBellDistance = 0;
+  state.finishPlayed = false;
 
   commentaryEngine.reset();
-  stopAllAudio();
+  audioManager.stopAll();
 
   timerEl.innerText = "0:00.00";
   lapCounterEl.innerText = "Lap 1 of 4";
@@ -321,8 +370,28 @@ export function toggleRace() {
   else startRace();
 }
 
+export function toggleAudio() {
+  CONFIG.audioEnabled = !CONFIG.audioEnabled;
+  if (audioManager) {
+    audioManager.setEnabled(CONFIG.audioEnabled);
+  }
+  console.log("Audio enabled:", CONFIG.audioEnabled);
+  return CONFIG.audioEnabled;
+}
+
 window.toggleRace = toggleRace;
 window.resetRace = resetRace;
+window.toggleAudio = toggleAudio;
+
+const speedSlider = document.getElementById("speedSlider");
+const speedDisplay = document.getElementById("speedDisplay");
+
+if (speedSlider) {
+  speedSlider.addEventListener("input", (e) => {
+    state.speed = parseFloat(e.target.value);
+    speedDisplay.innerText = state.speed + "x";
+  });
+}
 
 initRunners();
 resetRace();
