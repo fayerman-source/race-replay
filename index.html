@@ -172,8 +172,8 @@
                 height: auto;
                 overflow-y: auto;
             }
-            .track-wrapper { height: 500px; min-height: 500px; }
-            .oval-track { transform: scale(0.9); }
+            .track-wrapper { height: 520px; min-height: 520px; padding-top: 10px; }
+            .oval-track { transform: scale(0.78); margin-top: -20px; }
         }
     </style>
 </head>
@@ -347,6 +347,7 @@
     // Build audio lookup
     const audioElements = {};
     let isAudioPlaying = false; // Track if any audio is currently playing
+    let currentFocusRunnerId = null; // Track which runner the indicator should follow
     
     // Race state variables
     let raceTime = 0;
@@ -516,18 +517,27 @@
                 });
                 lastPlayedCommentary = nextCommentaryIndex;
                 
-                // Sync Indicator
+                // Set focus runner for indicator tracking
                 if (subjectId) {
-                    const targetRunner = document.getElementById(`runner-${subjectId}`);
-                    if (targetRunner) {
-                        focusIndicator.style.top = targetRunner.style.top;
-                        focusIndicator.style.left = targetRunner.style.left;
-                        focusIndicator.classList.add('active');
-                    }
+                    currentFocusRunnerId = subjectId;
                 } else {
+                    currentFocusRunnerId = null;
                     focusIndicator.classList.remove('active');
                 }
             }
+        }
+        
+        // Continuously update indicator position to follow focused runner
+        if (currentFocusRunnerId && isAudioPlaying) {
+            const targetRunner = document.getElementById(`runner-${currentFocusRunnerId}`);
+            if (targetRunner) {
+                focusIndicator.style.top = targetRunner.style.top;
+                focusIndicator.style.left = targetRunner.style.left;
+                focusIndicator.classList.add('active');
+            }
+        } else if (!isAudioPlaying) {
+            currentFocusRunnerId = null;
+            focusIndicator.classList.remove('active');
         }
 
         let finishedCount = 0;
@@ -613,6 +623,8 @@
             }
         });
         isAudioPlaying = false;
+        currentFocusRunnerId = null;
+        focusIndicator.classList.remove('active');
     }
 
     function stopRace() {
@@ -630,6 +642,8 @@
         raceTime = 0;
         lastPlayedCommentary = -1;
         isAudioPlaying = false;
+        currentFocusRunnerId = null;
+        focusIndicator.classList.remove('active');
 
         // Stop all audio and reset
         Object.values(audioElements).forEach(audio => {
