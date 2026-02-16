@@ -25,6 +25,9 @@ const state = {
   startHornPlayed: false,
   lastLapBellDistance: 0,
   finishPlayed: false,
+  // Lane tracking
+  runnerLanes: {},      // runnerId -> lane index (0-5, inner to outer)
+  prevPositions: {},    // runnerId -> previous distance
 };
 
 const commentaryEngine = new CommentaryEngine({
@@ -45,23 +48,45 @@ const timerEl = document.getElementById("timer");
 const lapCounterEl = document.getElementById("lapCounter");
 const commentaryBoxEl = document.getElementById("commentaryBox");
 
+// Sort runners by bib number for lane assignment
+function getSortedRunnersByBib() {
+  return [...RUNNERS].sort((a, b) => a.bib - b.bib);
+}
+
+// Initialize runners with lanes based on bib number
 function initRunners() {
+  const sortedRunners = getSortedRunnersByBib();
+  
+  // Assign lanes: inner lanes (0-5) based on sorted bib order
+  sortedRunners.forEach((runner, index) => {
+    state.runnerLanes[runner.id] = index % 6;  // 6 lanes
+  });
+
   RUNNERS.forEach((runner, index) => {
     const dot = document.createElement("div");
     dot.className = "runner-dot";
     dot.style.backgroundColor = runner.color;
-
-    const laneOffset = (index % 3) * 8 - 4;
-    dot.dataset.offset = laneOffset;
+    
+    // Store lane in dataset
+    dot.dataset.lane = state.runnerLanes[runner.id];
+    dot.dataset.runnerId = runner.id;
+    
+    // Add position badge element
+    const badge = document.createElement("div");
+    badge.className = "position-badge";
+    badge.id = `badge-${runner.id}`;
+    badge.style.display = "none";
+    dot.appendChild(badge);
 
     if (runner.highlight) {
-      dot.style.border = "3px solid white";
       dot.style.zIndex = "50";
-      dot.style.transform = "translate(-50%, -50%) scale(1.3)";
     }
 
     dot.id = `runner-${runner.id}`;
     dot.innerText = runner.bib;
+    
+    // Re-add the badge after innerText clears it
+    dot.appendChild(badge);
 
     if (runner.highlight) {
       const label = document.createElement("div");
@@ -110,6 +135,92 @@ function getLeaderDistance() {
   return maxDist;
 }
 
+// Calculate lane assignments based on overtaking
+function updateLaneAssignments(positions) {
+  // positions is array of {runnerId, distance, lane}
+  // Sort by distance descending (leader first)
+  const sorted = [...positions].sort((a, b) => b.distance - a.distance);
+  
+  // Assign lanes: leader gets inner lane, others get outer lanes
+  // Use a simple algorithm: when A overtakes B, A gets the outer lane
+  const usedLanes = new Set();
+  
+  sorted.forEach((p, rank) => {
+    const runnerId = p.runnerId;
+    const currentLane = state.runnerLanes[runnerId];
+    const prevDist = state.prevPositions[runnerId] || 0;
+    const currDist = p.distance;
+    
+    // Check if overtaken anyone in this frame
+    let wasOvertaken = false;
+    sorted.forEach((other) => {
+      if (other.runnerId === runnerId) return;
+      const otherPrev = state.prevPositions[other.runnerId] || 0;
+      if (otherPrev > prevDist && currDist >= other.distance) {
+        // We overtook this runner - move to outer lane
+        wasOvertaken = true;
+      }
+      if (prevDist > otherPrev && other.distance >= currDist) {
+        // We were overtaken - stay in inner lane
+      }
+    });
+    
+    // Determine target lane based on rank (rank 0 = 1st place)
+    // Higher rank = more outer lane
+    let targetLane = rank % 6;
+    
+    // Keep lane transition smooth
+    if (currentLane !== undefined) {
+      // Only change lanes if there's an overtake
+      if (wasOvertaken && currentLane < 5) {
+        targetLane = Math.min(5, currentLane + 1);
+      } else if (!wasOvertaken && rank > 0 && currentLane > rank) {
+        // Pull back when leading
+        targetLane = rank;
+      }
+    }
+    
+    state.runnerLanes[runnerId] = targetLane;
+    usedLanes.add(targetLane);
+  });
+  
+  // Update previous positions for next frame
+  positions.forEach(p => {
+    state.prevPositions[p.runnerId] = p.distance;
+  });
+}
+
+// Update leader highlighting
+function updateLeaderHighlight(positions) {
+  // Sort by distance descending
+  const sorted = [...positions].sort((a, b) => b.distance - a.distance);
+  
+  // Remove all position classes first
+  document.querySelectorAll('.runner-dot').forEach(dot => {
+    dot.classList.remove('position-1', 'position-2', 'position-3');
+  });
+  
+  // Apply positions to top 3
+  sorted.slice(0, 3).forEach((p, idx) => {
+    const dot = document.getElementById(`runner-${p.runnerId}`);
+    const badge = document.getElementById(`badge-${p.runnerId}`);
+    if (dot && idx < 3) {
+      dot.classList.add(`position-${idx + 1}`);
+      if (badge) {
+        badge.innerText = idx + 1;
+        badge.className = `position-badge ${['gold', 'silver', 'bronze'][idx]}`;
+        badge.style.display = "block";
+      }
+    }
+  });
+  
+  // Hide badges for runners not in top 3
+  sorted.slice(3).forEach(p => {
+    const badge = document.getElementById(`badge-${p.runnerId}`);
+    if (badge) badge.style.display = "none";
+  });
+}
+
 function updateLapUI() {
   let currentLap = 1;
 
@@ -134,14 +245,11 @@ function highlightMentionedRunners(text) {
     dot.classList.remove("mentioned");
   });
 
-  const mentionedIds = [];
-
   RUNNERS.forEach((runner) => {
     const nameRegex = new RegExp(`\\b${runner.fullName}\\b`, "i");
     const bibRegex = new RegExp(`\\(${runner.bib}\\)`);
 
     if (nameRegex.test(text) || bibRegex.test(text)) {
-      mentionedIds.push(runner.id);
       const dot = document.getElementById(`runner-${runner.id}`);
       if (dot) {
         dot.classList.add("mentioned");
@@ -149,8 +257,6 @@ function highlightMentionedRunners(text) {
       }
     }
   });
-
-  return mentionedIds;
 }
 
 function updateCommentary(event) {
@@ -197,20 +303,54 @@ function updateFocusIndicator() {
 
 function updateRunnerPositions() {
   let finishedCount = 0;
+  const positions = [];
 
+  // First pass: calculate distances and positions
   RUNNERS.forEach((runner) => {
     const effectiveTime = state.raceTime < 0 ? 0 : state.raceTime;
     const dist = getDistanceAtTime(runner.splits, effectiveTime);
-    const coords = getTrackCoordinates(dist);
+    const lane = state.runnerLanes[runner.id] !== undefined ? state.runnerLanes[runner.id] : 3;
+    
+    positions.push({
+      runnerId: runner.id,
+      distance: dist,
+      lane: lane
+    });
+  });
+
+  // Update lane assignments based on overtaking
+  updateLaneAssignments(positions);
+
+  // Update leader highlighting
+  updateLeaderHighlight(positions);
+
+  // Second pass: update visual positions
+  RUNNERS.forEach((runner) => {
+    const effectiveTime = state.raceTime < 0 ? 0 : state.raceTime;
+    const dist = getDistanceAtTime(runner.splits, effectiveTime);
+    const lane = state.runnerLanes[runner.id] || 3;
+    
+    const coords = getTrackCoordinates(dist, lane);
     const dot = document.getElementById(`runner-${runner.id}`);
-    const offset = parseFloat(dot.dataset.offset || "0");
+    
+    if (dot) {
+      dot.dataset.lane = lane;
+      dot.style.left = `${coords.x}px`;
+      dot.style.top = `${coords.y}px`;
+      
+      // Raise highlighted runner (Skye) above others
+      if (runner.highlight) {
+        dot.style.zIndex = "50";
+      } else {
+        dot.style.zIndex = "10";
+      }
 
-    dot.style.left = `${coords.x + offset}px`;
-    dot.style.top = `${coords.y}px`;
-
-    if (dist >= 800) {
-      dot.style.opacity = "0.3";
-      finishedCount += 1;
+      if (dist >= 800) {
+        dot.style.opacity = "0.3";
+        finishedCount += 1;
+      } else {
+        dot.style.opacity = "1";
+      }
     }
   });
 
@@ -334,6 +474,13 @@ export function resetRace() {
   state.startHornPlayed = false;
   state.lastLapBellDistance = 0;
   state.finishPlayed = false;
+  
+  // Reset lane assignments
+  const sortedRunners = getSortedRunnersByBib();
+  sortedRunners.forEach((runner, index) => {
+    state.runnerLanes[runner.id] = index % 6;
+    state.prevPositions[runner.id] = 0;
+  });
 
   commentaryEngine.reset();
   audioManager.stopAll();
@@ -355,13 +502,19 @@ export function resetRace() {
     else dot.classList.remove("active");
   });
 
+  // Reset runner positions and clear leader badges
   RUNNERS.forEach((runner) => {
-    const coords = getTrackCoordinates(0);
+    const lane = state.runnerLanes[runner.id] || 3;
+    const coords = getTrackCoordinates(0, lane);
     const dot = document.getElementById(`runner-${runner.id}`);
-    const offset = parseFloat(dot.dataset.offset || "0");
-    dot.style.left = `${coords.x + offset}px`;
-    dot.style.top = `${coords.y}px`;
-    dot.style.opacity = "1";
+    if (dot) {
+      dot.style.left = `${coords.x}px`;
+      dot.style.top = `${coords.y}px`;
+      dot.style.opacity = "1";
+      dot.classList.remove('position-1', 'position-2', 'position-3');
+    }
+    const badge = document.getElementById(`badge-${runner.id}`);
+    if (badge) badge.style.display = "none";
   });
 }
 

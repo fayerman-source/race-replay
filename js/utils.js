@@ -1,5 +1,24 @@
+// Track dimensions - 6 lane Armory track
+export const TRACK_CONFIG = {
+  laneWidth: 32,           // pixels per lane
+  innerRadius: 36,         // radius of innermost curve
+  straightLength: 250,     // length of straight sections
+  centerX: 210,            // center X of track
+  straightY1: 150,         // Y position of first straight
+  straightY2: 400,         // Y position of second straight
+};
+
 export const LAP_PIXELS = 1285.4;
 export const PIXELS_PER_METER = LAP_PIXELS / 200;
+
+/**
+ * Get lane offset in pixels from inner edge
+ * laneIndex: 0 = innermost, 5 = outermost
+ */
+export function getLaneOffset(laneIndex) {
+  if (laneIndex === undefined || laneIndex === null) laneIndex = 3;
+  return laneIndex * TRACK_CONFIG.laneWidth + TRACK_CONFIG.laneWidth / 2;
+}
 
 export function getDistanceAtTime(splits, currentTime) {
   if (currentTime <= 0) return 0;
@@ -32,30 +51,79 @@ export function getTimeAtDistance(splits, targetDistance) {
   return segmentStartTime + segmentRatio * segmentDuration;
 }
 
-export function getTrackCoordinates(meters) {
-  let d = (meters % 200) * PIXELS_PER_METER;
-  if (d < 50) return { x: 300, y: 200 - d }; // Right Straight 1
-
-  d -= 50;
-  const curveLen = Math.PI * 125;
-  if (d < curveLen) {
-    // Top curve
-    const angle = 0 - (d / curveLen) * Math.PI;
-    return { x: 175 + 125 * Math.cos(angle), y: 150 + 125 * Math.sin(angle) };
+/**
+ * Get track coordinates for a given distance in meters
+ * laneIndex: 0-5 (inner to outer), defaults to middle lane
+ */
+export function getTrackCoordinates(meters, laneIndex = 3) {
+  // Convert meters to position along 200m lap
+  const lapPos = meters % 200;
+  const laneOffset = getLaneOffset(laneIndex);
+  
+  // Calculate position on track
+  // Track goes: finish line -> curve -> backstretch -> curve -> finish
+  
+  // Right straight (finish to first curve) - 50m
+  if (lapPos < 50) {
+    const t = lapPos / 50;
+    const x = 264 + t * (390 - 264) + laneOffset;
+    const y = 200 - t * 50;
+    return { x, y };
   }
-
-  d -= curveLen;
-  if (d < 250) return { x: 50, y: 150 + d }; // Left straight
-
-  d -= 250;
-  if (d < curveLen) {
-    // Bottom curve
-    const angle = Math.PI - (d / curveLen) * Math.PI;
-    return { x: 175 + 125 * Math.cos(angle), y: 400 + 125 * Math.sin(angle) };
+  
+  // First curve (top) - ~85m
+  const curve1Start = 50;
+  const curve1Length = Math.PI * (TRACK_CONFIG.innerRadius + 60 + laneOffset);
+  const curve1End = curve1Start + curve1Length / PIXELS_PER_METER;
+  
+  if (lapPos < curve1End) {
+    const t = (lapPos - curve1Start) / (curve1End - curve1Start);
+    const angle = Math.PI * (1 - t);
+    const radius = TRACK_CONFIG.innerRadius + 60 + laneOffset;
+    const centerX = 210;
+    const centerY = 150;
+    return {
+      x: centerX + radius * Math.cos(angle),
+      y: centerY + radius * Math.sin(angle)
+    };
   }
-
-  d -= curveLen;
-  return { x: 300, y: 400 - d }; // Right Straight 2
+  
+  // Backstretch (left straight) - 100m
+  const backstretchStart = curve1End;
+  const backstretchLength = 100;
+  const backstretchEnd = backstretchStart + backstretchLength;
+  
+  if (lapPos < backstretchEnd) {
+    const t = (lapPos - backstretchStart) / backstretchLength;
+    const x = 30 + laneOffset;
+    const y = 150 + t * 250;
+    return { x, y };
+  }
+  
+  // Second curve (bottom) - ~85m
+  const curve2Start = backstretchEnd;
+  const curve2Length = Math.PI * (TRACK_CONFIG.innerRadius + 60 + laneOffset);
+  const curve2End = curve2Start + curve2Length / PIXELS_PER_METER;
+  
+  if (lapPos < curve2End) {
+    const t = (lapPos - curve2Start) / (curve2End - curve2Start);
+    const angle = Math.PI * t;
+    const radius = TRACK_CONFIG.innerRadius + 60 + laneOffset;
+    const centerX = 210;
+    const centerY = 400;
+    return {
+      x: centerX + radius * Math.cos(angle),
+      y: centerY + radius * Math.sin(angle)
+    };
+  }
+  
+  // Final straight - 50m
+  const finalStraightStart = curve2End;
+  const t = (lapPos - finalStraightStart) / (200 - finalStraightStart);
+  const x = 30 + t * (390 - 30) + laneOffset;
+  const y = 400 - t * 200;
+  
+  return { x, y };
 }
 
 export function formatTime(seconds) {
