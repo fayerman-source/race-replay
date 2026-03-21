@@ -12,8 +12,8 @@
         /* Layout Grid */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 350px; /* Track takes space, Panel fixed width */
-            gap: 1rem;
+            grid-template-columns: minmax(760px, 1.3fr) 330px;
+            gap: 1.25rem;
             min-height: 100vh; /* Allow growing */
             padding: 1rem;
         }
@@ -28,40 +28,55 @@
             align-items: center;
             overflow: hidden;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            min-height: 620px; /* Ensure space for track */
+            min-height: 920px; /* Ensure space for track */
         }
 
         .oval-track {
             position: relative;
             width: 350px;
-            height: 600px;
+            height: 550px;
             transform-origin: center;
-            transform: scale(1.15);
+            transform: scale(1.55);
         }
 
-        /* SVG Styling */
+        /* SVG Styling - Armory Blue Mondo Track */
         .track-surface {
-            fill: #B91C1C;
-            stroke: rgba(255,255,255,0.8);
-            stroke-width: 2px;
+            fill: #1E3A8A; /* Armory Blue */
+            stroke: rgba(255,255,255,0.9);
+            stroke-width: 3px;
         }
         .track-infield {
-            fill: #1E293B; /* Match container bg for seamless look */
+            fill: #1E293B; /* Match container bg */
+        }
+        .lane-line {
+            stroke: rgba(255,255,255,0.4);
+            stroke-width: 1px;
+            stroke-dasharray: 8 4;
         }
         .start-finish-line {
             stroke: white;
-            stroke-width: 4px;
+            stroke-width: 5px;
+        }
+        .break-line {
+            stroke: #22C55E; /* Green breakline */
+            stroke-width: 3px;
+            stroke-dasharray: none;
         }
         .split-line {
             stroke: rgba(255,255,255,0.3);
             stroke-width: 2px;
             stroke-dasharray: 4 4;
         }
+        .checkpoint-label {
+            fill: rgba(255,255,255,0.72);
+            font-size: 9px;
+            font-weight: bold;
+        }
 
         /* Runner Dot */
         .runner-dot {
-            width: 18px;
-            height: 18px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             position: absolute;
             top: 0;
@@ -70,12 +85,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 6px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
             z-index: 10;
-            transition: transform 0.1s linear, box-shadow 0.2s;
+            transition: transform 0.15s linear, box-shadow 0.2s, top 0.1s linear, left 0.1s linear;
+            border: 1.5px solid rgba(255,255,255,0.8);
         }
 
         .runner-dot.mentioned {
@@ -83,16 +99,50 @@
             animation: pulse-highlight 0.8s ease-in-out 2;
         }
 
+        /* Leader positions */
+        .runner-dot.position-1 {
+            border: 3px solid #FFD700; /* Gold */
+            box-shadow: 0 0 10px #FFD700, 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .runner-dot.position-2 {
+            border: 3px solid #C0C0C0; /* Silver */
+            box-shadow: 0 0 8px #C0C0C0, 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .runner-dot.position-3 {
+            border: 3px solid #CD7F32; /* Bronze */
+            box-shadow: 0 0 8px #CD7F32, 0 2px 6px rgba(0,0,0,0.5);
+        }
+
+        /* Position badge */
+        .position-badge {
+            position: absolute;
+            top: -7px;
+            right: -4px;
+            background: #1E293B;
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 8px;
+            padding: 0 2px;
+            font-size: 4px;
+            font-weight: bold;
+            color: white;
+            min-width: 8px;
+            text-align: center;
+            z-index: 15;
+        }
+        .position-badge.gold { background: #FFD700; color: #1E293B; }
+        .position-badge.silver { background: #C0C0C0; color: #1E293B; }
+        .position-badge.bronze { background: #CD7F32; color: white; }
+
         @keyframes pulse-highlight {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.4); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
         }
 
         /* Highlight Indicator */
         .focus-indicator {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 24px;
+            height: 24px;
             border: 2px solid #FACC15; /* Yellow */
             border-radius: 50%;
             transform: translate(-50%, -50%);
@@ -117,7 +167,7 @@
             top: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
             white-space: nowrap;
             text-shadow: 0 1px 2px black;
@@ -175,16 +225,24 @@
             background-color: #3B82F6;
         }
 
+        [data-state="pending"] {
+            opacity: 0.5;
+        }
+
+        [data-state="reached"] {
+            opacity: 1;
+        }
+
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 1400px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto; /* Track then Panel */
                 height: auto;
                 overflow-y: auto;
             }
-            .track-wrapper { height: 520px; min-height: 520px; padding-top: 10px; }
-            .oval-track { transform: scale(0.78); margin-top: -20px; }
+            .track-wrapper { height: 700px; min-height: 700px; padding-top: 10px; }
+            .oval-track { transform: scale(1.12); margin-top: -10px; }
         }
     </style>
 </head>
@@ -194,28 +252,28 @@
         <!-- LEFT: Track Visualization -->
         <div class="track-wrapper">
             <div class="oval-track" id="ovalTrack">
-                <!-- Vertical Track SVG -->
-                <svg width="350" height="600" viewBox="0 0 350 600" class="absolute top-0 left-0">
-                    <!-- Outer Lane Border -->
-                    <path d="M 25 150 L 25 400 A 150 150 0 1 0 325 400 L 325 150 A 150 150 0 1 0 25 150" fill="#B91C1C" stroke="white" stroke-width="2"/>
+                <!-- Vertical Track SVG - 6 Lane Armory Blue -->
+                <svg id="trackSvg" width="350" height="550" viewBox="0 0 350 550" class="absolute top-0 left-0">
+                    <!-- Outer track - oval shape with straights and curves -->
+                    <path d="M 25 175 L 25 375 A 150 150 0 1 0 325 375 L 325 175 A 150 150 0 1 0 25 175" fill="#1E3A8A" stroke="white" stroke-width="3"/>
+                    
+                    <!-- Lane lines (7 lines for 8 lanes) -->
+                    <path d="M 40.625 175 L 40.625 375 A 134.375 134.375 0 1 0 309.375 375 L 309.375 175 A 134.375 134.375 0 1 0 40.625 175" class="lane-line" fill="none"/>
+                    <path d="M 56.25 175 L 56.25 375 A 118.75 118.75 0 1 0 293.75 375 L 293.75 175 A 118.75 118.75 0 1 0 56.25 175" class="lane-line" fill="none"/>
+                    <path d="M 71.875 175 L 71.875 375 A 103.125 103.125 0 1 0 278.125 375 L 278.125 175 A 103.125 103.125 0 1 0 71.875 175" class="lane-line" fill="none"/>
+                    <path d="M 87.5 175 L 87.5 375 A 87.5 87.5 0 1 0 262.5 375 L 262.5 175 A 87.5 87.5 0 1 0 87.5 175" class="lane-line" fill="none"/>
+                    <path d="M 103.125 175 L 103.125 375 A 71.875 71.875 0 1 0 246.875 375 L 246.875 175 A 71.875 71.875 0 1 0 103.125 175" class="lane-line" fill="none"/>
+                    <path d="M 118.75 175 L 118.75 375 A 56.25 56.25 0 1 0 231.25 375 L 231.25 175 A 56.25 56.25 0 1 0 118.75 175" class="lane-line" fill="none"/>
+                    <path d="M 134.375 175 L 134.375 375 A 40.625 40.625 0 1 0 215.625 375 L 215.625 175 A 40.625 40.625 0 1 0 134.375 175" class="lane-line" fill="none"/>
 
-                    <!-- Inner Infield -->
-                    <path d="M 75 150 L 75 400 A 100 100 0 1 0 275 400 L 275 150 A 100 100 0 1 0 75 150" fill="#1E293B" stroke="white" stroke-width="2"/>
+                    <!-- Inner infield -->
+                    <path d="M 150 175 L 150 375 A 25 25 0 1 0 200 375 L 200 175 A 25 25 0 1 0 150 175" fill="#1E293B" stroke="white" stroke-width="2"/>
 
-                    <!-- Finish Line (Right side, near top of straight) -->
-                    <line x1="275" y1="200" x2="325" y2="200" class="start-finish-line" />
-                    <text x="335" y="205" fill="white" font-size="10" font-weight="bold" text-anchor="start">FINISH</text>
-
-                    <!-- 100m / Backstretch Mark -->
-                    <line x1="25" y1="200" x2="75" y2="200" class="split-line" />
-                    <text x="15" y="205" fill="rgba(255,255,255,0.5)" font-size="10" text-anchor="end">100m</text>
-
-                    <!-- 150m Mark (Top Curve Apex) -->
-                    <line x1="175" y1="25" x2="175" y2="75" class="split-line" />
-
-                    <!-- 50m Mark (Bottom Curve Apex) -->
-                    <line x1="175" y1="475" x2="175" y2="525" class="split-line" />
-
+                    <!-- Shared start / finish line -->
+                    <line x1="200" y1="175" x2="325" y2="175" class="start-finish-line" />
+                    <text x="334" y="172" fill="white" font-size="9" font-weight="bold">STA</text>
+                    <text x="334" y="184" fill="white" font-size="9" font-weight="bold">FIN</text>
+                    <g id="checkpointMarkers"></g>
                 </svg>
 
                 <!-- Runners Layer -->
@@ -232,11 +290,11 @@
             <div class="card text-center relative overflow-hidden shrink-0">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
                 <div class="flex justify-between items-center px-4 pt-4 pb-2">
-                    <h1 class="text-lg font-bold text-gray-300">800m Championship Heat</h1>
-                    <span class="text-[10px] bg-blue-900/50 px-2 py-0.5 rounded text-blue-300 border border-blue-800">200m Banked | 4 Laps</span>
+                    <h1 class="text-lg font-bold text-gray-300" id="eventTitle">800m Heat Replay</h1>
+                    <span class="text-[10px] bg-blue-900/50 px-2 py-0.5 rounded text-blue-300 border border-blue-800" id="trackBadge">200m Banked | 4 Laps</span>
                 </div>
                 <div class="text-5xl font-mono text-white tracking-widest mt-2" id="timer">0:00.00</div>
-                <div class="text-xs text-gray-500 mb-2">Elapsed / <span class="text-gray-400">3:26.00</span></div>
+                <div class="text-xs text-gray-500 mb-2">Winning Time / <span class="text-gray-400" id="raceDuration">--:--</span></div>
 
                 <!-- Lap Indicators -->
                 <div class="flex flex-col items-center pb-2">
@@ -275,7 +333,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="text-xs text-gray-400 font-bold">Speed:</span>
-                    <input type="range" id="speedSlider" min="1" max="4" step="0.5" value="1" class="flex-grow h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    <input type="range" id="speedSlider" aria-label="Playback Speed" min="1" max="4" step="0.5" value="1" class="flex-grow h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
                     <span id="speedDisplay" class="text-xs font-mono text-blue-400 w-8">1x</span>
                 </div>
             </div>
@@ -285,18 +343,18 @@
                 <h3 class="text-xs text-gray-400 uppercase font-bold mb-3">Live Splits</h3>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between items-center p-2 bg-gray-700/50 rounded border-l-2 border-blue-500">
-                        <span class="text-gray-300">Leader (Melodi #2)</span>
-                        <span class="font-mono font-bold text-blue-400">2:21.58</span>
+                        <span class="text-gray-300" id="liveLeaderLabel">Winner</span>
+                        <span class="font-mono font-bold text-blue-400" id="liveLeaderTime">--:--</span>
                     </div>
                     <div class="flex justify-between items-center p-2 bg-gray-700/50 rounded border-l-2 border-orange-500">
-                        <span class="text-gray-300">Skye (Rank 8 / #10)</span>
-                        <span class="font-mono font-bold text-orange-400">3:04.27</span>
+                        <span class="text-gray-300" id="focusRunnerLabel">Focus Runner</span>
+                        <span class="font-mono font-bold text-orange-400" id="focusRunnerTime">--:--</span>
                     </div>
                     <div class="grid grid-cols-4 gap-1 mt-2 text-center text-xs text-gray-500">
-                        <div>0-200<br><span class="text-white">41.5</span></div>
-                        <div>200-400<br><span class="text-white">47.0</span></div>
-                        <div>400-600<br><span class="text-white">48.3</span></div>
-                        <div>600-800<br><span class="text-white">47.4</span></div>
+                        <div data-state="pending">0-200<br><span class="text-white" id="split200">--</span></div>
+                        <div data-state="pending">200-400<br><span class="text-white" id="split400">--</span></div>
+                        <div data-state="pending">400-600<br><span class="text-white" id="split600">--</span></div>
+                        <div data-state="pending">600-800<br><span class="text-white" id="split800">--</span></div>
                     </div>
                 </div>
             </div>

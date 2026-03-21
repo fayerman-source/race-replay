@@ -1,0 +1,317 @@
+{
+  "default_replay_id": "skye-oceanbreeze-section-2",
+  "replays": [
+    {
+      "replay_id": "skye-oceanbreeze-section-2",
+      "title": "Skye Fayerman - Section #2",
+      "event": {
+        "name": "800m",
+        "venue": "Ocean Breeze Athletic Complex, Staten Island",
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 200,
+        "active_heat_id": "Section #2",
+        "source": {
+          "provider": "MileSplit Live",
+          "meet_url": "https://www.milesplit.live/meets/695904/events/27/heats/F/F",
+          "notes": [
+            "Results captured from manual HTML copy/paste.",
+            "Position-change markers such as caret/down-caret were omitted from structured split data."
+          ]
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Section #2",
+          "status": "partial_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Elene Jikia",
+              "lane": 1,
+              "year": 12,
+              "team": "The Camp",
+              "result": {
+                "final_time": 165.31,
+                "display_time": "2:45.31"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 35.89, 75.9, 118.78, 165.31],
+                "segment_seconds": [35.89, 40.02, 42.88, 46.54],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 2,
+              "athlete": "Asha Rashid Scherrer",
+              "lane": 2,
+              "year": 11,
+              "team": "Poughkeepsie City Striders",
+              "result": {
+                "final_time": 174.42,
+                "display_time": "2:54.42"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 39.35, 85.16, 131.22, 174.42],
+                "segment_seconds": [39.35, 45.82, 46.06, 43.21],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Victoria Fahoum",
+              "lane": 3,
+              "year": 11,
+              "team": "Ocean Breeze Wave Runners",
+              "result": {
+                "final_time": 181.72,
+                "display_time": "3:01.72"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 39.12, 86.23, 136.42, 181.72],
+                "segment_seconds": [39.12, 47.12, 50.19, 45.3],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Skye Fayerman",
+              "lane": 8,
+              "year": 11,
+              "team": "Flyers XC & Track Club",
+              "result": {
+                "final_time": 182.12,
+                "display_time": "3:02.12"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 39.96, 85.61, 134.34, 182.12],
+                "segment_seconds": [39.96, 45.66, 48.74, 47.78],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              },
+              "tags": ["focus_runner"]
+            },
+            {
+              "place": 5,
+              "athlete": "Brooklyn Braboy",
+              "lane": 4,
+              "year": 12,
+              "team": "VELOCITY TRACK CLUB NEW YORK",
+              "result": {
+                "final_time": 183.16,
+                "display_time": "3:03.16"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 38.77, 83.94, 135.07, 183.16],
+                "segment_seconds": [38.77, 45.18, 51.13, 48.1],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Alicia Davey",
+              "lane": 5,
+              "year": 11,
+              "team": "Ruff Kutz",
+              "result": {
+                "final_time": 186.04,
+                "display_time": "3:06.04"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 39.06, 85.92, 136.76, 186.04],
+                "segment_seconds": [39.06, 46.86, 50.85, 49.29],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Madison Hall",
+              "lane": 6,
+              "year": 11,
+              "team": "Ruff Kutz",
+              "result": {
+                "final_time": 188.35,
+                "display_time": "3:08.35"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 37.89, 86.95, 139, 188.35],
+                "segment_seconds": [37.89, 49.06, 52.05, 49.36],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 8,
+              "athlete": "Margeaux Siriban",
+              "lane": 7,
+              "year": 11,
+              "team": "V-Tesse Track Club of Long I",
+              "result": {
+                "final_time": 194.4,
+                "display_time": "3:14.40"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 39.88, 88.36, 142.37, 194.4],
+                "segment_seconds": [39.88, 48.48, 54.02, 52.03],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Evelyn Cohen",
+              "year": 11,
+              "team": "Unattached",
+              "status": "DNS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "chloe-oceanbreeze-section-1",
+      "title": "Chloe Nazryk - Section #1",
+      "event": {
+        "name": "800m",
+        "venue": "Ocean Breeze Athletic Complex, Staten Island",
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 200,
+        "active_heat_id": "Section #1",
+        "source": {
+          "provider": "MileSplit Live",
+          "meet_url": "https://www.milesplit.live/meets/695904/events/27/heats/F/F",
+          "notes": [
+            "Results captured from manual HTML copy/paste.",
+            "Position-change markers such as caret/down-caret were omitted from structured split data."
+          ]
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Section #1",
+          "status": "partial_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Linda Burley",
+              "year": 12,
+              "team": "VELOCITY TRACK CLUB NEW YORK",
+              "result": {
+                "final_time": 173.13,
+                "display_time": "2:53.13"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 35.02, 77.31, 127.38, 173.13],
+                "segment_seconds": [35.02, 42.3, 50.07, 45.76],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 2,
+              "athlete": "Lillian Harty",
+              "year": 12,
+              "team": "Prospect Park Youth Running",
+              "result": {
+                "final_time": 185.8,
+                "display_time": "3:05.80"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 39.64, 86.45, 136.65, 185.8],
+                "segment_seconds": [39.64, 46.82, 50.2, 49.16],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Chloe Nazryk",
+              "year": 11,
+              "team": "Unattached",
+              "result": {
+                "final_time": 201.7,
+                "display_time": "3:21.70"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 43.63, 98.21, 153.1, 201.7],
+                "segment_seconds": [43.63, 54.58, 54.9, 48.6],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              },
+              "tags": ["focus_runner"]
+            },
+            {
+              "place": 4,
+              "athlete": "Sahila Johnson",
+              "year": 11,
+              "team": "Team Dynasty",
+              "result": {
+                "final_time": 201.99,
+                "display_time": "3:21.99"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 41.67, 94.16, 150.64, 201.99],
+                "segment_seconds": [41.67, 52.5, 56.48, 51.35],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Riley Merkstein",
+              "year": 11,
+              "team": "Prospect Park Youth Running",
+              "result": {
+                "final_time": 202.65,
+                "display_time": "3:22.65"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 44.89, 98.4, 153.98, 202.65],
+                "segment_seconds": [44.89, 53.51, 55.58, 48.67],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Milena Kucharnik",
+              "year": 12,
+              "team": "St. Agnes Track",
+              "result": {
+                "final_time": 209.28,
+                "display_time": "3:29.28"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 41.23, 96.79, 154.01, 209.28],
+                "segment_seconds": [41.23, 55.56, 57.23, 55.27],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Aurelia Lindner",
+              "year": 11,
+              "team": "Snyder Track Club",
+              "result": {
+                "final_time": 218.2,
+                "display_time": "3:38.20"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 45.43, 100.55, 162.55, 218.2],
+                "segment_seconds": [45.43, 55.13, 62.0, 55.65],
+                "split_marks_m": [0, 200, 400, 600, 800]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Maya Green",
+              "year": 11,
+              "team": "Prospect Park Youth Running",
+              "status": "DNS"
+            },
+            {
+              "place": null,
+              "athlete": "Bailey Lipatov",
+              "year": 12,
+              "team": "St. Agnes Track",
+              "status": "DNS"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

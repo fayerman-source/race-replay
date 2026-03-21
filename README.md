@@ -59,6 +59,15 @@ This demo uses **anonymized sample data** to illustrate the technology. All runn
 
 **[→ Experience the Live Replay](https://fayerman-source.github.io/race-replay/)**
 
+### Replay Links
+
+This project can support multiple replayable races from one site using a query parameter:
+
+- Base site: `https://fayerman-source.github.io/race-replay/`
+- Specific replay: `https://fayerman-source.github.io/race-replay/?replay=skye-oceanbreeze-section-2`
+
+GitHub Pages is a good fit because this is a static site with no server-side build requirement.
+
 ---
 
 ## 💼 Partnership & Licensing Inquiries
