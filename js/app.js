@@ -111,6 +111,7 @@ function renderCheckpointMarkers() {
   if (!checkpointMarkersEl || !state.raceModel) return;
 
   checkpointMarkersEl.innerHTML = "";
+  const svgWidth = trackSvgEl?.viewBox?.baseVal?.width || 350;
   const splitMarks = state.raceModel.event.split_marks_m.filter(
     (mark) => mark < state.raceModel.event.race_distance_m,
   );
@@ -146,8 +147,11 @@ function renderCheckpointMarkers() {
     marks.forEach((mark, index) => {
       const label = document.createElementNS(SVG_NS, "text");
       label.setAttribute("class", "checkpoint-label");
-      label.setAttribute("x", (outer.x + 12).toFixed(2));
+      const isNearRightEdge = outer.x > (svgWidth - 40);
+      const labelX = isNearRightEdge ? (outer.x - 8) : (outer.x + 12);
+      label.setAttribute("x", labelX.toFixed(2));
       label.setAttribute("y", (outer.y + 30 + (index * 11)).toFixed(2));
+      label.setAttribute("text-anchor", isNearRightEdge ? "end" : "start");
       label.textContent = `${mark}m`;
       checkpointMarkersEl.appendChild(label);
     });
