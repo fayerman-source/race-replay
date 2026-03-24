@@ -49,40 +49,26 @@ This demonstration showcases a **live, animated replay system** that transforms 
 
 ---
 
-## 🏁 Demonstration
+## 🏁 Demo
 
-The current flagship public demo is:
+The main public example is the **World Athletics Indoor Championships women's 800m final**, built from official `100m` split data.
 
-- **World Athletics Indoor Championships women's 800m final**
-- based on official `100m` split data
-- replay link: `https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final`
+- [Open the main demo](https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final)
+- [Open the site homepage](https://fayerman-source.github.io/race-replay/)
+- [Open the Skye replay](https://fayerman-source.github.io/race-replay/?replay=skye-oceanbreeze-section-2)
 
-Additional internal/demo examples also exist in the project, including Ocean Breeze youth heats on a 200m banked indoor track.
-
-**[→ Experience the Live Replay](https://fayerman-source.github.io/race-replay/)**
-
-### Replay Links
-
-This project can support multiple replayable races from one site using a query parameter:
-
-- Base site: `https://fayerman-source.github.io/race-replay/`
-- Primary public demo: `https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final`
-- Skye heat replay: `https://fayerman-source.github.io/race-replay/?replay=skye-oceanbreeze-section-2`
-
-GitHub Pages is a good fit because this is a static site with no server-side build requirement.
+The project can support multiple replayable races from one site using query-parameter routing. GitHub Pages works well here because the app is fully static.
 
 ---
 
-## 💼 Partnership & Licensing Inquiries
+## 💼 Partnership & Licensing
 
-This visualization technology is available for integration with:
+This visualization technology is designed to be licensable and embeddable for:
 
 - **Race results platforms** (Athletic.net, MileSplit, DirectAthletics)
 - **Timing companies** (Hy-Tek, FinishLynx, PrimeTime Timing)
 - **Track & field applications**
 - **Youth sports organizations**
-
-### Integration Possibilities
 
 - **API-first architecture** — drop-in module for existing result systems
 - **White-label licensing** — branded replays for your platform
@@ -91,9 +77,9 @@ This visualization technology is available for integration with:
 
 ---
 
-## 🛡️ Data & Rights Note
+## 🛡️ Data & Rights
 
-This project currently mixes:
+This prototype currently mixes:
 - manually structured replay data derived from publicly posted results
 - event metadata and recap text for demonstration purposes
 - official split-based examples where higher-resolution public data is available
@@ -104,7 +90,7 @@ For production use, the long-term model should rely on data provided directly by
 
 ---
 
-## 🔒 Intellectual Property Notice
+## 🔒 Intellectual Property
 
 This demonstration represents proprietary visualization technology. All code, algorithms, user interface designs, and visual elements are the exclusive property of the developer.
 
