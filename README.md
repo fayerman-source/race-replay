@@ -51,10 +51,13 @@ This demonstration showcases a **live, animated replay system** that transforms 
 
 ## 🏁 Demonstration
 
-This project now includes multiple replayable 800m examples:
+The current flagship public demo is:
 
-- Ocean Breeze youth heats on a 200m banked indoor track
-- A World Athletics Indoor Championships women's 800m final replay using official 100m split data
+- **World Athletics Indoor Championships women's 800m final**
+- based on official `100m` split data
+- replay link: `https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final`
+
+Additional internal/demo examples also exist in the project, including Ocean Breeze youth heats on a 200m banked indoor track.
 
 **[→ Experience the Live Replay](https://fayerman-source.github.io/race-replay/)**
 
@@ -63,9 +66,8 @@ This project now includes multiple replayable 800m examples:
 This project can support multiple replayable races from one site using a query parameter:
 
 - Base site: `https://fayerman-source.github.io/race-replay/`
+- Primary public demo: `https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final`
 - Skye heat replay: `https://fayerman-source.github.io/race-replay/?replay=skye-oceanbreeze-section-2`
-- Chloe heat replay: `https://fayerman-source.github.io/race-replay/?replay=chloe-oceanbreeze-section-1`
-- World Athletics final replay: `https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final`
 
 GitHub Pages is a good fit because this is a static site with no server-side build requirement.
 
