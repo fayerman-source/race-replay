@@ -18,34 +18,47 @@ export const TRACK_CONFIG = {
 };
 
 const STRAIGHT_VISUAL_LENGTH = TRACK_CONFIG.svg.bottomY - TRACK_CONFIG.svg.topY;
-const VISUAL_LANE_WIDTH =
-  (TRACK_CONFIG.svg.outerRadius - TRACK_CONFIG.svg.innerRadius) / TRACK_CONFIG.laneCount;
+const BASE_VISUAL_LANE_WIDTH = (
+  TRACK_CONFIG.svg.outerRadius - TRACK_CONFIG.svg.innerRadius
+) / TRACK_CONFIG.laneCount;
 
-function clampLane(lane) {
+function getVisualLaneWidthPx(laneCount = TRACK_CONFIG.laneCount) {
+  return BASE_VISUAL_LANE_WIDTH;
+}
+
+function getTrackInnerRadiusPx(laneCount = TRACK_CONFIG.laneCount) {
+  return TRACK_CONFIG.svg.outerRadius - (laneCount * getVisualLaneWidthPx(laneCount));
+}
+
+function clampLane(lane, laneCount = TRACK_CONFIG.laneCount) {
   const numericLane = Number(lane);
   if (!Number.isFinite(numericLane)) return 1;
-  return Math.min(TRACK_CONFIG.laneCount, Math.max(1, numericLane));
+  return Math.min(laneCount, Math.max(1, numericLane));
 }
 
-function getLaneRadiusPx(lane) {
-  return TRACK_CONFIG.svg.innerRadius + (clampLane(lane) - 0.5) * VISUAL_LANE_WIDTH;
+function getLaneRadiusPx(lane, laneCount = TRACK_CONFIG.laneCount) {
+  const trackInnerRadius = getTrackInnerRadiusPx(laneCount);
+  return trackInnerRadius + (clampLane(lane, laneCount) - 0.5) * getVisualLaneWidthPx(laneCount);
 }
 
-function getLanePathLengthPx(lane) {
-  const radius = getLaneRadiusPx(lane);
+function getLanePathLengthPx(lane, laneCount = TRACK_CONFIG.laneCount) {
+  const radius = getLaneRadiusPx(lane, laneCount);
   return (2 * STRAIGHT_VISUAL_LENGTH) + (2 * Math.PI * radius);
 }
 
-export function getLaneStartOffsetMeters(lane) {
-  const laneDelta = clampLane(lane) - 1;
+export function getLaneStartOffsetMeters(
+  lane,
+  laneCount = TRACK_CONFIG.laneCount,
+  turnsCompensated = 1,
+) {
+  const laneDelta = clampLane(lane, laneCount) - 1;
   if (laneDelta <= 0) return 0;
 
-  // Indoor 800s commonly use a one-turn stagger before athletes can break.
-  return Math.PI * TRACK_CONFIG.laneWidthMeters * laneDelta;
+  return turnsCompensated * Math.PI * TRACK_CONFIG.laneWidthMeters * laneDelta;
 }
 
-export function getVisualLane(lane) {
-  return clampLane(lane);
+export function getVisualLane(lane, laneCount = TRACK_CONFIG.laneCount) {
+  return clampLane(lane, laneCount);
 }
 
 /**
@@ -56,10 +69,11 @@ export function getVisualLane(lane) {
 export function getTrackCoordinates(meters, lane = 1, options = {}) {
   const lapDistance = options.lapDistance ?? TRACK_CONFIG.trackLength;
   const startOffsetMeters = options.startOffsetMeters ?? 0;
+  const laneCount = options.laneCount ?? TRACK_CONFIG.laneCount;
   const normalizedMeters = (((meters + startOffsetMeters) % lapDistance) + lapDistance) % lapDistance;
   const progress = normalizedMeters / lapDistance;
-  const radius = getLaneRadiusPx(lane);
-  const totalPath = getLanePathLengthPx(lane);
+  const radius = getLaneRadiusPx(lane, laneCount);
+  const totalPath = getLanePathLengthPx(lane, laneCount);
   const { centerX, topY, bottomY } = TRACK_CONFIG.svg;
   const halfCircumference = Math.PI * radius;
   const finishLinePathDistance = (2 * STRAIGHT_VISUAL_LENGTH) + halfCircumference;
@@ -99,48 +113,73 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
 
 export function getCheckpointSegment(meters, options = {}) {
   const lapDistance = options.lapDistance ?? TRACK_CONFIG.trackLength;
+  const laneCount = options.laneCount ?? TRACK_CONFIG.laneCount;
   const inner = getTrackCoordinates(meters, 1, {
     lapDistance,
+    laneCount,
     startOffsetMeters: 0,
   });
-  const outer = getTrackCoordinates(meters, TRACK_CONFIG.laneCount, {
+  const outer = getTrackCoordinates(meters, laneCount, {
     lapDistance,
+    laneCount,
     startOffsetMeters: 0,
   });
 
   return { inner, outer };
 }
 
-export function getDistanceAtTime(splits, currentTime) {
+function getNormalizedSplitMarks(splits, splitMarks, raceDistance = TRACK_CONFIG.raceDistance) {
+  if (Array.isArray(splitMarks) && splitMarks.length === splits.length) {
+    return splitMarks;
+  }
+
+  const segmentCount = Math.max(1, splits.length - 1);
+  const interval = raceDistance / segmentCount;
+  return Array.from({ length: splits.length }, (_, index) => index * interval);
+}
+
+export function getDistanceAtTime(splits, currentTime, splitMarks = null, raceDistance = TRACK_CONFIG.raceDistance) {
   if (currentTime <= 0) return 0;
-  if (currentTime >= splits[splits.length - 1]) return TRACK_CONFIG.raceDistance;
+  if (currentTime >= splits[splits.length - 1]) return raceDistance;
+
+  const normalizedSplitMarks = getNormalizedSplitMarks(splits, splitMarks, raceDistance);
 
   for (let i = 0; i < splits.length - 1; i += 1) {
     if (currentTime >= splits[i] && currentTime < splits[i + 1]) {
       const segmentTime = splits[i + 1] - splits[i];
       const timeInSegment = currentTime - splits[i];
       const progress = timeInSegment / segmentTime;
-      return (i * 200) + (progress * 200);
+      const segmentStart = normalizedSplitMarks[i];
+      const segmentEnd = normalizedSplitMarks[i + 1];
+      return segmentStart + (progress * (segmentEnd - segmentStart));
     }
   }
 
-  return TRACK_CONFIG.raceDistance;
+  return raceDistance;
 }
 
-export function getTimeAtDistance(splits, targetDistance) {
+export function getTimeAtDistance(splits, targetDistance, splitMarks = null, raceDistance = TRACK_CONFIG.raceDistance) {
   if (targetDistance <= 0) return 0;
-  if (targetDistance >= TRACK_CONFIG.raceDistance) {
+  if (targetDistance >= raceDistance) {
     return splits[splits.length - 1];
   }
 
-  const segment = Math.floor(targetDistance / 200);
-  const segmentStartDistance = segment * 200;
-  const distanceInSegment = targetDistance - segmentStartDistance;
-  const segmentRatio = distanceInSegment / 200;
-  const segmentStartTime = splits[segment];
-  const segmentEndTime = splits[segment + 1];
+  const normalizedSplitMarks = getNormalizedSplitMarks(splits, splitMarks, raceDistance);
 
-  return segmentStartTime + ((segmentEndTime - segmentStartTime) * segmentRatio);
+  for (let i = 0; i < normalizedSplitMarks.length - 1; i += 1) {
+    const segmentStartDistance = normalizedSplitMarks[i];
+    const segmentEndDistance = normalizedSplitMarks[i + 1];
+
+    if (targetDistance <= segmentEndDistance) {
+      const segmentStartTime = splits[i];
+      const segmentEndTime = splits[i + 1];
+      const distanceInSegment = targetDistance - segmentStartDistance;
+      const segmentRatio = distanceInSegment / (segmentEndDistance - segmentStartDistance);
+      return segmentStartTime + ((segmentEndTime - segmentStartTime) * segmentRatio);
+    }
+  }
+
+  return splits[splits.length - 1];
 }
 
 export function formatTime(seconds) {
@@ -159,4 +198,26 @@ export function formatTime(seconds) {
 
 export function deepClone(value) {
   return JSON.parse(JSON.stringify(value));
+}
+
+export function buildOvalPath(radius) {
+  const { centerX, topY, bottomY } = TRACK_CONFIG.svg;
+  const leftX = centerX - radius;
+  const rightX = centerX + radius;
+  return `M ${leftX} ${topY} L ${leftX} ${bottomY} A ${radius} ${radius} 0 1 0 ${rightX} ${bottomY} L ${rightX} ${topY} A ${radius} ${radius} 0 1 0 ${leftX} ${topY}`;
+}
+
+export function getTrackVisualGeometry(laneCount = TRACK_CONFIG.laneCount) {
+  const outerRadius = TRACK_CONFIG.svg.outerRadius;
+  const innerRadius = getTrackInnerRadiusPx(laneCount);
+  const laneWidthPx = getVisualLaneWidthPx(laneCount);
+  const laneRadii = Array.from({ length: Math.max(0, laneCount - 1) }, (_, index) => {
+    return outerRadius - ((index + 1) * laneWidthPx);
+  });
+
+  return {
+    outerPath: buildOvalPath(outerRadius),
+    lanePaths: laneRadii.map((radius) => buildOvalPath(radius)),
+    infieldPath: buildOvalPath(innerRadius),
+  };
 }

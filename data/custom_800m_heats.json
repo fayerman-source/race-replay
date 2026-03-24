@@ -312,6 +312,144 @@
           ]
         }
       ]
+    },
+    {
+      "replay_id": "waic-torun-2026-womens-800m-final",
+      "title": "World Indoors 2026 - Women's 800m Final",
+      "event": {
+        "name": "Women's 800m Final",
+        "venue": "World Athletics Indoor Championships Kujawy Pomorze 26, Torun",
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 100,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "active_heat_id": "Final",
+        "commentary": {
+          "pre_start": "A world-class women's 800m final is loaded in Torun, with Keely Hodgkinson chasing her first world indoor title.",
+          "opening": "Hodgkinson takes control early from the outside and works to stay clear of trouble as the field settles into position.",
+          "through_200": "Hodgkinson leads through 200m in 27.26, with Getachew committed to the pace and Werro and Wiley tracking just behind.",
+          "through_400": "The Olympic champion reaches 400m in 56.95 and keeps the race stretched, while Getachew tries to go with her.",
+          "through_600": "Hodgkinson still leads at 600m in 1:26.46 as Werro and Wiley begin to close on Getachew behind her.",
+          "closing": "There is no catching Hodgkinson on the final circuit as she powers away from the field.",
+          "finish": "Hodgkinson wins the world title in a championship record 1:55.30, with Werro second in 1:56.64 and Wiley third in a PB of 1:58.36."
+        },
+        "source": {
+          "provider": "World Athletics",
+          "notes": [
+            "Structured from official race analysis and lane assignment data supplied by the user.",
+            "This replay uses 100m split intervals from the official World Athletics race analysis."
+          ],
+          "writeup_excerpt": "Keely Hodgkinson won in a championship record of 1:55.30 after leading through 200m in 27.26, 400m in 56.96, and 600m in 1:26.46."
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final",
+          "status": "official_results_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Keely Hodgkinson",
+              "lane": 6,
+              "team": "Great Britain",
+              "country": "GBR",
+              "result": {
+                "final_time": 115.3,
+                "display_time": "1:55.30"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.39, 27.26, 42.02, 56.95, 71.73, 86.46, 100.65, 115.3],
+                "segment_seconds": [13.39, 13.87, 14.76, 14.93, 14.78, 14.73, 14.19, 14.65],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              },
+              "tags": ["focus_runner"]
+            },
+            {
+              "place": 2,
+              "athlete": "Audrey Werro",
+              "lane": 5,
+              "team": "Switzerland",
+              "country": "SUI",
+              "result": {
+                "final_time": 116.64,
+                "display_time": "1:56.64"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.67, 27.3, 42.35, 57.47, 72.38, 87.4, 102.2, 116.64],
+                "segment_seconds": [13.67, 13.63, 15.05, 15.12, 14.91, 15.02, 14.8, 14.44],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Addison Wiley",
+              "lane": 4,
+              "team": "United States",
+              "country": "USA",
+              "result": {
+                "final_time": 118.36,
+                "display_time": "1:58.36"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.73, 27.63, 42.53, 57.63, 72.53, 87.64, 102.67, 118.36],
+                "segment_seconds": [13.73, 13.9, 14.9, 15.1, 14.9, 15.11, 15.03, 15.69],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Nigist Getachew",
+              "lane": 1,
+              "team": "Ethiopia",
+              "country": "ETH",
+              "result": {
+                "final_time": 119.73,
+                "display_time": "1:59.73"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.68, 27.31, 42.25, 57.21, 72.14, 87.35, 102.79, 119.73],
+                "segment_seconds": [13.68, 13.63, 14.94, 14.96, 14.93, 15.21, 15.44, 16.94],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Hayley Kitching",
+              "lane": 3,
+              "team": "Australia",
+              "country": "AUS",
+              "result": {
+                "final_time": 120.5,
+                "display_time": "2:00.50"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.14, 28.39, 43.46, 58.91, 74.39, 90.14, 105.49, 120.5],
+                "segment_seconds": [14.14, 14.25, 15.07, 15.45, 15.48, 15.75, 15.35, 15.01],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Clara Liberman",
+              "lane": 2,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 123.3,
+                "display_time": "2:03.30"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.99, 28.02, 42.96, 58.38, 73.96, 90.36, 106.72, 123.3],
+                "segment_seconds": [13.99, 14.03, 14.94, 15.42, 15.58, 16.4, 16.36, 16.58],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -46,6 +46,7 @@ function normalizeEntry(entry, index, lane) {
     place: entry.place,
     year: entry.year,
     splits: entry.splits.cumulative_seconds,
+    splitMarks: entry.splits.split_marks_m || null,
     segmentSplits: entry.splits.segment_seconds || [],
     finalTime,
     displayTime: entry?.result?.display_time || null,
@@ -90,6 +91,7 @@ export async function loadHeatData() {
     event: {
       ...replayPayload.event,
       active_heat_id: activeHeat.heat_id,
+      lane_count: replayPayload?.event?.lane_count || TRACK_CONFIG.laneCount,
       track_length_m: replayPayload?.event?.track_length_m || TRACK_CONFIG.trackLength,
       race_distance_m: replayPayload?.event?.race_distance_m || TRACK_CONFIG.raceDistance,
       venue: replayPayload?.event?.venue || "Ocean Breeze Athletic Complex, Staten Island",

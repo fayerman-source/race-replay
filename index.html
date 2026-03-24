@@ -254,20 +254,9 @@
             <div class="oval-track" id="ovalTrack">
                 <!-- Vertical Track SVG - 6 Lane Armory Blue -->
                 <svg id="trackSvg" width="350" height="550" viewBox="0 0 350 550" class="absolute top-0 left-0">
-                    <!-- Outer track - oval shape with straights and curves -->
-                    <path d="M 25 175 L 25 375 A 150 150 0 1 0 325 375 L 325 175 A 150 150 0 1 0 25 175" fill="#1E3A8A" stroke="white" stroke-width="3"/>
-                    
-                    <!-- Lane lines (7 lines for 8 lanes) -->
-                    <path d="M 40.625 175 L 40.625 375 A 134.375 134.375 0 1 0 309.375 375 L 309.375 175 A 134.375 134.375 0 1 0 40.625 175" class="lane-line" fill="none"/>
-                    <path d="M 56.25 175 L 56.25 375 A 118.75 118.75 0 1 0 293.75 375 L 293.75 175 A 118.75 118.75 0 1 0 56.25 175" class="lane-line" fill="none"/>
-                    <path d="M 71.875 175 L 71.875 375 A 103.125 103.125 0 1 0 278.125 375 L 278.125 175 A 103.125 103.125 0 1 0 71.875 175" class="lane-line" fill="none"/>
-                    <path d="M 87.5 175 L 87.5 375 A 87.5 87.5 0 1 0 262.5 375 L 262.5 175 A 87.5 87.5 0 1 0 87.5 175" class="lane-line" fill="none"/>
-                    <path d="M 103.125 175 L 103.125 375 A 71.875 71.875 0 1 0 246.875 375 L 246.875 175 A 71.875 71.875 0 1 0 103.125 175" class="lane-line" fill="none"/>
-                    <path d="M 118.75 175 L 118.75 375 A 56.25 56.25 0 1 0 231.25 375 L 231.25 175 A 56.25 56.25 0 1 0 118.75 175" class="lane-line" fill="none"/>
-                    <path d="M 134.375 175 L 134.375 375 A 40.625 40.625 0 1 0 215.625 375 L 215.625 175 A 40.625 40.625 0 1 0 134.375 175" class="lane-line" fill="none"/>
-
-                    <!-- Inner infield -->
-                    <path d="M 150 175 L 150 375 A 25 25 0 1 0 200 375 L 200 175 A 25 25 0 1 0 150 175" fill="#1E293B" stroke="white" stroke-width="2"/>
+                    <path id="trackOuterPath" d="M 25 175 L 25 375 A 150 150 0 1 0 325 375 L 325 175 A 150 150 0 1 0 25 175" fill="#1E3A8A" stroke="white" stroke-width="3"/>
+                    <g id="laneLinesGroup"></g>
+                    <path id="trackInfieldPath" d="M 150 175 L 150 375 A 25 25 0 1 0 200 375 L 200 175 A 25 25 0 1 0 150 175" fill="#1E293B" stroke="white" stroke-width="2"/>
 
                     <!-- Shared start / finish line -->
                     <line x1="200" y1="175" x2="325" y2="175" class="start-finish-line" />
@@ -350,12 +339,7 @@
                         <span class="text-gray-300" id="focusRunnerLabel">Focus Runner</span>
                         <span class="font-mono font-bold text-orange-400" id="focusRunnerTime">--:--</span>
                     </div>
-                    <div class="grid grid-cols-4 gap-1 mt-2 text-center text-xs text-gray-500">
-                        <div data-state="pending">0-200<br><span class="text-white" id="split200">--</span></div>
-                        <div data-state="pending">200-400<br><span class="text-white" id="split400">--</span></div>
-                        <div data-state="pending">400-600<br><span class="text-white" id="split600">--</span></div>
-                        <div data-state="pending">600-800<br><span class="text-white" id="split800">--</span></div>
-                    </div>
+                    <div class="grid grid-cols-4 gap-1 mt-2 text-center text-xs text-gray-500" id="splitGrid"></div>
                 </div>
             </div>
 

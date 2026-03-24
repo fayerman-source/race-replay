@@ -1,4 +1,10 @@
-import { TRACK_CONFIG, formatTime, getCheckpointSegment, getTrackCoordinates } from "./utils.js";
+import {
+  TRACK_CONFIG,
+  formatTime,
+  getCheckpointSegment,
+  getTrackCoordinates,
+  getTrackVisualGeometry,
+} from "./utils.js";
 import { SfxManager } from "./sfx-manager.js";
 import { loadHeatData } from "./heat-data.js";
 import { createRaceModel } from "./race-model.js";
@@ -23,6 +29,7 @@ const state = {
   raceModel: null,
   currentSnapshot: null,
   renderLaneByRunnerId: {},
+  renderProgressByRunnerId: {},
 };
 
 const sfxManager = new SfxManager();
@@ -38,18 +45,15 @@ const eventTitleEl = document.getElementById("eventTitle");
 const trackBadgeEl = document.getElementById("trackBadge");
 const raceDurationEl = document.getElementById("raceDuration");
 const trackSvgEl = document.getElementById("trackSvg");
+const trackOuterPathEl = document.getElementById("trackOuterPath");
+const trackInfieldPathEl = document.getElementById("trackInfieldPath");
+const laneLinesGroupEl = document.getElementById("laneLinesGroup");
 const checkpointMarkersEl = document.getElementById("checkpointMarkers");
 const liveLeaderLabelEl = document.getElementById("liveLeaderLabel");
 const liveLeaderTimeEl = document.getElementById("liveLeaderTime");
 const focusRunnerLabelEl = document.getElementById("focusRunnerLabel");
 const focusRunnerTimeEl = document.getElementById("focusRunnerTime");
-const splitCells = [
-  document.getElementById("split200"),
-  document.getElementById("split400"),
-  document.getElementById("split600"),
-  document.getElementById("split800"),
-];
-const splitCellLabels = ["0-200", "200-400", "400-600", "600-800"];
+const splitGridEl = document.getElementById("splitGrid");
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 function getSnapshot() {
@@ -74,16 +78,82 @@ function getSortedByProgress() {
     .filter(Boolean);
 }
 
+function getSplitSegments(snapshot = getSnapshot()) {
+  const splitMarks = snapshot?.event?.split_marks_m || [];
+  let previousMark = 0;
+
+  return splitMarks.map((mark, index) => {
+    const label = `${previousMark}-${mark}`;
+    previousMark = mark;
+    return { mark, index, label };
+  });
+}
+
+function renderSplitGrid() {
+  if (!splitGridEl) return;
+
+  splitGridEl.innerHTML = "";
+  getSplitSegments().forEach(({ mark, label }) => {
+    const cell = document.createElement("div");
+    cell.dataset.state = "pending";
+    cell.dataset.mark = String(mark);
+    cell.innerHTML = `${label}<br><span class="text-white" data-role="split-value">--</span>`;
+    splitGridEl.appendChild(cell);
+  });
+}
+
 function updateHeatSummary() {
   const snapshot = getSnapshot();
   const focusRunner = getFocusRunner();
   const leader = getLeader();
   const leaderState = leader && snapshot ? snapshot.getRunnerState(leader.id) : null;
+  const raceComplete = snapshot?.isComplete || false;
   const completedLegs = Math.min(4, Math.floor((leaderState?.officialDistance || 0) / 200));
+  const commentary = state.event?.commentary || null;
+  const leaderDistance = leaderState?.officialDistance || 0;
 
   if (state.raceTime === 0) {
+    if (commentary?.pre_start) {
+      commentaryBoxEl.innerText = commentary.pre_start;
+      return;
+    }
     commentaryBoxEl.innerText = `${state.activeHeat.heat_id} at ${state.event.venue}. ${state.runners.length} athletes are loaded and ready to replay from the lane stagger start.`;
     return;
+  }
+
+  if (raceComplete && leader) {
+    if (commentary?.finish) {
+      commentaryBoxEl.innerText = commentary.finish;
+      return;
+    }
+    const focusSummary = focusRunner
+      ? ` ${focusRunner.fullName} finishes in ${focusRunner.displayTime || formatTime(focusRunner.finalTime)}.`
+      : "";
+    commentaryBoxEl.innerText = `${leader.fullName} wins in ${leader.displayTime || formatTime(leader.finalTime)}.${focusSummary}`.trim();
+    return;
+  }
+
+  if (commentary) {
+    if (leaderDistance >= 700 && commentary.closing) {
+      commentaryBoxEl.innerText = commentary.closing;
+      return;
+    }
+    if (leaderDistance >= 600 && commentary.through_600) {
+      commentaryBoxEl.innerText = commentary.through_600;
+      return;
+    }
+    if (leaderDistance >= 400 && commentary.through_400) {
+      commentaryBoxEl.innerText = commentary.through_400;
+      return;
+    }
+    if (leaderDistance >= 200 && commentary.through_200) {
+      commentaryBoxEl.innerText = commentary.through_200;
+      return;
+    }
+    if (commentary.opening) {
+      commentaryBoxEl.innerText = commentary.opening;
+      return;
+    }
   }
 
   if (completedLegs === 0 && leader) {
@@ -102,9 +172,30 @@ function updateHeatMeta() {
   const leader = [...state.runners].sort((a, b) => a.finalTime - b.finalTime)[0];
 
   eventTitleEl.innerText = state.replayTitle || `${state.event.name} ${state.activeHeat.heat_id}`;
-  trackBadgeEl.innerText = `${state.event.track_length_m}m Banked | ${state.event.race_distance_m / state.event.track_length_m} Laps`;
+  trackBadgeEl.innerText = `${state.event.track_length_m}m Banked | ${state.event.lane_count} Lanes | ${state.event.race_distance_m / state.event.track_length_m} Laps`;
   raceDurationEl.innerText = leader ? formatTime(leader.finalTime) : "--:--";
   document.title = `${eventTitleEl.innerText} | Race Replay`;
+}
+
+function renderTrackGeometry() {
+  if (!trackOuterPathEl || !trackInfieldPathEl || !laneLinesGroupEl || !state.event) return;
+
+  const laneCount = state.event.lane_count || TRACK_CONFIG.laneCount;
+  const geometry = getTrackVisualGeometry(laneCount);
+
+  trackOuterPathEl.setAttribute("d", geometry.outerPath);
+  trackOuterPathEl.setAttribute("class", "track-surface");
+  trackInfieldPathEl.setAttribute("d", geometry.infieldPath);
+  trackInfieldPathEl.setAttribute("class", "track-infield");
+
+  laneLinesGroupEl.innerHTML = "";
+  geometry.lanePaths.forEach((pathData) => {
+    const lanePath = document.createElementNS(SVG_NS, "path");
+    lanePath.setAttribute("d", pathData);
+    lanePath.setAttribute("class", "lane-line");
+    lanePath.setAttribute("fill", "none");
+    laneLinesGroupEl.appendChild(lanePath);
+  });
 }
 
 function renderCheckpointMarkers() {
@@ -120,6 +211,7 @@ function renderCheckpointMarkers() {
   splitMarks.forEach((mark) => {
     const { inner, outer } = getCheckpointSegment(mark, {
       lapDistance: state.raceModel.event.track_length_m,
+      laneCount: state.raceModel.event.lane_count,
     });
     const key = [
       outer.x.toFixed(2),
@@ -179,9 +271,10 @@ function updateLiveSplitsPanel() {
   if (!focusRunner) {
     focusRunnerLabelEl.innerText = "Focus Runner";
     focusRunnerTimeEl.innerText = "--";
-    splitCells.forEach((cell) => {
-      cell.innerText = "--";
-      cell.parentElement.dataset.state = "pending";
+    splitGridEl?.querySelectorAll("[data-mark]").forEach((cell) => {
+      const valueEl = cell.querySelector("[data-role='split-value']");
+      if (valueEl) valueEl.textContent = "--";
+      cell.dataset.state = "pending";
     });
     return;
   }
@@ -193,13 +286,14 @@ function updateLiveSplitsPanel() {
     ? (focusRunner.displayTime || formatTime(focusRunner.finalTime))
     : `${focusState.officialDistance.toFixed(0)}m`;
 
-  focusRunner.segmentSplits.forEach((split, index) => {
-    const splitMark = snapshot.event.split_marks_m[index];
-    if (!splitCells[index]) return;
-
-    const isReached = raceComplete || focusState.checkpoints[splitMark];
-    splitCells[index].innerText = isReached ? split.toFixed(2) : "--";
-    splitCells[index].parentElement.dataset.state = isReached ? "reached" : "pending";
+  getSplitSegments(snapshot).forEach(({ mark }, index) => {
+    const split = focusRunner.segmentSplits[index];
+    const cell = splitGridEl?.querySelector(`[data-mark="${mark}"]`);
+    if (!cell) return;
+    const isReached = raceComplete || focusState.checkpoints[mark];
+    const valueEl = cell.querySelector("[data-role='split-value']");
+    if (valueEl) valueEl.textContent = Number.isFinite(split) && isReached ? split.toFixed(2) : "--";
+    cell.dataset.state = isReached ? "reached" : "pending";
   });
 }
 
@@ -303,7 +397,7 @@ function updateRunnerPositions(deltaSeconds = 0) {
   let finishedCount = 0;
   const snapshot = getSnapshot();
   if (!snapshot) return finishedCount;
-  const maxLaneChangePerSecond = 6;
+  const laneResponse = 3.2;
 
   state.runners.forEach((runner) => {
     const runnerState = snapshot.getRunnerState(runner.id);
@@ -313,17 +407,21 @@ function updateRunnerPositions(deltaSeconds = 0) {
 
     const previousLane = state.renderLaneByRunnerId[runner.id] ?? runnerState.displayLane;
     const targetLane = runnerState.displayLane;
-    const maxStep = Math.max(0.02, deltaSeconds * maxLaneChangePerSecond);
     const laneDelta = targetLane - previousLane;
-    const smoothedLane = Math.abs(laneDelta) <= maxStep
-      ? targetLane
-      : previousLane + (Math.sign(laneDelta) * maxStep);
-    const smoothedPosition = getTrackCoordinates(runnerState.officialDistance, smoothedLane, {
+    const laneBlend = 1 - Math.exp(-Math.max(0, deltaSeconds) * laneResponse);
+    const smoothedLane = previousLane + (laneDelta * laneBlend);
+
+    const targetVisualProgress = runnerState.officialDistance + runnerState.longitudinalOffset;
+    const previousVisualProgress = state.renderProgressByRunnerId[runner.id] ?? targetVisualProgress;
+    const smoothedVisualProgress = Math.max(previousVisualProgress, targetVisualProgress);
+
+    const smoothedPosition = getTrackCoordinates(smoothedVisualProgress, smoothedLane, {
       lapDistance: snapshot.event.track_length_m,
-      startOffsetMeters: runnerState.longitudinalOffset,
+      laneCount: snapshot.event.lane_count,
     });
 
     state.renderLaneByRunnerId[runner.id] = smoothedLane;
+    state.renderProgressByRunnerId[runner.id] = smoothedVisualProgress;
     dot.style.left = `${smoothedPosition.x}px`;
     dot.style.top = `${smoothedPosition.y}px`;
     dot.style.opacity = runnerState.phase === "finished" ? "0.35" : "1";
@@ -443,6 +541,7 @@ export function resetRace() {
   state.finishPlayed = false;
   state.currentSnapshot = state.raceModel.getSnapshot(state.raceTime);
   state.renderLaneByRunnerId = {};
+  state.renderProgressByRunnerId = {};
 
   timerEl.innerText = "0:00.00";
   lapCounterEl.innerText = "Lap 1 of 4";
@@ -453,10 +552,10 @@ export function resetRace() {
     else dot.classList.remove("active");
   });
 
-  splitCells.forEach((cell, index) => {
-    cell.innerText = "--";
-    cell.parentElement.dataset.state = "pending";
-    cell.parentElement.firstChild.textContent = splitCellLabels[index];
+  splitGridEl?.querySelectorAll("[data-mark]").forEach((cell) => {
+    const valueEl = cell.querySelector("[data-role='split-value']");
+    if (valueEl) valueEl.textContent = "--";
+    cell.dataset.state = "pending";
   });
 
   state.runners.forEach((runner) => {
@@ -466,6 +565,7 @@ export function resetRace() {
 
     if (dot && runnerState) {
       state.renderLaneByRunnerId[runner.id] = runnerState.displayLane;
+      state.renderProgressByRunnerId[runner.id] = runnerState.officialDistance + runnerState.longitudinalOffset;
       dot.style.left = `${runnerState.trackPosition.x}px`;
       dot.style.top = `${runnerState.trackPosition.y}px`;
       dot.style.opacity = "1";
@@ -509,6 +609,8 @@ async function init() {
   state.currentSnapshot = state.raceModel.getSnapshot(0);
 
   updateHeatMeta();
+  renderTrackGeometry();
+  renderSplitGrid();
   renderCheckpointMarkers();
   initRunners();
   resetRace();

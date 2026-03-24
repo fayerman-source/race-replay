@@ -22,7 +22,7 @@ function getPackedLane(baseLaneIndex, eventConfig) {
   if (baseLaneIndex === 2) return 2.6;
   if (baseLaneIndex === 3) return 3;
 
-  return Math.min(3.2, 3 + ((baseLaneIndex - 3) * eventConfig.extra_packed_lane_spacing));
+  return Math.min(eventConfig.lane_count, 3 + ((baseLaneIndex - 3) * eventConfig.extra_packed_lane_spacing));
 }
 
 function buildPackedLaneTargets(orderedStates, eventConfig) {
@@ -59,7 +59,7 @@ function buildPackedLaneTargets(orderedStates, eventConfig) {
 }
 
 function getDisplayLane(baseLane, officialDistance, packedLane, eventConfig) {
-  const startLane = getVisualLane(baseLane);
+  const startLane = getVisualLane(baseLane, eventConfig.lane_count);
   const mergeProgress = getMergeProgress(officialDistance, eventConfig);
 
   if (mergeProgress === 0) return startLane;
@@ -67,7 +67,11 @@ function getDisplayLane(baseLane, officialDistance, packedLane, eventConfig) {
 }
 
 function getDisplayStartOffset(baseLane, officialDistance, eventConfig) {
-  const initialOffset = getLaneStartOffsetMeters(baseLane);
+  const initialOffset = getLaneStartOffsetMeters(
+    baseLane,
+    eventConfig.lane_count,
+    eventConfig.start_offset_turns,
+  );
 
   if (initialOffset === 0) return 0;
   if (officialDistance <= 0) return initialOffset;
@@ -88,6 +92,7 @@ function buildEventConfig(event) {
   const trackLength = event.track_length_m || TRACK_CONFIG.trackLength;
   const raceDistance = event.race_distance_m || TRACK_CONFIG.raceDistance;
   const timingInterval = event.timing_interval_m || 200;
+  const laneCount = event.lane_count || TRACK_CONFIG.laneCount;
   const splitMarks = [];
 
   for (let mark = timingInterval; mark <= raceDistance; mark += timingInterval) {
@@ -99,9 +104,11 @@ function buildEventConfig(event) {
     track_length_m: trackLength,
     race_distance_m: raceDistance,
     timing_interval_m: timingInterval,
+    lane_count: laneCount,
     split_marks_m: splitMarks,
-    break_distance_m: 55,
-    merge_complete_distance_m: 85,
+    start_offset_turns: event.start_offset_turns || 1,
+    break_distance_m: event.break_distance_m || 55,
+    merge_complete_distance_m: event.merge_complete_distance_m || 85,
     extra_packed_lane_spacing: 0.2,
     crowding_gap_m: 2.2,
   };
@@ -114,7 +121,12 @@ export function createRaceModel(event, runners) {
   function getSnapshot(raceTime) {
     const effectiveTime = Math.max(0, raceTime);
     const baseStates = runners.map((runner) => {
-      const officialDistance = getDistanceAtTime(runner.splits, effectiveTime);
+      const officialDistance = getDistanceAtTime(
+        runner.splits,
+        effectiveTime,
+        runner.splitMarks,
+        eventConfig.race_distance_m,
+      );
 
       return {
         id: runner.id,
@@ -145,6 +157,7 @@ export function createRaceModel(event, runners) {
       const longitudinalOffset = getDisplayStartOffset(baseState.runner.lane, baseState.officialDistance, eventConfig);
       const trackPosition = getTrackCoordinates(baseState.officialDistance, displayLane, {
         lapDistance: eventConfig.track_length_m,
+        laneCount: eventConfig.lane_count,
         startOffsetMeters: longitudinalOffset,
       });
       const checkpoints = Object.fromEntries(
@@ -190,7 +203,12 @@ export function createRaceModel(event, runners) {
       getSplitTimeForRunner(id, distanceMark) {
         const runner = runnerMap.get(id);
         if (!runner) return null;
-        return getTimeAtDistance(runner.splits, distanceMark);
+        return getTimeAtDistance(
+          runner.splits,
+          distanceMark,
+          runner.splitMarks,
+          eventConfig.race_distance_m,
+        );
       },
     };
   }
