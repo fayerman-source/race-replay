@@ -51,11 +51,10 @@ This demonstration showcases a **live, animated replay system** that transforms 
 
 ## 🏁 Demonstration
 
-**Demo Event:** 800m Indoor Track (200m banked oval)  
-**Featured Runner:** Skye (Age 10, Bib #10)  
-**Result:** 3:04.27 — A new Personal Record!
+This project now includes multiple replayable 800m examples:
 
-This demo uses **anonymized sample data** to illustrate the technology. All runner names are first-name only, and team affiliations are generic placeholders.
+- Ocean Breeze youth heats on a 200m banked indoor track
+- A World Athletics Indoor Championships women's 800m final replay using official 100m split data
 
 **[→ Experience the Live Replay](https://fayerman-source.github.io/race-replay/)**
 
@@ -64,7 +63,9 @@ This demo uses **anonymized sample data** to illustrate the technology. All runn
 This project can support multiple replayable races from one site using a query parameter:
 
 - Base site: `https://fayerman-source.github.io/race-replay/`
-- Specific replay: `https://fayerman-source.github.io/race-replay/?replay=skye-oceanbreeze-section-2`
+- Skye heat replay: `https://fayerman-source.github.io/race-replay/?replay=skye-oceanbreeze-section-2`
+- Chloe heat replay: `https://fayerman-source.github.io/race-replay/?replay=chloe-oceanbreeze-section-1`
+- World Athletics final replay: `https://fayerman-source.github.io/race-replay/?replay=waic-torun-2026-womens-800m-final`
 
 GitHub Pages is a good fit because this is a static site with no server-side build requirement.
 
@@ -88,14 +89,16 @@ This visualization technology is available for integration with:
 
 ---
 
-## 🛡️ Data Privacy Notice
+## 🛡️ Data & Rights Note
 
-This demonstration uses **anonymized sample data** for illustrative purposes:
-- First names only — no full names or identifying information
-- Generic team placeholders
-- Split times are representative examples
+This project currently mixes:
+- manually structured replay data derived from publicly posted results
+- event metadata and recap text for demonstration purposes
+- official split-based examples where higher-resolution public data is available
 
-For production use, this system is designed to work with data provided directly by rights holders (meet organizers, timing companies, or platforms with proper licensing agreements).
+It is intended as a prototype and product demonstration, not as an official results service.
+
+For production use, the long-term model should rely on data provided directly by rights holders, meet organizers, timing companies, governing bodies, or platforms with proper licensing agreements.
 
 ---
 
