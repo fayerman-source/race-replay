@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv("/home/elidev/nidra/meditation-generator/.env")
+load_dotenv()
 
 # Check if Azure credentials exist
 key = os.getenv("AZURE_SPEECH_KEY")

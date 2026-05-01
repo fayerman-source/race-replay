@@ -200,6 +200,16 @@ export function deepClone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+export function escapeHtml(str) {
+  if (typeof str !== "string") return str;
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export function buildOvalPath(radius) {
   const { centerX, topY, bottomY } = TRACK_CONFIG.svg;
   const leftX = centerX - radius;

@@ -31,7 +31,7 @@ manifest = {
     ]
 }
 
-with open("/home/elidev/.openclaw/workspace/circuit-race-replay/commentary_audio_v2/manifest.json", "w") as f:
+with open("./commentary_audio_v2/manifest.json", "w") as f:
     json.dump(manifest, f, indent=2)
 
 print("Manifest created successfully!")

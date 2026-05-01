@@ -16,14 +16,14 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv("/home/elidev/nidra/meditation-generator/.env")
+load_dotenv()
 
 from google import genai
 from google.genai import types
 from pydub import AudioSegment
 
 # Load race data
-with open("/home/elidev/.openclaw/workspace/circuit-race-replay/data/race_data.json") as f:
+with open("./data/race_data.json") as f:
     race_data = json.load(f)
 
 # Age-aware dual commentary

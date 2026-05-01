@@ -1,0 +1,42 @@
+[
+  {
+    "vulnerability": "Stored XSS via runner data.\nLocation: `js/app.js` (multiple locations), `js/utils.js` (lack of sanitization).",
+    "vulnerabilityType": null,
+    "severity": null,
+    "dataType": null,
+    "sourceLocation": {
+      "file": null,
+      "startLine": null,
+      "endLine": null
+    },
+    "sinkLocation": {
+      "file": null,
+      "startLine": null,
+      "endLine": null
+    },
+    "lineContent": null,
+    "description": "The application used `innerHTML` to render runner names, teams, and other metadata fetched from a JSON file without sanitization. An attacker who could influence this JSON data could execute arbitrary JavaScript.\nFix: \nImplemented `escapeHtml` utility in `js/utils.js`.\nUpdated `js/app.js` to sanitize all dynamic data before using `innerHTML`.\nVerification: Verified with a PoC demonstrating script injection before the fix and proper escaping after the fix.",
+    "recommendation": null,
+    "codeSuggestion": null
+  },
+  {
+    "vulnerability": "Hardcoded paths to credentials and sensitive local environment information.\nLocation: All `.py` files, specifically `generate_commentary.py`, `generate_commentary_gemini.py`, and documentation.",
+    "vulnerabilityType": null,
+    "severity": null,
+    "dataType": null,
+    "sourceLocation": {
+      "file": null,
+      "startLine": null,
+      "endLine": null
+    },
+    "sinkLocation": {
+      "file": null,
+      "startLine": null,
+      "endLine": null
+    },
+    "lineContent": null,
+    "description": "Python scripts contained hardcoded absolute paths to `.env` files and Google Cloud credentials outside the project directory. This leaks developer environment information and poses a risk if those external files are accessible.\nFix:\nReplaced hardcoded `load_dotenv` paths with standard `load_dotenv()` which looks for a local `.env`.\nRemoved hardcoded `GOOGLE_APPLICATION_CREDENTIALS` path.\nConverted all absolute local paths to relative paths.\nVerification: Verified by grep search that no `/home/` absolute paths remain in the codebase.",
+    "recommendation": null,
+    "codeSuggestion": null
+  }
+]

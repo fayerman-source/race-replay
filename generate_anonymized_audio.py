@@ -11,7 +11,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Load Azure credentials from nidra project
-load_dotenv("/home/elidev/nidra/meditation-generator/.env")
+load_dotenv()
 
 import azure.cognitiveservices.speech as speechsdk
 

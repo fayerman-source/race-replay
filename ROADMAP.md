@@ -30,12 +30,12 @@ Shareable URL pattern:
 
 ## Key Files
 
-- [index.html](/home/fayerman/race-replay/index.html)
-- [js/app.js](/home/fayerman/race-replay/js/app.js)
-- [js/heat-data.js](/home/fayerman/race-replay/js/heat-data.js)
-- [js/race-model.js](/home/fayerman/race-replay/js/race-model.js)
-- [js/utils.js](/home/fayerman/race-replay/js/utils.js)
-- [data/custom_800m_heats.json](/home/fayerman/race-replay/data/custom_800m_heats.json)
+- [index.html](./index.html)
+- [js/app.js](./js/app.js)
+- [js/heat-data.js](./js/heat-data.js)
+- [js/race-model.js](./js/race-model.js)
+- [js/utils.js](./js/utils.js)
+- [data/custom_800m_heats.json](./data/custom_800m_heats.json)
 
 ## Implemented So Far
 

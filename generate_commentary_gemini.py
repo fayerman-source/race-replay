@@ -15,7 +15,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Load credentials from nidra project
-load_dotenv("/home/elidev/nidra/meditation-generator/.env")
+load_dotenv()
 
 from google import genai
 from google.genai import types
@@ -79,7 +79,7 @@ def generate_commentary_audio(output_dir: Path, personality: str = "excited_anno
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         print("Error: GEMINI_API_KEY not found in environment")
-        print("Make sure /home/elidev/nidra/meditation-generator/.env has GEMINI_API_KEY")
+        print("Make sure your .env file has GEMINI_API_KEY")
         return
     
     client = genai.Client(api_key=api_key)

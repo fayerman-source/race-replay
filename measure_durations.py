@@ -4,7 +4,7 @@ from pathlib import Path
 from pydub import AudioSegment
 
 # Scan actual MP3 files and get durations
-audio_dir = Path("/home/elidev/.openclaw/workspace/circuit-race-replay/commentary_audio_v2")
+audio_dir = Path("./commentary_audio_v2")
 mp3_files = sorted(audio_dir.glob("*.mp3"))
 
 print(f"Found {len(mp3_files)} MP3 files")
@@ -41,7 +41,7 @@ commentary_timing.sort(key=lambda x: x["index"])
 # Save timing data
 timing_data = {"commentaryTiming": commentary_timing}
 
-output_path = "/home/elidev/.openclaw/workspace/circuit-race-replay/data/commentary_timing.json"
+output_path = "./data/commentary_timing.json"
 with open(output_path, "w") as f:
     json.dump(timing_data, f, indent=2)
 
