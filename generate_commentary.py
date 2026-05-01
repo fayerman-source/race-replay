@@ -11,9 +11,9 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load credentials from nidra project
-load_dotenv("/home/elidev/nidra/meditation-generator/.env")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/elidev/nidra/google_credentials.json"
+# Load credentials from .env if available
+load_dotenv()
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "path/to/your/credentials.json"
 
 from google.cloud import texttospeech
 

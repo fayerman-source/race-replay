@@ -5,7 +5,7 @@ This is a visual race replay system with JavaScript frontend and Python data gen
 ## Project Structure
 
 ```
-/home/fayerman/race-replay/
+./
 ├── js/                    # Frontend JavaScript (ES6 modules)
 │   ├── app.js            # Main application logic
 │   ├── commentary-engine.js  # Audio commentary orchestration

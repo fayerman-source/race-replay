@@ -18,7 +18,7 @@ import time
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv("/home/elidev/nidra/meditation-generator/.env")
+load_dotenv()
 
 from google import genai
 from google.genai import types

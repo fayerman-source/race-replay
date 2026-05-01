@@ -4,6 +4,7 @@ import {
   getCheckpointSegment,
   getTrackCoordinates,
   getTrackVisualGeometry,
+  escapeHtml,
 } from "./utils.js";
 import { SfxManager } from "./sfx-manager.js";
 import { loadHeatData } from "./heat-data.js";
@@ -97,7 +98,7 @@ function renderSplitGrid() {
     const cell = document.createElement("div");
     cell.dataset.state = "pending";
     cell.dataset.mark = String(mark);
-    cell.innerHTML = `${label}<br><span class="text-white" data-role="split-value">--</span>`;
+    cell.innerHTML = `${escapeHtml(label)}<br><span class="text-white" data-role="split-value">--</span>`;
     splitGridEl.appendChild(cell);
   });
 }
@@ -328,8 +329,8 @@ function initRunners() {
         L${runner.lane}
       </div>
       <div class="flex-grow min-w-0">
-        <div class="font-bold truncate text-white ${runner.highlight ? "text-orange-400" : ""}">${runner.fullName}</div>
-        <div class="text-gray-400 truncate text-[10px]">${runner.team}${runner.year ? ` | Year ${runner.year}` : ""}</div>
+        <div class="font-bold truncate text-white ${runner.highlight ? "text-orange-400" : ""}">${escapeHtml(runner.fullName)}</div>
+        <div class="text-gray-400 truncate text-[10px]">${escapeHtml(runner.team)}${runner.year ? ` | Year ${escapeHtml(runner.year)}` : ""}</div>
       </div>
       <div class="text-right text-gray-500 font-mono text-[10px]">
         ${runner.displayTime || formatTime(runner.finalTime)}

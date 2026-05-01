@@ -4,12 +4,12 @@ from pathlib import Path
 from pydub import AudioSegment
 
 # Load existing manifest
-with open("/home/elidev/.openclaw/workspace/circuit-race-replay/commentary_audio_v2/manifest.json") as f:
+with open("./commentary_audio_v2/manifest.json") as f:
     manifest = json.load(f)
 
 # Add durations to each file
 for item in manifest["files"]:
-    mp3_path = Path(f"/home/elidev/.openclaw/workspace/circuit-race-replay/commentary_audio_v2/{item['filename']}")
+    mp3_path = Path(f"./commentary_audio_v2/{item['filename']}")
     if mp3_path.exists():
         audio = AudioSegment.from_mp3(mp3_path)
         item["duration_sec"] = round(len(audio) / 1000, 2)
@@ -17,7 +17,7 @@ for item in manifest["files"]:
         item["duration_sec"] = 8.0  # Default estimate
 
 # Save updated manifest
-with open("/home/elidev/.openclaw/workspace/circuit-race-replay/commentary_audio_v2/manifest.json", "w") as f:
+with open("./commentary_audio_v2/manifest.json", "w") as f:
     json.dump(manifest, f, indent=2)
 
 print("Updated manifest with durations:")
@@ -39,7 +39,7 @@ for item in manifest["files"]:
         "subjectId": item["subjectId"]
     })
 
-with open("/home/elidev/.openclaw/workspace/circuit-race-replay/data/commentary_timing.json", "w") as f:
+with open("./data/commentary_timing.json", "w") as f:
     json.dump(js_data, f, indent=2)
 
 print(f"\nCreated commentary_timing.json with {len(js_data['commentaryTiming'])} entries")
