@@ -1,0 +1,21 @@
+{
+  "name": "race-replay",
+  "version": "1.0.0",
+  "description": "Visual Race Emulation: Transforming static race results into immersive, real-time animated experiences for parents, coaches, and fans.",
+  "keywords": [
+    "race-replay",
+    "sports-tech",
+    "track-and-field",
+    "data-visualization",
+    "real-time-animation",
+    "sports-analytics",
+    "fan-engagement"
+  ],
+  "author": "fayerman-source",
+  "license": "Proprietary",
+  "dependencies": {
+    "youtube-caption-extractor": "^1.9.1",
+    "youtube-transcript": "^1.2.1",
+    "ytdl-core": "^4.11.5"
+  }
+}

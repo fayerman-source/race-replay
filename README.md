@@ -1,3 +1,7 @@
+[![SportsTech](https://img.shields.io/badge/Industry-SportsTech-FF6B6B)](https://github.com/fayerman-source/race-replay)
+[![Visual Replay](https://img.shields.io/badge/Feature-Visual_Replay-4ECDC4)](https://github.com/fayerman-source/race-replay)
+[![Status: Prototype](https://img.shields.io/badge/Status-Prototype-FFE66D)](https://github.com/fayerman-source/race-replay)
+
 # 🏃‍♀️ Race Replay
 
 > **Transforming static race results into immersive, real-time visual experiences.**

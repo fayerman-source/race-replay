@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Binaries
+*.deb
+*.exe
+*.dll
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py
+
+# Local/Backup HTML
+index-original.html
+index-tokyo.html
+
+# Assets (Excluded for lean repo, hosted externally if needed)
+data/*.pdf
+commentary_audio/
+commentary_audio_v2/
+commentary_age_aware/
+commentary_anonymized/
+commentary_dual/
+
+# Intermediate/Internal Data & Scripts
+data/commentary_timing.json
+data/commentary_timing_real.json
+data/fully_aligned_commentary.json
+data/race_transcript_window.json
+data/replay_sync.json
+data/tokyo_800m_results.json
+data/transcript_800m.json
+data/transcript_race_alignment.json
+js/audio-manager.js
+js/commentary-engine.js
+js/real-race-data.js
+
+# Build artifacts
+.next/
+out/
+build/
+dist/
