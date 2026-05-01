@@ -1,6 +1,10 @@
 [![SportsTech](https://img.shields.io/badge/Industry-SportsTech-FF6B6B)](https://github.com/fayerman-source/race-replay)
 [![Visual Replay](https://img.shields.io/badge/Feature-Visual_Replay-4ECDC4)](https://github.com/fayerman-source/race-replay)
 [![Status: Prototype](https://img.shields.io/badge/Status-Prototype-FFE66D)](https://github.com/fayerman-source/race-replay)
+[![Vanilla JS](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub_Pages-222222?logo=github-pages)](https://fayerman-source.github.io/race-replay/)
+
 
 # 🏃‍♀️ Race Replay
 
