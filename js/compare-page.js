@@ -1,5 +1,6 @@
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime, TRACK_CONFIG } from "./utils.js";
+import { normalizeHeatRunners } from "./heat-data.js";
 
 // =====================================================================
 // CONFIGURATION
@@ -72,45 +73,11 @@ function svgText(attrs, text) {
   return node;
 }
 
-function getMarkerLabel(name) {
-  const parts = (name || "Runner").trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return "R";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0] || ""}${parts[parts.length - 1][0] || ""}`.toUpperCase();
-}
-
-// Normalize a heat's entries the same way heat-data.js does (we already
-// have the payload, so we don't refetch — just apply the same logic).
+// Runner normalization is shared with heat-data.js — single source of truth
+// for validation, lane assignment, and id generation. We only re-sort here
+// by finishing place since the comparison page reads top-down by result.
 function normalizeRunners(heat) {
-  const validEntries = heat.entries.filter((entry) =>
-    entry?.splits?.cumulative_seconds
-      && entry.status !== "DNS"
-      && entry.status !== "DNF",
-  );
-  let fallbackLane = 1;
-  return validEntries
-    .map((entry, index) => {
-      const lane = Number.isFinite(entry.lane) ? entry.lane : fallbackLane++;
-      const finalTime = entry.result?.final_time
-        ?? entry.splits.cumulative_seconds[entry.splits.cumulative_seconds.length - 1];
-      const nameParts = (entry.athlete || "Runner").trim().split(/\s+/);
-      return {
-        id: `${entry.athlete || "runner"}-${index}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        name: nameParts[0],
-        fullName: entry.athlete,
-        team: entry.team || entry.country || "—",
-        country: entry.country || "",
-        lane,
-        place: entry.place,
-        finalTime,
-        displayTime: entry.result?.display_time || null,
-        markerLabel: getMarkerLabel(entry.athlete),
-        splits: entry.splits.cumulative_seconds,
-        segmentSplits: entry.splits.segment_seconds,
-        splitMarks: entry.splits.split_marks_m,
-        highlight: Array.isArray(entry.tags) && entry.tags.includes("focus_runner"),
-      };
-    })
+  return normalizeHeatRunners(heat).slice()
     .sort((a, b) => (a.place || 99) - (b.place || 99));
 }
 
