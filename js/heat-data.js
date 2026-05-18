@@ -26,7 +26,16 @@ function getMarkerLabel(name) {
 }
 
 function normalizeEntry(entry, index, lane) {
-  if (!entry?.splits?.cumulative_seconds) return null;
+  // Stronger validation: an empty splits array passes a truthy check but
+  // crashes downstream interpolation (needs at least a start + finish mark).
+  const cumulative = entry?.splits?.cumulative_seconds;
+  if (!Array.isArray(cumulative) || cumulative.length < 2) return null;
+  // DNF entries (e.g. pacers) are filtered here because the replay-render
+  // pipeline (race-model.js, getDistanceAtTime in utils.js) doesn't yet
+  // model partial-splits runners — feeding it a runner whose splits stop
+  // at 400m would teleport them to the finish line. The analyzer also
+  // needs complete data for field-relative metrics. When the replay player
+  // grows partial-runner support, this filter can be made opt-out.
   if (entry.status === "DNS" || entry.status === "DNF") return null;
 
   const nameParts = (entry.athlete || "Runner").trim().split(/\s+/);
@@ -71,7 +80,8 @@ export async function loadHeatData() {
   const activeHeatId = replayPayload?.event?.active_heat_id || replayPayload?.heats?.[0]?.heat_id;
   const activeHeat = replayPayload.heats.find((heat) => heat.heat_id === activeHeatId) || replayPayload.heats[0];
   const validEntries = activeHeat.entries.filter((entry) =>
-    entry?.splits?.cumulative_seconds
+    Array.isArray(entry?.splits?.cumulative_seconds)
+      && entry.splits.cumulative_seconds.length >= 2
       && entry.status !== "DNS"
       && entry.status !== "DNF",
   );
