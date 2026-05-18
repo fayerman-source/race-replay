@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Race Analysis</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0F172A;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #94A3B8;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="p-4 sm:p-8">
+  <main class="max-w-7xl mx-auto">
+    <a href="./index.html" class="text-sm text-slate-400 hover:text-slate-200 inline-block mb-4">
+      ← back to replay
+    </a>
+
+    <div id="loading" class="text-slate-400">Loading analysis…</div>
+
+    <div id="content" class="hidden space-y-8">
+      <header id="header"></header>
+
+      <section>
+        <div class="section-title">Final order</div>
+        <div id="leaderboard" class="bg-slate-900/40 rounded-lg border border-slate-800 p-3"></div>
+      </section>
+
+      <details class="bg-slate-900/40 rounded-lg border border-slate-800 p-4 group">
+        <summary class="cursor-pointer text-sm font-semibold text-slate-300 hover:text-white select-none flex items-center gap-2">
+          <span class="text-slate-500 group-open:rotate-90 inline-block transition-transform">▶</span>
+          What do these codes mean?
+          <span class="text-xs text-slate-500 font-normal ml-1">(running styles, split classes, race shape, metrics)</span>
+        </summary>
+        <div id="glossary" class="mt-4 pt-4 border-t border-slate-800"></div>
+      </details>
+
+      <section>
+        <div class="section-title">Splits</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          The raw timing data the rest of this page is derived from. Top
+          number in each cell is cumulative time at the mark; bottom number
+          is the segment time. <span class="underline decoration-yellow-400 decoration-2 underline-offset-2">Yellow-underlined segment time</span>
+          = fastest in the field at that checkpoint.
+          <span class="text-emerald-400">Emerald-tinted cell</span>
+          = that runner's own fastest segment.
+        </p>
+        <div id="splits-table" class="bg-slate-900/40 rounded-lg border border-slate-800 p-3 overflow-x-auto"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Race-level signals</div>
+        <div id="race-signals" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Field-relative segment scores</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          For each 100m segment, every runner is scored 0–100 against the field
+          (100 = fastest in segment, 0 = slowest). A row that stays green across
+          the race is a dominant runner. A row that turns green late is a closer.
+          A row that fades from green to red is a fader.
+        </p>
+        <div id="heatmap"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Rank progression (bumps chart)</div>
+        <p class="text-xs text-slate-500 mb-3">
+          Lines cross when one runner passes another. Flat lines = no
+          position change.
+        </p>
+        <div id="bumps" class="bg-slate-900/40 rounded-lg border border-slate-800 p-4"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Energy distribution (Brohamer)</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          What % of each runner's total race time was spent in each segment.
+          Even pacing would be uniform bars. Green cells are faster-than-even
+          segments; red are slower-than-even.
+        </p>
+        <div id="energy"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Per-runner profiles</div>
+        <div id="runner-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Commentary events (narrator-ready)</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          Time-ordered observations the analyzer flagged as worth commenting
+          on. Each carries enough context for a template to produce a sentence.
+        </p>
+        <div id="events" class="bg-slate-900/40 rounded-lg border border-slate-800 p-3 overflow-x-auto"></div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="./js/analysis-page.js"></script>
+</body>
+</html>
