@@ -585,9 +585,19 @@ function renderEventsTable(bundle, runners) {
   root.appendChild(table);
 }
 
+// Cross-page navigation should preserve the active replay context.
+function wireBackLink(replayId) {
+  const link = document.getElementById("back-link");
+  if (!link) return;
+  if (replayId && replayId !== "default-replay") {
+    link.href = `./index.html?replay=${encodeURIComponent(replayId)}`;
+  }
+}
+
 async function init() {
   try {
     const replayData = await loadHeatData();
+    wireBackLink(replayData.replayId);
     // competition_level now travels with each replay in the source JSON,
     // so we can pass replayData.event straight through without a per-page
     // lookup table.

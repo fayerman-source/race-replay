@@ -79,14 +79,19 @@ function getProfile(bundle, fullName) {
 // RENDERERS
 // =====================================================================
 
-function renderHeader(bundleA, bundleB) {
+function renderHeader(bundleA, bundleB, commonCount) {
   const root = document.getElementById("header");
   clear(root);
   root.appendChild(el("h1", { className: "text-3xl font-bold tracking-tight" },
     "Same year, same runner, different races"));
+  const commonText = commonCount === 0
+    ? "No athletes ran both races."
+    : commonCount === 1
+      ? "One athlete ran both races."
+      : `${commonCount} athletes ran both races.`;
   root.appendChild(el("p", { className: "text-slate-400 mt-2 max-w-3xl" },
     `${COMPARISON.a.label} (${COMPARISON.a.dateLabel}) vs ${COMPARISON.b.label} (${COMPARISON.b.dateLabel}). ` +
-    "Four athletes ran both finals. The framework reads the two races as fundamentally " +
+    `${commonText} The framework reads the two races as fundamentally ` +
     "different in shape, and shows you the patterns that travel with each athlete vs the " +
     "ones that don't."));
 }
@@ -557,6 +562,12 @@ async function init() {
     if (!replayA) throw new Error(`replay ${COMPARISON.a.replayId} not found`);
     if (!replayB) throw new Error(`replay ${COMPARISON.b.replayId} not found`);
 
+    // Wire the back-link to the active replay context (race A by default).
+    const backLink = document.getElementById("back-link");
+    if (backLink && replayA?.replay_id) {
+      backLink.href = `./index.html?replay=${encodeURIComponent(replayA.replay_id)}`;
+    }
+
     const bundleA = buildBundle(replayA);
     const bundleB = buildBundle(replayB);
 
@@ -575,7 +586,7 @@ async function init() {
       return placeA - placeB;
     });
 
-    renderHeader(bundleA, bundleB);
+    renderHeader(bundleA, bundleB, commonNamesOrdered.length);
     renderLeaderboards(bundleA, bundleB, colorMap);
     renderContrasts(bundleA, bundleB);
     renderCommonAthletes(bundleA, bundleB, commonNamesOrdered, colorMap);
