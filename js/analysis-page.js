@@ -539,16 +539,33 @@ function renderEnergyDistribution(bundle) {
     "Green = ran this segment faster than even pace. Red = ran it slower. Cells show % of total race time."));
 }
 
-function renderRunnerCards(bundle) {
+// Format a "vs PB" delta string from the runner's result and pre-race PB.
+// Returns null when there's no PB data to compare against.
+function formatVsPb(runner, profile) {
+  const pb = runner?.preRacePbIndoorSeconds;
+  const time = profile?.finalTime ?? runner?.finalTime;
+  if (!Number.isFinite(pb) || !Number.isFinite(time)) return null;
+  const delta = time - pb;
+  if (Math.abs(delta) < 0.005) return { text: "= PB", isImprovement: false };
+  if (delta < 0) {
+    return { text: `−${Math.abs(delta).toFixed(2)}s (new PB)`, isImprovement: true };
+  }
+  return { text: `+${delta.toFixed(2)}s`, isImprovement: false };
+}
+
+function renderRunnerCards(bundle, runners) {
   const root = document.getElementById("runner-cards");
   clear(root);
 
+  const runnerById = new Map(runners.map((r) => [r.id, r]));
   const orderedProfiles = bundle.raceLevel.finishOrder
     .map((id) => bundle.perRunner.find((p) => p.id === id))
     .filter(Boolean);
 
   orderedProfiles.forEach((p, idx) => {
     const color = RUNNER_COLORS[idx % RUNNER_COLORS.length];
+    const runner = runnerById.get(p.id);
+    const vsPb = formatVsPb(runner, p);
     const card = el("div", { className: "bg-slate-800/60 rounded-lg p-4 border border-slate-700" });
     card.appendChild(el("div", { className: "flex items-center gap-2 mb-2" },
       el("span", { className: "inline-block w-3 h-3 rounded-full", style: `background:${color}` }),
@@ -568,15 +585,20 @@ function renderRunnerCards(bundle) {
       ["Peak decline", p.peakDeclinePct != null ? `${p.peakDeclinePct.toFixed(2)}%` : "—", METRICS_GLOSSARY["Peak decline"]],
       ["Monotonicity", p.monotonicityScore != null ? p.monotonicityScore.toFixed(2) : "—", METRICS_GLOSSARY["Monotonicity"]],
       ["Fastest segment", p.fastestSegmentIdx != null ? `seg ${p.fastestSegmentIdx + 1} (${p.segments[p.fastestSegmentIdx].toFixed(2)}s)` : "—", "Index of the runner's fastest 100m or 200m segment (1-based)."],
-      ["Tags", `[${p.style.tags.join(", ")}]`, p.style.tags.map((t) => SECONDARY_TAG_GLOSSARY[t] || STYLE_GLOSSARY[t]).filter(Boolean).join(" · ")],
     ];
+    if (vsPb) {
+      stats.push(["vs PB", vsPb.text, `Pre-race PB: ${runner?.preRacePbIndoor || "?"}. Negative = new PB.`, vsPb.isImprovement]);
+    }
+    stats.push(["Tags", `[${p.style.tags.join(", ")}]`, p.style.tags.map((t) => SECONDARY_TAG_GLOSSARY[t] || STYLE_GLOSSARY[t]).filter(Boolean).join(" · ")]);
     const grid = el("dl", { className: "grid grid-cols-2 gap-x-3 gap-y-1 text-xs" });
-    stats.forEach(([k, v, tip]) => {
+    stats.forEach(([k, v, tip, accent]) => {
       grid.appendChild(el("dt", {
         className: tip ? "text-slate-400 cursor-help" : "text-slate-400",
         title: tip || "",
       }, k));
-      grid.appendChild(el("dd", { className: "text-right font-mono" }, v));
+      grid.appendChild(el("dd", {
+        className: accent ? "text-right font-mono text-emerald-400 font-bold" : "text-right font-mono",
+      }, v));
     });
     card.appendChild(grid);
     root.appendChild(card);
@@ -636,7 +658,7 @@ async function init() {
     renderHeatmap(bundle);
     renderBumpsChart(bundle, replayData.runners);
     renderEnergyDistribution(bundle);
-    renderRunnerCards(bundle);
+    renderRunnerCards(bundle, replayData.runners);
     renderEventsTable(bundle, replayData.runners);
 
     document.getElementById("loading").classList.add("hidden");

@@ -60,6 +60,11 @@ export function normalizeEntry(entry, index, lane) {
     finalTime,
     displayTime: entry?.result?.display_time || null,
     honors: Array.isArray(entry?.result?.honors) ? entry.result.honors.slice() : [],
+    preRacePbIndoor: entry?.career?.pre_race_pb_indoor || null,
+    preRacePbIndoorSeconds: Number.isFinite(entry?.career?.pre_race_pb_indoor_seconds)
+      ? entry.career.pre_race_pb_indoor_seconds
+      : null,
+    preRaceSbIndoor: entry?.career?.pre_race_sb_indoor || null,
     highlight: Array.isArray(entry.tags) && entry.tags.includes("focus_runner"),
   };
 }

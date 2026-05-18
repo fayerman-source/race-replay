@@ -75,6 +75,18 @@ function getProfile(bundle, fullName) {
   return bundle.perRunner.find((p) => p.id === runner.id);
 }
 
+// Format "vs PB" delta from a normalized runner record. Returns null when
+// pre-race PB data isn't available in the source JSON for this runner.
+function formatVsPbFromRunner(runner) {
+  const pb = runner?.preRacePbIndoorSeconds;
+  const time = runner?.finalTime;
+  if (!Number.isFinite(pb) || !Number.isFinite(time)) return null;
+  const delta = time - pb;
+  if (Math.abs(delta) < 0.005) return { text: "= PB", isImprovement: false };
+  if (delta < 0) return { text: `−${Math.abs(delta).toFixed(2)}s (new PB)`, isImprovement: true };
+  return { text: `+${delta.toFixed(2)}s`, isImprovement: false };
+}
+
 // =====================================================================
 // RENDERERS
 // =====================================================================
@@ -307,6 +319,16 @@ function renderCommonAthletes(bundleA, bundleB, commonNames, colorMap) {
       pA.fastestSegmentIdx != null ? `seg ${pA.fastestSegmentIdx + 1} (${pA.segments[pA.fastestSegmentIdx].toFixed(2)}s)` : "—",
       pB.fastestSegmentIdx != null ? `seg ${pB.fastestSegmentIdx + 1} (${pB.segments[pB.fastestSegmentIdx].toFixed(2)}s)` : "—",
       false));
+
+    // vs PB row — show pre-race PB-relative delta for each race when known.
+    const vsPbA = formatVsPbFromRunner(rA);
+    const vsPbB = formatVsPbFromRunner(rB);
+    if (vsPbA || vsPbB) {
+      card.appendChild(statRow("vs PB",
+        vsPbA ? vsPbA.text : "—",
+        vsPbB ? vsPbB.text : "—",
+        false));
+    }
 
     root.appendChild(card);
   });
