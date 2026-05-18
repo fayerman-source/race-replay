@@ -5,25 +5,29 @@ import { normalizeHeatRunners } from "./heat-data.js";
 // =====================================================================
 // CONFIGURATION
 // =====================================================================
-// Hardcoded comparison pair for now. Could be extended via URL params
-// later (?a=lievin-...&b=waic-...). Chronological order: A=earlier, B=later.
+// The comparison pair can be selected via URL params (?a=...&b=...)
+// referencing any two replay_ids in custom_800m_heats.json. If either
+// param is absent, the defaults below are used.
 
-const COMPARISON = {
-  a: {
-    replayId: "lievin-2026-womens-800m-wr",
-    label: "Liévin",
-    dateLabel: "19 Feb 2026 · World Record",
-    accent: "#F97316",  // amber for the WR race
-    accentDim: "rgba(249, 115, 22, 0.5)",
-  },
-  b: {
-    replayId: "waic-torun-2026-womens-800m-final",
-    label: "Toruń",
-    dateLabel: "22 Mar 2026 · Championship Record",
-    accent: "#3B82F6",  // blue for the championship race
-    accentDim: "rgba(59, 130, 246, 0.5)",
-  },
+const DEFAULT_PAIR = {
+  aId: "lievin-2026-womens-800m-wr",
+  bId: "waic-torun-2026-womens-800m-final",
 };
+
+const ACCENT_A = { accent: "#F97316", accentDim: "rgba(249, 115, 22, 0.5)" };  // amber
+const ACCENT_B = { accent: "#3B82F6", accentDim: "rgba(59, 130, 246, 0.5)" };  // blue
+
+function resolveComparisonPair() {
+  const params = new URLSearchParams(window.location.search);
+  const aId = params.get("a") || DEFAULT_PAIR.aId;
+  const bId = params.get("b") || DEFAULT_PAIR.bId;
+  return {
+    a: { replayId: aId, ...ACCENT_A },
+    b: { replayId: bId, ...ACCENT_B },
+  };
+}
+
+const COMPARISON = resolveComparisonPair();
 
 // Distinct colors for the common athletes who appear in both races.
 const COMMON_ATHLETE_COLORS = [
@@ -553,7 +557,18 @@ function buildBundle(replay) {
   bundle.runnersById = new Map(runners.map((r) => [r.id, r]));
   bundle.runnersByName = new Map(runners.map((r) => [r.fullName, r]));
   bundle.runners = runners;
+  bundle.replay = replay;
   return bundle;
+}
+
+// Surface display labels off the replay JSON so URL-driven comparison
+// pairs render cleanly without page edits. Falls back to title when the
+// replay doesn't carry short/date labels.
+function labelsFromReplay(replay) {
+  return {
+    label: replay.short_label || (replay.title || "Race").split(/[-–]/)[0].trim(),
+    dateLabel: replay.date_label || "",
+  };
 }
 
 async function init() {
@@ -569,6 +584,11 @@ async function init() {
 
     const bundleA = buildBundle(replayA);
     const bundleB = buildBundle(replayB);
+
+    // Merge per-replay labels into the COMPARISON config so downstream
+    // renderers can keep reading COMPARISON.a.label / .dateLabel as before.
+    Object.assign(COMPARISON.a, labelsFromReplay(replayA));
+    Object.assign(COMPARISON.b, labelsFromReplay(replayB));
 
     const { map: colorMap, common } = buildAthleteColorMap(bundleA.runners, bundleB.runners);
 

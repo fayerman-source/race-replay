@@ -4,6 +4,8 @@
     {
       "replay_id": "skye-oceanbreeze-section-2",
       "title": "Skye Fayerman - Section #2",
+      "short_label": "Ocean Breeze §2",
+      "date_label": "Section 2",
       "event": {
         "name": "800m",
         "venue": "Ocean Breeze Athletic Complex, Staten Island",
@@ -169,6 +171,8 @@
     {
       "replay_id": "chloe-oceanbreeze-section-1",
       "title": "Chloe Nazryk - Section #1",
+      "short_label": "Ocean Breeze §1",
+      "date_label": "Section 1",
       "event": {
         "name": "800m",
         "venue": "Ocean Breeze Athletic Complex, Staten Island",
@@ -318,6 +322,8 @@
     {
       "replay_id": "waic-torun-2026-womens-800m-final",
       "title": "World Indoors 2026 - Women's 800m Final",
+      "short_label": "Toruń",
+      "date_label": "22 Mar 2026 · Championship Record",
       "event": {
         "name": "Women's 800m Final",
         "venue": "World Athletics Indoor Championships Kujawy Pomorze 26, Torun",
@@ -457,6 +463,8 @@
     {
       "replay_id": "lievin-2026-womens-800m-wr",
       "title": "Liévin 2026 – Hodgkinson Indoor 800m World Record",
+      "short_label": "Liévin",
+      "date_label": "19 Feb 2026 · World Record",
       "event": {
         "name": "Women's 800m Final A",
         "venue": "Crédit Mutuel - Meeting Hauts-de-France Pas-de-Calais, Liévin",
