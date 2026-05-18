@@ -1,15 +1,18 @@
 {
-  "default_replay_id": "skye-oceanbreeze-section-2",
+  "default_replay_id": "lievin-2026-womens-800m-wr",
   "replays": [
     {
       "replay_id": "skye-oceanbreeze-section-2",
       "title": "Skye Fayerman - Section #2",
+      "short_label": "Ocean Breeze §2",
+      "date_label": "Section 2",
       "event": {
         "name": "800m",
         "venue": "Ocean Breeze Athletic Complex, Staten Island",
         "track_length_m": 200,
         "race_distance_m": 800,
         "timing_interval_m": 200,
+        "competition_level": "hs_varsity_w",
         "active_heat_id": "Section #2",
         "source": {
           "provider": "MileSplit Live",
@@ -168,12 +171,15 @@
     {
       "replay_id": "chloe-oceanbreeze-section-1",
       "title": "Chloe Nazryk - Section #1",
+      "short_label": "Ocean Breeze §1",
+      "date_label": "Section 1",
       "event": {
         "name": "800m",
         "venue": "Ocean Breeze Athletic Complex, Staten Island",
         "track_length_m": 200,
         "race_distance_m": 800,
         "timing_interval_m": 200,
+        "competition_level": "hs_varsity_w",
         "active_heat_id": "Section #1",
         "source": {
           "provider": "MileSplit Live",
@@ -316,9 +322,16 @@
     {
       "replay_id": "waic-torun-2026-womens-800m-final",
       "title": "World Indoors 2026 - Women's 800m Final",
+      "short_label": "Toruń",
+      "date_label": "22 Mar 2026 · Championship Record",
       "event": {
         "name": "Women's 800m Final",
         "venue": "World Athletics Indoor Championships Kujawy Pomorze 26, Torun",
+        "date": "2026-03-22",
+        "pre_race_records": [
+          "Indoor WR (Hodgkinson, Liévin, 19 Feb 2026): 1:54.87",
+          "Pre-2026 indoor WR (Ceplak, 2002): 1:55.82"
+        ],
         "lane_count": 6,
         "track_length_m": 200,
         "race_distance_m": 800,
@@ -326,6 +339,7 @@
         "start_offset_turns": 2,
         "break_distance_m": 160,
         "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_w",
         "active_heat_id": "Final",
         "commentary": {
           "pre_start": "A world-class women's 800m final is loaded in Torun, with Keely Hodgkinson chasing her first world indoor title.",
@@ -358,7 +372,13 @@
               "country": "GBR",
               "result": {
                 "final_time": 115.3,
-                "display_time": "1:55.30"
+                "display_time": "1:55.30",
+                "honors": ["CR"]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:54.87",
+                "pre_race_pb_indoor_seconds": 114.87,
+                "pre_race_sb_indoor": "1:54.87"
               },
               "splits": {
                 "cumulative_seconds": [0, 13.39, 27.26, 42.02, 56.95, 71.73, 86.46, 100.65, 115.3],
@@ -377,6 +397,11 @@
                 "final_time": 116.64,
                 "display_time": "1:56.64"
               },
+              "career": {
+                "pre_race_pb_indoor": "1:57.49",
+                "pre_race_pb_indoor_seconds": 117.49,
+                "pre_race_sb_indoor": "1:57.49"
+              },
               "splits": {
                 "cumulative_seconds": [0, 13.67, 27.3, 42.35, 57.47, 72.38, 87.4, 102.2, 116.64],
                 "segment_seconds": [13.67, 13.63, 15.05, 15.12, 14.91, 15.02, 14.8, 14.44],
@@ -391,7 +416,13 @@
               "country": "USA",
               "result": {
                 "final_time": 118.36,
-                "display_time": "1:58.36"
+                "display_time": "1:58.36",
+                "honors": ["PB"]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:59.43",
+                "pre_race_pb_indoor_seconds": 119.43,
+                "pre_race_sb_indoor": "1:59.43"
               },
               "splits": {
                 "cumulative_seconds": [0, 13.73, 27.63, 42.53, 57.63, 72.53, 87.64, 102.67, 118.36],
@@ -425,6 +456,11 @@
                 "final_time": 120.5,
                 "display_time": "2:00.50"
               },
+              "career": {
+                "pre_race_pb_indoor": "1:59.22",
+                "pre_race_pb_indoor_seconds": 119.22,
+                "pre_race_sb_indoor": "1:59.22"
+              },
               "splits": {
                 "cumulative_seconds": [0, 14.14, 28.39, 43.46, 58.91, 74.39, 90.14, 105.49, 120.5],
                 "segment_seconds": [14.14, 14.25, 15.07, 15.45, 15.48, 15.75, 15.35, 15.01],
@@ -441,10 +477,218 @@
                 "final_time": 123.3,
                 "display_time": "2:03.30"
               },
+              "career": {
+                "pre_race_pb_indoor": "1:59.50",
+                "pre_race_pb_indoor_seconds": 119.50,
+                "pre_race_sb_indoor": "1:59.50"
+              },
               "splits": {
                 "cumulative_seconds": [0, 13.99, 28.02, 42.96, 58.38, 73.96, 90.36, 106.72, 123.3],
                 "segment_seconds": [13.99, 14.03, 14.94, 15.42, 15.58, 16.4, 16.36, 16.58],
                 "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "lievin-2026-womens-800m-wr",
+      "title": "Liévin 2026 – Hodgkinson Indoor 800m World Record",
+      "short_label": "Liévin",
+      "date_label": "19 Feb 2026 · World Record",
+      "event": {
+        "name": "Women's 800m Final A",
+        "venue": "Crédit Mutuel - Meeting Hauts-de-France Pas-de-Calais, Liévin",
+        "date": "2026-02-19",
+        "pre_race_records": [
+          "Indoor WR (Ceplak, 2002): 1:55.82",
+          "World lead 2026 (Hodgkinson): 1:56.33",
+          "Meeting record (Mutola, 1998): 1:56.36"
+        ],
+        "lane_count": 8,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 100,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_w",
+        "active_heat_id": "Final A",
+        "commentary": {
+          "pre_start": "World Athletics Indoor Tour at Liévin. Keely Hodgkinson takes the start with the indoor 800m world record of 1:55.82 (Ceplak, 2002) in her sights.",
+          "opening": "Pacer Anna Gryc takes the field through a fast first 100m. Hodgkinson tucks in behind.",
+          "through_200": "26.80 at 200m for Hodgkinson — on pace for sub-1:55.",
+          "through_400": "56.01 at 400m. Pacer Gryc has done her job and drops out. Hodgkinson now solo.",
+          "through_600": "1:25.06 at 600m. The world record is within reach.",
+          "closing": "200m to go. Hodgkinson holds the pace through the back stretch.",
+          "finish": "1:54.87. World indoor record. Ceplak's 24-year-old mark is finally broken."
+        },
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://athle-history.matsport.com/events/02514df4-15d1-4e7c-8519-d3512c3715e7_ATSTAW008101/results",
+          "notes": [
+            "Paced race. Anna Gryc paced through 400m, then dropped out (DNF).",
+            "Hodgkinson's 1:54.87 broke Jolanda Ceplak's indoor world record of 1:55.82 from March 2002."
+          ]
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final A",
+          "status": "official_results_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Keely Hodgkinson",
+              "lane": 2,
+              "team": "Great Britain",
+              "country": "GBR",
+              "result": {
+                "final_time": 114.87,
+                "display_time": "1:54.87",
+                "honors": ["WR", "WL"]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:56.33",
+                "pre_race_pb_indoor_seconds": 116.33,
+                "pre_race_sb_indoor": "1:56.33"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.52, 26.80, 41.30, 56.01, 70.55, 85.06, 99.67, 114.87],
+                "segment_seconds": [13.52, 13.28, 14.50, 14.71, 14.54, 14.51, 14.61, 15.20],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              },
+              "tags": ["focus_runner"]
+            },
+            {
+              "place": 2,
+              "athlete": "Audrey Werro",
+              "lane": 3,
+              "team": "Switzerland",
+              "country": "SUI",
+              "result": {
+                "final_time": 118.38,
+                "display_time": "1:58.38"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:57.49",
+                "pre_race_pb_indoor_seconds": 117.49,
+                "pre_race_sb_indoor": "1:57.49"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.34, 26.96, 41.54, 56.26, 71.07, 86.37, 102.20, 118.38],
+                "segment_seconds": [13.34, 13.62, 14.58, 14.72, 14.81, 15.30, 15.83, 16.18],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Tsige Duguma",
+              "lane": 4,
+              "team": "Ethiopia",
+              "country": "ETH",
+              "result": {
+                "final_time": 118.83,
+                "display_time": "1:58.83",
+                "honors": ["SB"]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:58.35",
+                "pre_race_pb_indoor_seconds": 118.35
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.07, 27.79, 42.47, 57.32, 72.67, 88.07, 103.55, 118.83],
+                "segment_seconds": [14.07, 13.72, 14.68, 14.85, 15.35, 15.40, 15.48, 15.28],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Nigist Getachew",
+              "lane": 5,
+              "team": "Ethiopia",
+              "country": "ETH",
+              "result": {
+                "final_time": 119.54,
+                "display_time": "1:59.54",
+                "honors": ["PB"]
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.65, 27.60, 42.28, 57.12, 72.49, 87.99, 103.79, 119.54],
+                "segment_seconds": [13.65, 13.95, 14.68, 14.84, 15.37, 15.50, 15.80, 15.75],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Clara Liberman",
+              "lane": 6,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 120.61,
+                "display_time": "2:00.61"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.13, 28.04, 42.78, 57.82, 73.23, 88.94, 104.81, 120.61],
+                "segment_seconds": [14.13, 13.91, 14.74, 15.04, 15.41, 15.71, 15.87, 15.80],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Anna Wielgosz",
+              "lane": 1,
+              "team": "Poland",
+              "country": "POL",
+              "result": {
+                "final_time": 120.70,
+                "display_time": "2:00.70"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.35, 28.23, 43.15, 58.46, 74.10, 89.79, 105.38, 120.70],
+                "segment_seconds": [14.35, 13.88, 14.92, 15.31, 15.64, 15.69, 15.59, 15.32],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Charlotte Dumas",
+              "lane": 7,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 121.47,
+                "display_time": "2:01.47"
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:00.26",
+                "pre_race_pb_indoor_seconds": 120.26,
+                "pre_race_sb_indoor": "2:00.26"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.57, 28.87, 43.55, 58.89, 74.56, 90.09, 105.50, 121.47],
+                "segment_seconds": [14.57, 14.30, 14.68, 15.34, 15.67, 15.53, 15.41, 15.97],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Anna Gryc",
+              "lane": 8,
+              "team": "Poland",
+              "country": "POL",
+              "status": "DNF",
+              "role": "pacer",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.16, 26.50, 40.97, 55.58],
+                "segment_seconds": [13.16, 13.34, 14.47, 14.61],
+                "split_marks_m": [0, 100, 200, 300, 400]
               }
             }
           ]
