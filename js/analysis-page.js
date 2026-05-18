@@ -127,6 +127,13 @@ function svgText(attrs, text) {
 // SECTION RENDERERS
 // =====================================================================
 
+// Known comparison pairs — if a replay is part of one, surface a link
+// to the comparison page from this analysis page.
+const COMPARISON_PAIRS = {
+  "lievin-2026-womens-800m-wr": { partner: "waic-torun-2026-womens-800m-final", label: "Toruń (championship-record)" },
+  "waic-torun-2026-womens-800m-final": { partner: "lievin-2026-womens-800m-wr", label: "Liévin (world-record)" },
+};
+
 function renderHeader(replayData) {
   const root = document.getElementById("header");
   clear(root);
@@ -134,6 +141,15 @@ function renderHeader(replayData) {
     replayData.replayTitle || `${replayData.event.name} ${replayData.activeHeat.heat_id}`));
   root.appendChild(el("p", { className: "text-slate-400 mt-1" },
     replayData.event.venue || ""));
+
+  const pair = COMPARISON_PAIRS[replayData.replayId];
+  if (pair) {
+    const link = el("a", {
+      href: "./compare.html",
+      className: "inline-flex items-center gap-1 mt-2 text-sm text-amber-300 hover:text-amber-200 underline decoration-dotted",
+    }, `Compare with ${pair.label} →`);
+    root.appendChild(link);
+  }
 }
 
 function renderLeaderboard(bundle, runners) {

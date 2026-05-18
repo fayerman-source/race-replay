@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Race Comparison</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0F172A;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #94A3B8;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .race-tag-a {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93C5FD;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+    .race-tag-b {
+      background: rgba(249, 115, 22, 0.15);
+      color: #FDBA74;
+      border: 1px solid rgba(249, 115, 22, 0.35);
+    }
+  </style>
+</head>
+<body class="p-4 sm:p-8">
+  <main class="max-w-7xl mx-auto">
+    <a href="./index.html" class="text-sm text-slate-400 hover:text-slate-200 inline-block mb-4">
+      ← back to replay
+    </a>
+
+    <div id="loading" class="text-slate-400">Loading comparison…</div>
+
+    <div id="content" class="hidden space-y-8">
+      <header id="header"></header>
+
+      <section>
+        <div class="section-title">Final orders</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          Both races side by side. Athletes who appear in both races are color-coded;
+          single-race athletes are muted.
+        </p>
+        <div id="leaderboards" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Race-level contrasts</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          The same dimensions we measure for each race individually, paired so the
+          difference is visible at a glance.
+        </p>
+        <div id="contrasts" class="space-y-2"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Common athletes — what changed between the two races</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          For runners who competed in both races, here's their performance profile
+          in each. <span class="text-amber-300">Amber highlights</span> mark metrics
+          that changed materially (different style code, different split class, or
+          peak decline differing by &gt;3 percentage points).
+        </p>
+        <div id="common-athletes" class="space-y-4"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Headline visualization — Werro's pacing shape</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          Energy distribution (% of total race time per 100m segment) for Audrey
+          Werro in both races. Same runner, four weeks apart, completely different
+          pacing shape. This is the kind of contrast the framework was built to surface.
+        </p>
+        <div id="werro-viz" class="bg-slate-900/40 rounded-lg border border-slate-800 p-4"></div>
+      </section>
+
+      <section>
+        <div class="section-title">Common athletes — segment splits side by side</div>
+        <p class="text-xs text-slate-500 mb-3 max-w-3xl">
+          For each common runner, the per-100m segment times in both races.
+          Cells with the larger of the two times (slower segment) are tinted red;
+          smaller (faster) cells are tinted green. Tells you exactly where each
+          runner ran faster or slower between the two races.
+        </p>
+        <div id="common-splits" class="space-y-3"></div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="./js/compare-page.js"></script>
+</body>
+</html>
