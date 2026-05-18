@@ -99,11 +99,7 @@ function safeSplitMarks(runner, raceDistance) {
   return cumulative.map((_, i) => i * interval);
 }
 
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value));
-}
-
-function pickInterpolated(timeAtMark, mark, prevMark, prevTime, nextMark, nextTime) {
+function pickInterpolated(mark, prevMark, prevTime, nextMark, nextTime) {
   if (nextMark === prevMark) return prevTime;
   const t = (mark - prevMark) / (nextMark - prevMark);
   return prevTime + t * (nextTime - prevTime);
@@ -116,9 +112,7 @@ function timeAtDistance(runner, distance, raceDistance) {
   if (distance >= raceDistance) return cumulative[cumulative.length - 1];
   for (let i = 0; i < marks.length - 1; i += 1) {
     if (distance >= marks[i] && distance <= marks[i + 1]) {
-      return pickInterpolated(
-        null, distance, marks[i], cumulative[i], marks[i + 1], cumulative[i + 1],
-      );
+      return pickInterpolated(distance, marks[i], cumulative[i], marks[i + 1], cumulative[i + 1]);
     }
   }
   return cumulative[cumulative.length - 1];
