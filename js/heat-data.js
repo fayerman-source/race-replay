@@ -63,6 +63,22 @@ export function normalizeEntry(entry, index, lane) {
   };
 }
 
+// Resolve the active heat for a replay payload, respecting the
+// active_heat_id metadata. Falls back to the first heat when no id is set
+// or no matching heat is found.
+export function getActiveHeat(replay) {
+  if (!replay || !Array.isArray(replay.heats) || !replay.heats.length) return null;
+  const activeHeatId = replay?.event?.active_heat_id || replay.heats[0].heat_id;
+  return replay.heats.find((h) => h.heat_id === activeHeatId) || replay.heats[0];
+}
+
+// Normalize the active heat of a replay payload (the higher-level helper
+// that callers should usually reach for). Combines getActiveHeat +
+// normalizeHeatRunners so consumers don't reinvent active-heat selection.
+export function normalizeReplayRunners(replay) {
+  return normalizeHeatRunners(getActiveHeat(replay));
+}
+
 // Normalize a heat's entries into the runner shape used by race-model.js,
 // race-analyzer.js, and the UI. Extracted from loadHeatData so other pages
 // (e.g. compare-page.js) that work directly with a payload can reuse the
@@ -100,8 +116,7 @@ export async function loadHeatData() {
       || payload.replays[0]
     )
     : payload;
-  const activeHeatId = replayPayload?.event?.active_heat_id || replayPayload?.heats?.[0]?.heat_id;
-  const activeHeat = replayPayload.heats.find((heat) => heat.heat_id === activeHeatId) || replayPayload.heats[0];
+  const activeHeat = getActiveHeat(replayPayload);
   const runners = normalizeHeatRunners(activeHeat);
 
   return {

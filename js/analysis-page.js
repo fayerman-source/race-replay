@@ -351,9 +351,10 @@ function renderHeatmap(bundle) {
   const header = el("div", { className: "grid gap-1 text-xs text-slate-400 mb-1",
     style: `grid-template-columns: 180px repeat(${segCount}, 1fr)` });
   header.appendChild(el("div", { className: "px-2 py-1 font-semibold" }, "Athlete"));
+  const raceDistance = bundle.event.raceDistance || 800;
   for (let i = 0; i < segCount; i += 1) {
-    const start = i * (800 / segCount);
-    const end = (i + 1) * (800 / segCount);
+    const start = Math.round(i * (raceDistance / segCount));
+    const end = Math.round((i + 1) * (raceDistance / segCount));
     header.appendChild(el("div", { className: "text-center py-1" }, `${start}-${end}m`));
   }
   root.appendChild(header);
@@ -400,7 +401,8 @@ function renderBumpsChart(bundle, runners) {
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
 
-  const xAt = (cp) => padL + (cp / 800) * plotW;
+  const raceDistance = bundle.event.raceDistance || 800;
+  const xAt = (cp) => padL + (cp / raceDistance) * plotW;
   const yAt = (rank) => padT + ((rank - 1) / Math.max(1, N - 1)) * plotH;
 
   const root_svg = svg("svg", {

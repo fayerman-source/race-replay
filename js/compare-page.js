@@ -1,6 +1,6 @@
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime, TRACK_CONFIG } from "./utils.js";
-import { normalizeHeatRunners } from "./heat-data.js";
+import { normalizeReplayRunners } from "./heat-data.js";
 import { clear, el, svg, svgText } from "./dom-utils.js";
 
 // =====================================================================
@@ -47,10 +47,12 @@ const MUTED_COLOR = "#6B7280";  // slate-500 — single-race runners
 // =====================================================================
 
 // Runner normalization is shared with heat-data.js — single source of truth
-// for validation, lane assignment, and id generation. We only re-sort here
-// by finishing place since the comparison page reads top-down by result.
-function normalizeRunners(heat) {
-  return normalizeHeatRunners(heat).slice()
+// for validation, lane assignment, and id generation. We re-sort here by
+// finishing place since the comparison page reads top-down by result.
+// Uses normalizeReplayRunners so the active_heat_id is respected (not
+// always heats[0]).
+function normalizeRunners(replay) {
+  return normalizeReplayRunners(replay).slice()
     .sort((a, b) => (a.place || 99) - (b.place || 99));
 }
 
@@ -410,8 +412,9 @@ function renderHeadlineViz(bundleA, bundleB, commonNames) {
       fill: COMPARISON.b.accent, opacity: 0.85, rx: 2,
     }));
 
-    // Segment label
-    const labelX = (i * 100) + "-" + ((i + 1) * 100) + "m";
+    // Segment label — use the race's actual distance, not hardcoded 100m bins.
+    const distPerSeg = (bundleA.event.raceDistance || 800) / segCount;
+    const labelX = Math.round(i * distPerSeg) + "-" + Math.round((i + 1) * distPerSeg) + "m";
     root_svg.appendChild(svgText({
       x: xGroup, y: padT + plotH + 16,
       fill: "#94A3B8", "font-size": 10, "text-anchor": "middle",
@@ -459,11 +462,12 @@ function renderCommonSplits(bundleA, bundleB, commonNames, colorMap) {
     // Use the runner's actual segmentMarks rather than assuming 100m bins —
     // otherwise a 200m-resolution race renders with "0-100m, 100-200m..."
     // labels that don't match the underlying segment ranges.
+    const raceDistance = bundleA.event.raceDistance || bundleB.event.raceDistance || 800;
     const marks = (Array.isArray(pA.segmentMarks) && pA.segmentMarks.length >= segCount + 1)
       ? pA.segmentMarks
       : (Array.isArray(pB.segmentMarks) && pB.segmentMarks.length >= segCount + 1)
         ? pB.segmentMarks
-        : Array.from({ length: segCount + 1 }, (_, i) => Math.round((i / segCount) * 800));
+        : Array.from({ length: segCount + 1 }, (_, i) => Math.round((i / segCount) * raceDistance));
 
     const card = el("div", { className: "bg-slate-900/40 rounded-lg border border-slate-800 p-3" });
     card.appendChild(el("div", { className: "flex items-center gap-2 mb-2" },
@@ -522,7 +526,7 @@ function renderCommonSplits(bundleA, bundleB, commonNames, colorMap) {
 // =====================================================================
 
 function buildBundle(replay) {
-  const runners = normalizeRunners(replay.heats[0]);
+  const runners = normalizeRunners(replay);
   // competition_level travels with each replay in the source JSON.
   const bundle = analyzeRace(replay.event, runners);
   bundle.runnersById = new Map(runners.map((r) => [r.id, r]));
