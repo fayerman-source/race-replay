@@ -450,6 +450,178 @@
           ]
         }
       ]
+    },
+    {
+      "replay_id": "lievin-2026-womens-800m-wr",
+      "title": "Liévin 2026 – Hodgkinson Indoor 800m World Record",
+      "event": {
+        "name": "Women's 800m Final A",
+        "venue": "Crédit Mutuel - Meeting Hauts-de-France Pas-de-Calais, Liévin",
+        "lane_count": 8,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 100,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "active_heat_id": "Final A",
+        "commentary": {
+          "pre_start": "World Athletics Indoor Tour at Liévin. Keely Hodgkinson takes the start with the indoor 800m world record of 1:55.82 (Ceplak, 2002) in her sights.",
+          "opening": "Pacer Anna Gryc takes the field through a fast first 100m. Hodgkinson tucks in behind.",
+          "through_200": "26.80 at 200m for Hodgkinson — on pace for sub-1:55.",
+          "through_400": "56.01 at 400m. Pacer Gryc has done her job and drops out. Hodgkinson now solo.",
+          "through_600": "1:25.06 at 600m. The world record is within reach.",
+          "closing": "200m to go. Hodgkinson holds the pace through the back stretch.",
+          "finish": "1:54.87. World indoor record. Ceplak's 24-year-old mark is finally broken."
+        },
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://athle-history.matsport.com/events/02514df4-15d1-4e7c-8519-d3512c3715e7_ATSTAW008101/results",
+          "notes": [
+            "Paced race. Anna Gryc paced through 400m, then dropped out (DNF).",
+            "Hodgkinson's 1:54.87 broke Jolanda Ceplak's indoor world record of 1:55.82 from March 2002."
+          ]
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final A",
+          "status": "official_results_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Keely Hodgkinson",
+              "lane": 2,
+              "team": "Great Britain",
+              "country": "GBR",
+              "result": {
+                "final_time": 114.87,
+                "display_time": "1:54.87"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.52, 26.80, 41.30, 56.01, 70.55, 85.06, 99.67, 114.87],
+                "segment_seconds": [13.52, 13.28, 14.50, 14.71, 14.54, 14.51, 14.61, 15.20],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              },
+              "tags": ["focus_runner"]
+            },
+            {
+              "place": 2,
+              "athlete": "Audrey Werro",
+              "lane": 3,
+              "team": "Switzerland",
+              "country": "SUI",
+              "result": {
+                "final_time": 118.38,
+                "display_time": "1:58.38"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.34, 26.96, 41.54, 56.26, 71.07, 86.37, 102.20, 118.38],
+                "segment_seconds": [13.34, 13.62, 14.58, 14.72, 14.81, 15.30, 15.83, 16.18],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Tsige Duguma",
+              "lane": 4,
+              "team": "Ethiopia",
+              "country": "ETH",
+              "result": {
+                "final_time": 118.83,
+                "display_time": "1:58.83"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.07, 27.79, 42.47, 57.32, 72.67, 88.07, 103.55, 118.83],
+                "segment_seconds": [14.07, 13.72, 14.68, 14.85, 15.35, 15.40, 15.48, 15.28],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Nigist Getachew",
+              "lane": 5,
+              "team": "Ethiopia",
+              "country": "ETH",
+              "result": {
+                "final_time": 119.54,
+                "display_time": "1:59.54"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.65, 27.60, 42.28, 57.12, 72.49, 87.99, 103.79, 119.54],
+                "segment_seconds": [13.65, 13.95, 14.68, 14.84, 15.37, 15.50, 15.80, 15.75],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Clara Liberman",
+              "lane": 6,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 120.61,
+                "display_time": "2:00.61"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.13, 28.04, 42.78, 57.82, 73.23, 88.94, 104.81, 120.61],
+                "segment_seconds": [14.13, 13.91, 14.74, 15.04, 15.41, 15.71, 15.87, 15.80],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Anna Wielgosz",
+              "lane": 1,
+              "team": "Poland",
+              "country": "POL",
+              "result": {
+                "final_time": 120.70,
+                "display_time": "2:00.70"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.35, 28.23, 43.15, 58.46, 74.10, 89.79, 105.38, 120.70],
+                "segment_seconds": [14.35, 13.88, 14.92, 15.31, 15.64, 15.69, 15.59, 15.32],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Charlotte Dumas",
+              "lane": 7,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 121.47,
+                "display_time": "2:01.47"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 14.57, 28.87, 43.55, 58.89, 74.56, 90.09, 105.50, 121.47],
+                "segment_seconds": [14.57, 14.30, 14.68, 15.34, 15.67, 15.53, 15.41, 15.97],
+                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Anna Gryc",
+              "lane": 8,
+              "team": "Poland",
+              "country": "POL",
+              "status": "DNF",
+              "role": "pacer",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "splits": {
+                "cumulative_seconds": [0, 13.16, 26.50, 40.97, 55.58],
+                "segment_seconds": [13.16, 13.34, 14.47, 14.61],
+                "split_marks_m": [0, 100, 200, 300, 400]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

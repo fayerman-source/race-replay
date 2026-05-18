@@ -26,9 +26,8 @@ function getMarkerLabel(name) {
 }
 
 function normalizeEntry(entry, index, lane) {
-  if (!entry?.splits?.cumulative_seconds || entry.status === "DNS") {
-    return null;
-  }
+  if (!entry?.splits?.cumulative_seconds) return null;
+  if (entry.status === "DNS" || entry.status === "DNF") return null;
 
   const nameParts = (entry.athlete || "Runner").trim().split(/\s+/);
   const fullName = entry.athlete || "Runner";
@@ -71,7 +70,11 @@ export async function loadHeatData() {
     : payload;
   const activeHeatId = replayPayload?.event?.active_heat_id || replayPayload?.heats?.[0]?.heat_id;
   const activeHeat = replayPayload.heats.find((heat) => heat.heat_id === activeHeatId) || replayPayload.heats[0];
-  const validEntries = activeHeat.entries.filter((entry) => entry?.splits?.cumulative_seconds && entry.status !== "DNS");
+  const validEntries = activeHeat.entries.filter((entry) =>
+    entry?.splits?.cumulative_seconds
+      && entry.status !== "DNS"
+      && entry.status !== "DNF",
+  );
   let fallbackLane = 1;
 
   const runners = validEntries
