@@ -321,22 +321,48 @@ function renderCommonAthletes(bundleA, bundleB, commonNames, colorMap) {
       pA.monotonicityScore != null ? pA.monotonicityScore.toFixed(2) : "—",
       pB.monotonicityScore != null ? pB.monotonicityScore.toFixed(2) : "—", false));
     card.appendChild(statRow("Fastest segment",
-      pA.fastestSegmentIdx != null ? `seg ${pA.fastestSegmentIdx} (${pA.segments[pA.fastestSegmentIdx].toFixed(2)}s)` : "—",
-      pB.fastestSegmentIdx != null ? `seg ${pB.fastestSegmentIdx} (${pB.segments[pB.fastestSegmentIdx].toFixed(2)}s)` : "—",
+      pA.fastestSegmentIdx != null ? `seg ${pA.fastestSegmentIdx + 1} (${pA.segments[pA.fastestSegmentIdx].toFixed(2)}s)` : "—",
+      pB.fastestSegmentIdx != null ? `seg ${pB.fastestSegmentIdx + 1} (${pB.segments[pB.fastestSegmentIdx].toFixed(2)}s)` : "—",
       false));
 
     root.appendChild(card);
   });
 }
 
-function renderWerroViz(bundleA, bundleB) {
+// Pick the most informative common athlete for the headline visualization:
+// the one whose peak-decline differs MOST between the two races. That's
+// the strongest "same runner, different race" story the framework can tell.
+function pickHeadlineAthlete(bundleA, bundleB, commonNames) {
+  let bestName = null;
+  let bestDelta = -Infinity;
+  commonNames.forEach((name) => {
+    const pA = getProfile(bundleA, name);
+    const pB = getProfile(bundleB, name);
+    if (!pA || !pB || pA.peakDeclinePct == null || pB.peakDeclinePct == null) return;
+    const delta = Math.abs(pA.peakDeclinePct - pB.peakDeclinePct);
+    if (delta > bestDelta) {
+      bestDelta = delta;
+      bestName = name;
+    }
+  });
+  return bestName;
+}
+
+function renderHeadlineViz(bundleA, bundleB, commonNames) {
   const root = document.getElementById("werro-viz");
   clear(root);
 
-  const pA = getProfile(bundleA, "Audrey Werro");
-  const pB = getProfile(bundleB, "Audrey Werro");
+  const name = pickHeadlineAthlete(bundleA, bundleB, commonNames);
+  if (!name) {
+    root.appendChild(el("p", { className: "text-slate-400 text-sm" },
+      "No common athlete with peak-decline data — comparison unavailable."));
+    return;
+  }
+  const pA = getProfile(bundleA, name);
+  const pB = getProfile(bundleB, name);
   if (!pA || !pB) {
-    root.appendChild(el("p", { className: "text-slate-400 text-sm" }, "Werro data unavailable."));
+    root.appendChild(el("p", { className: "text-slate-400 text-sm" },
+      `${name} data unavailable.`));
     return;
   }
 
@@ -439,10 +465,10 @@ function renderWerroViz(bundleA, bundleB) {
   const splitA = pA.splitClass?.label;
   const splitB = pB.splitClass?.label;
   root.appendChild(el("p", { className: "text-xs text-slate-400 mt-3 max-w-3xl" },
-    `In ${COMPARISON.a.label}, Werro classified as ${pA.style.primary} with a ${splitA} (${peakDeclineA}% peak decline). ` +
-    `In ${COMPARISON.b.label}, she classified as ${pB.style.primary} with a ${splitB} (${peakDeclineB}% peak decline). ` +
-    "The bar heights are her % of total race time in each segment — back-loaded shape means she slowed late, " +
-    "front-loaded or even means she held pace."));
+    `In ${COMPARISON.a.label}, ${name} classified as ${pA.style.primary} with a ${splitA} (${peakDeclineA}% peak decline). ` +
+    `In ${COMPARISON.b.label}, ${name} classified as ${pB.style.primary} with a ${splitB} (${peakDeclineB}% peak decline). ` +
+    "The bar heights are % of total race time in each segment — back-loaded shape means the runner slowed late, " +
+    "front-loaded or even means they held pace."));
 }
 
 function renderCommonSplits(bundleA, bundleB, commonNames, colorMap) {
@@ -456,6 +482,15 @@ function renderCommonSplits(bundleA, bundleB, commonNames, colorMap) {
     if (!pA || !pB) return;
 
     const segCount = Math.min(pA.segments.length, pB.segments.length);
+
+    // Use the runner's actual segmentMarks rather than assuming 100m bins —
+    // otherwise a 200m-resolution race renders with "0-100m, 100-200m..."
+    // labels that don't match the underlying segment ranges.
+    const marks = (Array.isArray(pA.segmentMarks) && pA.segmentMarks.length >= segCount + 1)
+      ? pA.segmentMarks
+      : (Array.isArray(pB.segmentMarks) && pB.segmentMarks.length >= segCount + 1)
+        ? pB.segmentMarks
+        : Array.from({ length: segCount + 1 }, (_, i) => Math.round((i / segCount) * 800));
 
     const card = el("div", { className: "bg-slate-900/40 rounded-lg border border-slate-800 p-3" });
     card.appendChild(el("div", { className: "flex items-center gap-2 mb-2" },
@@ -472,7 +507,7 @@ function renderCommonSplits(bundleA, bundleB, commonNames, colorMap) {
     for (let i = 0; i < segCount; i += 1) {
       header.appendChild(el("div", {
         className: "text-center px-1 py-1 text-[10px] text-slate-500 font-mono",
-      }, `${i * 100}-${(i + 1) * 100}m`));
+      }, `${marks[i]}-${marks[i + 1]}m`));
     }
     card.appendChild(header);
 
@@ -551,7 +586,7 @@ async function init() {
     renderLeaderboards(bundleA, bundleB, colorMap);
     renderContrasts(bundleA, bundleB);
     renderCommonAthletes(bundleA, bundleB, commonNamesOrdered, colorMap);
-    renderWerroViz(bundleA, bundleB);
+    renderHeadlineViz(bundleA, bundleB, commonNamesOrdered);
     renderCommonSplits(bundleA, bundleB, commonNamesOrdered, colorMap);
 
     document.getElementById("loading").classList.add("hidden");

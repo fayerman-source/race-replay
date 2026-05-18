@@ -275,9 +275,14 @@ function renderSplitsTable(bundle) {
       el("span", { className: "truncate" }, p.name),
     ));
 
-    let cumulative = 0;
+    // Use the runner's official cumulative splits (from the source JSON)
+    // rather than re-summing segments — segment_seconds and cumulative_seconds
+    // can be rounded independently in the source data, so re-summing drifts.
+    const cumulativeSeconds = p.cumulativeSeconds || [];
     p.segments.forEach((seg, i) => {
-      cumulative += seg;
+      const cumulative = Number.isFinite(cumulativeSeconds[i + 1])
+        ? cumulativeSeconds[i + 1]
+        : p.segments.slice(0, i + 1).reduce((s, x) => s + x, 0);
       const isRowFastest = i === fastestIdx;
       const isFieldFastest = Math.abs(seg - fieldFastestAt[i]) < 0.005;
       const cellClass = isRowFastest
@@ -571,7 +576,7 @@ function renderRunnerCards(bundle) {
       ["Half differential", p.splitClass ? `${p.splitClass.diffPct.toFixed(2)}%` : "—", METRICS_GLOSSARY["Half differential"]],
       ["Peak decline", p.peakDeclinePct != null ? `${p.peakDeclinePct.toFixed(2)}%` : "—", METRICS_GLOSSARY["Peak decline"]],
       ["Monotonicity", p.monotonicityScore != null ? p.monotonicityScore.toFixed(2) : "—", METRICS_GLOSSARY["Monotonicity"]],
-      ["Fastest segment", p.fastestSegmentIdx != null ? `seg ${p.fastestSegmentIdx} (${p.segments[p.fastestSegmentIdx].toFixed(2)}s)` : "—", "Index of the runner's fastest 100m or 200m segment."],
+      ["Fastest segment", p.fastestSegmentIdx != null ? `seg ${p.fastestSegmentIdx + 1} (${p.segments[p.fastestSegmentIdx].toFixed(2)}s)` : "—", "Index of the runner's fastest 100m or 200m segment (1-based)."],
       ["Tags", `[${p.style.tags.join(", ")}]`, p.style.tags.map((t) => SECONDARY_TAG_GLOSSARY[t] || STYLE_GLOSSARY[t]).filter(Boolean).join(" · ")],
     ];
     const grid = el("dl", { className: "grid grid-cols-2 gap-x-3 gap-y-1 text-xs" });
