@@ -13,7 +13,6 @@ const COMPARISON = {
     replayId: "lievin-2026-womens-800m-wr",
     label: "Liévin",
     dateLabel: "19 Feb 2026 · World Record",
-    competitionLevel: "world_indoor_w",
     accent: "#F97316",  // amber for the WR race
     accentDim: "rgba(249, 115, 22, 0.5)",
   },
@@ -21,7 +20,6 @@ const COMPARISON = {
     replayId: "waic-torun-2026-womens-800m-final",
     label: "Toruń",
     dateLabel: "22 Mar 2026 · Championship Record",
-    competitionLevel: "world_indoor_w",
     accent: "#3B82F6",  // blue for the championship race
     accentDim: "rgba(59, 130, 246, 0.5)",
   },
@@ -548,10 +546,10 @@ function renderCommonSplits(bundleA, bundleB, commonNames, colorMap) {
 // PAGE INIT
 // =====================================================================
 
-function buildBundle(replay, cfg) {
+function buildBundle(replay) {
   const runners = normalizeRunners(replay.heats[0]);
-  const event = { ...replay.event, competition_level: cfg.competitionLevel };
-  const bundle = analyzeRace(event, runners);
+  // competition_level travels with each replay in the source JSON.
+  const bundle = analyzeRace(replay.event, runners);
   bundle.runnersById = new Map(runners.map((r) => [r.id, r]));
   bundle.runnersByName = new Map(runners.map((r) => [r.fullName, r]));
   bundle.runners = runners;
@@ -569,8 +567,8 @@ async function init() {
     if (!replayA) throw new Error(`replay ${COMPARISON.a.replayId} not found`);
     if (!replayB) throw new Error(`replay ${COMPARISON.b.replayId} not found`);
 
-    const bundleA = buildBundle(replayA, COMPARISON.a);
-    const bundleB = buildBundle(replayB, COMPARISON.b);
+    const bundleA = buildBundle(replayA);
+    const bundleB = buildBundle(replayB);
 
     const { map: colorMap, common } = buildAthleteColorMap(bundleA.runners, bundleB.runners);
 

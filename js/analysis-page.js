@@ -2,13 +2,6 @@ import { loadHeatData } from "./heat-data.js";
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime } from "./utils.js";
 
-// TODO: move this into the replay JSON itself; in the meantime, map here.
-const COMPETITION_LEVEL_MAP = {
-  "waic-torun-2026-womens-800m-final": "world_indoor_w",
-  "skye-oceanbreeze-section-2": "hs_varsity_w",
-  "chloe-oceanbreeze-section-1": "hs_varsity_w",
-  "lievin-2026-womens-800m-wr": "world_indoor_w",
-};
 
 const RUNNER_COLORS = [
   "#F97316", "#3B82F6", "#10B981", "#F59E0B",
@@ -622,9 +615,10 @@ function renderEventsTable(bundle, runners) {
 async function init() {
   try {
     const replayData = await loadHeatData();
-    const level = COMPETITION_LEVEL_MAP[replayData.replayId] || null;
-    const event = { ...replayData.event, competition_level: level };
-    const bundle = analyzeRace(event, replayData.runners);
+    // competition_level now travels with each replay in the source JSON,
+    // so we can pass replayData.event straight through without a per-page
+    // lookup table.
+    const bundle = analyzeRace(replayData.event, replayData.runners);
 
     renderHeader(replayData);
     renderLeaderboard(bundle, replayData.runners);

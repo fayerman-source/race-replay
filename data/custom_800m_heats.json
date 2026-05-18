@@ -10,6 +10,7 @@
         "track_length_m": 200,
         "race_distance_m": 800,
         "timing_interval_m": 200,
+        "competition_level": "hs_varsity_w",
         "active_heat_id": "Section #2",
         "source": {
           "provider": "MileSplit Live",
@@ -174,6 +175,7 @@
         "track_length_m": 200,
         "race_distance_m": 800,
         "timing_interval_m": 200,
+        "competition_level": "hs_varsity_w",
         "active_heat_id": "Section #1",
         "source": {
           "provider": "MileSplit Live",
@@ -326,6 +328,7 @@
         "start_offset_turns": 2,
         "break_distance_m": 160,
         "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_w",
         "active_heat_id": "Final",
         "commentary": {
           "pre_start": "A world-class women's 800m final is loaded in Torun, with Keely Hodgkinson chasing her first world indoor title.",
@@ -464,6 +467,7 @@
         "start_offset_turns": 2,
         "break_distance_m": 160,
         "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_w",
         "active_heat_id": "Final A",
         "commentary": {
           "pre_start": "World Athletics Indoor Tour at Liévin. Keely Hodgkinson takes the start with the indoor 800m world record of 1:55.82 (Ceplak, 2002) in her sights.",
