@@ -368,8 +368,18 @@ function classifyRaceShape(runners, event, parTable = PAR_TIMES) {
 
   // Always compare to par at the 200m mark, regardless of the underlying
   // split resolution (100m, 200m, etc.). timeAtDistance handles both.
+  // Early-pace band is based on the field's fastest 200m, not the winner's:
+  // a race won by a closer can still have a fast early pace set by an E
+  // runner who later faded.
   const raceDistance = event.race_distance_m || TRACK_CONFIG.raceDistance;
-  const leaderOpener = timeAtDistance(fastestRunner, 200, raceDistance);
+  let fieldFastest200 = Infinity;
+  runners.forEach((r) => {
+    const t = timeAtDistance(r, 200, raceDistance);
+    if (Number.isFinite(t) && t > 0 && t < fieldFastest200) fieldFastest200 = t;
+  });
+  const leaderOpener = Number.isFinite(fieldFastest200)
+    ? fieldFastest200
+    : timeAtDistance(fastestRunner, 200, raceDistance);
   const leaderTotal = fastestRunner.finalTime;
   const openerDeltaPct = ((leaderOpener - par.opener_200m) / par.opener_200m) * 100;
   const totalDeltaPct  = ((leaderTotal  - par.total_seconds) / par.total_seconds) * 100;
@@ -420,6 +430,12 @@ export function analyzeRace(event, runners) {
   for (let m = timingInterval; m <= raceDistance; m += timingInterval) {
     checkpoints.push(m);
   }
+  // Always include the finish line as a checkpoint, even when
+  // timing_interval_m doesn't evenly divide race_distance_m. Without this,
+  // finishOrder collapses to empty and every late-race signal breaks.
+  if (checkpoints.length === 0 || checkpoints[checkpoints.length - 1] !== raceDistance) {
+    checkpoints.push(raceDistance);
+  }
 
   const segmentScores = getSegmentScoresVsField(runners);
   const ranksByCheckpoint = getRanksByCheckpoint(runners, checkpoints, raceDistance);
@@ -435,6 +451,10 @@ export function analyzeRace(event, runners) {
       finalTime: r.finalTime,
       segments,
       segmentMarks: safeSplitMarks(r, raceDistance),
+      // Preserve the original cumulative splits straight from the JSON so
+      // UI layers can display the canonical numbers, not segment re-sums
+      // (which drift due to independent rounding of cumulative vs segment).
+      cumulativeSeconds: Array.isArray(r.splits) ? r.splits.slice() : null,
       energyDistribution: energy,
       peakDeclinePct: getPeakDeclinePct(r),
       monotonicityScore: getMonotonicityScore(r),
@@ -475,7 +495,7 @@ export function analyzeRace(event, runners) {
     raceShape: classifyRaceShape(runners, event),
   };
 
-  const events = extractCommentaryEvents({ event, perRunner, raceLevel });
+  const events = extractCommentaryEvents({ event, perRunner, raceLevel, runners });
 
   return {
     event: {
@@ -503,10 +523,11 @@ export function analyzeRace(event, runners) {
 // you actually want in the commentary box.
 // =====================================================================
 
-export function extractCommentaryEvents({ event, perRunner, raceLevel }) {
+export function extractCommentaryEvents({ event, perRunner, raceLevel, runners = [] }) {
   const events = [];
   const raceDistance = event.race_distance_m || TRACK_CONFIG.raceDistance;
   const runnerById = new Map(perRunner.map((p) => [p.id, p]));
+  const rawRunnerById = new Map(runners.map((r) => [r.id, r]));
 
   function pushEvent({ dueTime, distance, subjectId, kind, payload }) {
     events.push({ dueTime, distance, subjectId, kind, payload });
@@ -536,13 +557,14 @@ export function extractCommentaryEvents({ event, perRunner, raceLevel }) {
     }
   });
 
-  // Lead changes (time = time leader changes at given checkpoint)
+  // Lead changes (time = time leader changes at given checkpoint).
+  // Use the runner's official cumulative_seconds via timeAtDistance so the
+  // event time is correct even when checkpoint spacing differs from the
+  // runner's segment spacing.
   raceLevel.leadChanges.forEach((change) => {
-    const newLeader = runnerById.get(change.to_id);
-    if (!newLeader) return;
-    const cumulativeAtMark = newLeader.segments
-      .slice(0, raceLevel.checkpoints.indexOf(change.at_distance) + 1)
-      .reduce((s, x) => s + x, 0);
+    const rawNewLeader = rawRunnerById.get(change.to_id);
+    if (!rawNewLeader) return;
+    const cumulativeAtMark = timeAtDistance(rawNewLeader, change.at_distance, raceDistance);
     pushEvent({
       dueTime: cumulativeAtMark,
       distance: change.at_distance,
