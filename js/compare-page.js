@@ -1,7 +1,7 @@
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime, TRACK_CONFIG } from "./utils.js";
 import { normalizeReplayRunners } from "./heat-data.js";
-import { clear, el, svg, svgText } from "./dom-utils.js";
+import { clear, el, svg, svgText, renderHonor } from "./dom-utils.js";
 
 // =====================================================================
 // CONFIGURATION
@@ -119,7 +119,10 @@ function renderLeaderboards(bundleA, bundleB, colorMap) {
           el("span", { className: "inline-block w-2 h-2 rounded-full", style: `background:${color}` }),
           runner.fullName),
         el("td", { className: "py-1.5 px-2 text-slate-400 text-right" }, runner.country || runner.team),
-        el("td", { className: "py-1.5 px-2 font-mono text-right" }, runner.displayTime || formatTime(runner.finalTime)),
+        el("td", { className: "py-1.5 px-2 font-mono text-right whitespace-nowrap" },
+          runner.displayTime || formatTime(runner.finalTime),
+          ...(runner.honors || []).map((h) => renderHonor(h)),
+        ),
       ));
     });
     table.appendChild(tbody);

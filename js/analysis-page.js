@@ -1,7 +1,7 @@
 import { loadHeatData } from "./heat-data.js";
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime } from "./utils.js";
-import { clear, el, svg, svgText } from "./dom-utils.js";
+import { clear, el, svg, svgText, renderHonor } from "./dom-utils.js";
 
 
 const RUNNER_COLORS = [
@@ -45,6 +45,17 @@ const PACE_PRESSURE_GLOSSARY = {
   "lone speed":   "Only one E or E/P runner in the field. Front-runner has the pace uncontested.",
   "competitive": "Two E or E/P runners contesting the early pace. Pace usually honest.",
   "pace duel":    "Three or more E/E-P runners. Front-running tactics burn out; closers favored.",
+};
+
+const HONORS_GLOSSARY = {
+  "WR": "World Record — best time ever recorded for this event.",
+  "WL": "World Lead — fastest time recorded so far in the current year.",
+  "CR": "Championship Record — best time in this specific championship's history.",
+  "MR": "Meeting Record — best time ever at this specific meet.",
+  "NR": "National Record — best time ever for this athlete's country.",
+  "AR": "Area Record — best time ever for this continental area.",
+  "PB": "Personal Best — best time the athlete has ever run.",
+  "SB": "Season Best — best time the athlete has run this season.",
 };
 
 const METRICS_GLOSSARY = {
@@ -103,14 +114,24 @@ function renderHeader(replayData) {
   clear(root);
   root.appendChild(el("h1", { className: "text-3xl font-bold tracking-tight" },
     replayData.replayTitle || `${replayData.event.name} ${replayData.activeHeat.heat_id}`));
-  root.appendChild(el("p", { className: "text-slate-400 mt-1" },
-    replayData.event.venue || ""));
+
+  const venueLine = [replayData.event.venue, replayData.event.date].filter(Boolean).join(" · ");
+  root.appendChild(el("p", { className: "text-slate-400 mt-1" }, venueLine));
+
+  // Optional pre-race context (records the field was chasing at the gun).
+  const records = Array.isArray(replayData.event.pre_race_records) ? replayData.event.pre_race_records : [];
+  if (records.length) {
+    const wrap = el("div", { className: "mt-3 text-xs text-slate-500 space-y-0.5" });
+    wrap.appendChild(el("div", { className: "uppercase tracking-wider text-slate-400" }, "Going into this race"));
+    records.forEach((line) => wrap.appendChild(el("div", { className: "font-mono" }, line)));
+    root.appendChild(wrap);
+  }
 
   const pair = COMPARISON_PAIRS[replayData.replayId];
   if (pair) {
     const link = el("a", {
       href: "./compare.html",
-      className: "inline-flex items-center gap-1 mt-2 text-sm text-amber-300 hover:text-amber-200 underline decoration-dotted",
+      className: "inline-flex items-center gap-1 mt-3 text-sm text-amber-300 hover:text-amber-200 underline decoration-dotted",
     }, `Compare with ${pair.label} →`);
     root.appendChild(link);
   }
@@ -136,7 +157,10 @@ function renderLeaderboard(bundle, runners) {
         runner.fullName),
       el("td", { className: "py-2 px-2 text-slate-400" }, runner.country || runner.team || "—"),
       el("td", { className: "py-2 px-2 font-mono" }, String(runner.lane)),
-      el("td", { className: "py-2 px-2 font-mono" }, runner.displayTime || formatTime(runner.finalTime)),
+      el("td", { className: "py-2 px-2 font-mono whitespace-nowrap" },
+        runner.displayTime || formatTime(runner.finalTime),
+        ...(runner.honors || []).map((h) => renderHonor(h)),
+      ),
       el("td", {
         className: "py-2 px-2",
         title: SPLIT_CLASS_GLOSSARY[profile.splitClass?.label] || "",
@@ -190,6 +214,7 @@ function renderGlossary() {
   root.appendChild(block("Pace pressure", Object.entries(PACE_PRESSURE_GLOSSARY)));
 
   root.appendChild(block("Per-runner metrics", Object.entries(METRICS_GLOSSARY)));
+  root.appendChild(block("Result honors (post-race accolades)", Object.entries(HONORS_GLOSSARY)));
 }
 
 function renderSplitsTable(bundle) {

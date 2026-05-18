@@ -30,3 +30,25 @@ export function svgText(attrs, text) {
   node.appendChild(document.createTextNode(text));
   return node;
 }
+
+// Visual styling and friendly names for athletics result honors.
+// Keep this map small and additive — anything we can't classify falls
+// back to a neutral slate badge.
+const HONOR_STYLES = {
+  WR: { bg: "bg-yellow-400",  fg: "text-black", title: "World Record" },
+  WL: { bg: "bg-amber-500",   fg: "text-black", title: "World Lead" },
+  CR: { bg: "bg-amber-500",   fg: "text-black", title: "Championship Record" },
+  MR: { bg: "bg-amber-400",   fg: "text-black", title: "Meeting Record" },
+  NR: { bg: "bg-amber-400",   fg: "text-black", title: "National Record" },
+  AR: { bg: "bg-amber-400",   fg: "text-black", title: "Area Record" },
+  PB: { bg: "bg-emerald-500", fg: "text-white", title: "Personal Best" },
+  SB: { bg: "bg-emerald-700", fg: "text-white", title: "Season Best" },
+};
+
+export function renderHonor(code) {
+  const style = HONOR_STYLES[code] || { bg: "bg-slate-600", fg: "text-white", title: code };
+  return el("span", {
+    className: `ml-1.5 inline-block px-1.5 py-0.5 rounded text-[9px] font-bold ${style.bg} ${style.fg}`,
+    title: style.title,
+  }, code);
+}

@@ -59,6 +59,7 @@ export function normalizeEntry(entry, index, lane) {
     segmentSplits: entry.splits.segment_seconds || [],
     finalTime,
     displayTime: entry?.result?.display_time || null,
+    honors: Array.isArray(entry?.result?.honors) ? entry.result.honors.slice() : [],
     highlight: Array.isArray(entry.tags) && entry.tags.includes("focus_runner"),
   };
 }

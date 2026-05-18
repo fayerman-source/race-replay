@@ -327,6 +327,11 @@
       "event": {
         "name": "Women's 800m Final",
         "venue": "World Athletics Indoor Championships Kujawy Pomorze 26, Torun",
+        "date": "2026-03-22",
+        "pre_race_records": [
+          "Indoor WR (Hodgkinson, Liévin, 19 Feb 2026): 1:54.87",
+          "Pre-2026 indoor WR (Ceplak, 2002): 1:55.82"
+        ],
         "lane_count": 6,
         "track_length_m": 200,
         "race_distance_m": 800,
@@ -367,7 +372,8 @@
               "country": "GBR",
               "result": {
                 "final_time": 115.3,
-                "display_time": "1:55.30"
+                "display_time": "1:55.30",
+                "honors": ["CR"]
               },
               "splits": {
                 "cumulative_seconds": [0, 13.39, 27.26, 42.02, 56.95, 71.73, 86.46, 100.65, 115.3],
@@ -400,7 +406,8 @@
               "country": "USA",
               "result": {
                 "final_time": 118.36,
-                "display_time": "1:58.36"
+                "display_time": "1:58.36",
+                "honors": ["PB"]
               },
               "splits": {
                 "cumulative_seconds": [0, 13.73, 27.63, 42.53, 57.63, 72.53, 87.64, 102.67, 118.36],
@@ -468,6 +475,12 @@
       "event": {
         "name": "Women's 800m Final A",
         "venue": "Crédit Mutuel - Meeting Hauts-de-France Pas-de-Calais, Liévin",
+        "date": "2026-02-19",
+        "pre_race_records": [
+          "Indoor WR (Ceplak, 2002): 1:55.82",
+          "World lead 2026 (Hodgkinson): 1:56.33",
+          "Meeting record (Mutola, 1998): 1:56.36"
+        ],
         "lane_count": 8,
         "track_length_m": 200,
         "race_distance_m": 800,
@@ -508,7 +521,8 @@
               "country": "GBR",
               "result": {
                 "final_time": 114.87,
-                "display_time": "1:54.87"
+                "display_time": "1:54.87",
+                "honors": ["WR", "WL"]
               },
               "splits": {
                 "cumulative_seconds": [0, 13.52, 26.80, 41.30, 56.01, 70.55, 85.06, 99.67, 114.87],
@@ -541,7 +555,8 @@
               "country": "ETH",
               "result": {
                 "final_time": 118.83,
-                "display_time": "1:58.83"
+                "display_time": "1:58.83",
+                "honors": ["SB"]
               },
               "splits": {
                 "cumulative_seconds": [0, 14.07, 27.79, 42.47, 57.32, 72.67, 88.07, 103.55, 118.83],
@@ -557,7 +572,8 @@
               "country": "ETH",
               "result": {
                 "final_time": 119.54,
-                "display_time": "1:59.54"
+                "display_time": "1:59.54",
+                "honors": ["PB"]
               },
               "splits": {
                 "cumulative_seconds": [0, 13.65, 27.60, 42.28, 57.12, 72.49, 87.99, 103.79, 119.54],
