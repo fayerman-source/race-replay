@@ -1,6 +1,7 @@
 import { loadHeatData } from "./heat-data.js";
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime } from "./utils.js";
+import { clear, el, svg, svgText } from "./dom-utils.js";
 
 
 const RUNNER_COLORS = [
@@ -84,36 +85,6 @@ function ordinal(n) {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
-}
-
-function clear(node) {
-  while (node.firstChild) node.removeChild(node.firstChild);
-}
-
-function el(tag, attrs = {}, ...children) {
-  const node = document.createElement(tag);
-  Object.entries(attrs).forEach(([k, v]) => {
-    if (k === "className") node.className = v;
-    else node.setAttribute(k, v);
-  });
-  children.flat().forEach((c) => {
-    if (c == null) return;
-    node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
-  });
-  return node;
-}
-
-function svg(tag, attrs = {}, ...children) {
-  const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
-  Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
-  children.flat().forEach((c) => c != null && node.appendChild(c));
-  return node;
-}
-
-function svgText(attrs, text) {
-  const node = svg("text", attrs);
-  node.appendChild(document.createTextNode(text));
-  return node;
 }
 
 // =====================================================================

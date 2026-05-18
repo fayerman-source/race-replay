@@ -1,6 +1,7 @@
 import { analyzeRace } from "./race-analyzer.js";
 import { formatTime, TRACK_CONFIG } from "./utils.js";
 import { normalizeHeatRunners } from "./heat-data.js";
+import { clear, el, svg, svgText } from "./dom-utils.js";
 
 // =====================================================================
 // CONFIGURATION
@@ -44,36 +45,6 @@ const MUTED_COLOR = "#6B7280";  // slate-500 — single-race runners
 // =====================================================================
 // UTILITIES
 // =====================================================================
-
-function clear(node) {
-  while (node.firstChild) node.removeChild(node.firstChild);
-}
-
-function el(tag, attrs = {}, ...children) {
-  const node = document.createElement(tag);
-  Object.entries(attrs).forEach(([k, v]) => {
-    if (k === "className") node.className = v;
-    else node.setAttribute(k, v);
-  });
-  children.flat().forEach((c) => {
-    if (c == null) return;
-    node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
-  });
-  return node;
-}
-
-function svg(tag, attrs = {}, ...children) {
-  const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
-  Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
-  children.flat().forEach((c) => c != null && node.appendChild(c));
-  return node;
-}
-
-function svgText(attrs, text) {
-  const node = svg("text", attrs);
-  node.appendChild(document.createTextNode(text));
-  return node;
-}
 
 // Runner normalization is shared with heat-data.js — single source of truth
 // for validation, lane assignment, and id generation. We only re-sort here
