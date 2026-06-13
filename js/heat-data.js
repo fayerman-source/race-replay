@@ -30,17 +30,20 @@ export function normalizeEntry(entry, index, lane) {
   // crashes downstream interpolation (needs at least a start + finish mark).
   const cumulative = entry?.splits?.cumulative_seconds;
   if (!Array.isArray(cumulative) || cumulative.length < 2) return null;
-  // DNF entries (e.g. pacers) are filtered here because the replay-render
-  // pipeline (race-model.js, getDistanceAtTime in utils.js) doesn't yet
-  // model partial-splits runners — feeding it a runner whose splits stop
-  // at 400m would teleport them to the finish line. The analyzer also
-  // needs complete data for field-relative metrics. When the replay player
-  // grows partial-runner support, this filter can be made opt-out.
-  if (entry.status === "DNS" || entry.status === "DNF") return null;
+  // DNS entries (did not start, no splits) stay filtered. DNF entries are now
+  // supported: getDistanceAtTime pins a partial runner at their last mark
+  // instead of teleporting them to the finish, so a pacer who steps off at
+  // 400m can be shown pacing the field and then dropping out.
+  if (entry.status === "DNS") return null;
 
   const nameParts = (entry.athlete || "Runner").trim().split(/\s+/);
   const fullName = entry.athlete || "Runner";
-  const finalTime = getDisplayTimeSeconds(entry);
+  // A DNF runner's last split is a PARTIAL time, not a finish. Treat it as
+  // non-competing (Infinity) so finishing-time sorts — winner selection in
+  // updateHeatMeta, field-relative metrics in compare-page.js — never rank a
+  // dropped-out pacer ahead of the actual finishers. Display still uses
+  // displayTime ("DNF"), so the sentinel is never formatted for the UI.
+  const finalTime = entry.status === "DNF" ? Infinity : getDisplayTimeSeconds(entry);
 
   return {
     id: `${entry.athlete || "runner"}-${index}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
@@ -48,7 +51,7 @@ export function normalizeEntry(entry, index, lane) {
     fullName,
     team: entry.team || "Unattached",
     country: entry.country || "",
-    bib: lane,
+    bib: Number.isFinite(entry.bib) ? entry.bib : lane,
     bibLabel: `L${lane}`,
     markerLabel: getMarkerLabel(fullName),
     lane,
@@ -60,6 +63,9 @@ export function normalizeEntry(entry, index, lane) {
     finalTime,
     displayTime: entry?.result?.display_time || null,
     honors: Array.isArray(entry?.result?.honors) ? entry.result.honors.slice() : [],
+    medal: entry?.result?.medal || null,
+    dnf: entry.status === "DNF",
+    role: entry.role || null,
     preRacePbIndoor: entry?.career?.pre_race_pb_indoor || null,
     preRacePbIndoorSeconds: Number.isFinite(entry?.career?.pre_race_pb_indoor_seconds)
       ? entry.career.pre_race_pb_indoor_seconds
@@ -94,17 +100,63 @@ export function normalizeHeatRunners(heat) {
   const validEntries = heat.entries.filter((entry) =>
     Array.isArray(entry?.splits?.cumulative_seconds)
       && entry.splits.cumulative_seconds.length >= 2
-      && entry.status !== "DNS"
-      && entry.status !== "DNF",
+      && entry.status !== "DNS",
   );
   let fallbackLane = 1;
-  return validEntries
+  const runners = validEntries
     .map((entry, index) => {
       const lane = Number.isFinite(entry.lane) ? entry.lane : fallbackLane++;
       return normalizeEntry(entry, index, lane);
     })
     .filter(Boolean)
     .sort((a, b) => a.lane - b.lane);
+
+  return assignSharedLaneOffsets(runners);
+}
+
+// Indoor 800m fields often have more athletes than lanes, so a lane can be
+// shared (a "waterfall" double — Liévin runs two per lane in lanes 2 & 4).
+// The renderer draws one radius per lane, so co-lane runners would overlap.
+// We split each shared lane into inner/outer sub-positions: the faster-seeded
+// runner takes the inner (rail) side. Single-occupant lanes get offset 0 and
+// are unaffected. race-model.js adds laneOffset to the start lane only, so the
+// pair separates at the gun and converges as they pack after the break.
+const SHARED_LANE_SPREAD = 0.28;
+function assignSharedLaneOffsets(runners) {
+  const byLane = new Map();
+  runners.forEach((runner) => {
+    if (!byLane.has(runner.lane)) byLane.set(runner.lane, []);
+    byLane.get(runner.lane).push(runner);
+  });
+
+  const maxLane = runners.reduce((max, runner) => Math.max(max, runner.lane), 0);
+
+  byLane.forEach((laneRunners, lane) => {
+    if (laneRunners.length < 2) {
+      laneRunners.forEach((runner) => { runner.laneOffset = 0; });
+      return;
+    }
+    // Faster final time first → innermost. Equal/Infinity times (multiple DNFs)
+    // keep a stable order — an explicit equality check avoids the NaN a
+    // comparator would return from Infinity - Infinity.
+    const ordered = laneRunners.slice().sort((a, b) => {
+      const aTime = a.finalTime ?? Infinity;
+      const bTime = b.finalTime ?? Infinity;
+      return aTime === bTime ? 0 : aTime - bTime;
+    });
+    // On the boundary lanes, shift the whole spread inward so no sub-position
+    // lands outside [1, laneCount] where clampLane would collapse it back onto
+    // the edge and re-overlap the pair.
+    let shift = 0;
+    if (lane <= 1) shift = SHARED_LANE_SPREAD;
+    else if (lane >= maxLane) shift = -SHARED_LANE_SPREAD;
+    const step = (SHARED_LANE_SPREAD * 2) / (ordered.length - 1);
+    ordered.forEach((runner, slot) => {
+      runner.laneOffset = -SHARED_LANE_SPREAD + (slot * step) + shift;
+    });
+  });
+
+  return runners;
 }
 
 export async function loadHeatData() {

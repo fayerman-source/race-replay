@@ -58,8 +58,10 @@ function buildPackedLaneTargets(orderedStates, eventConfig) {
   return packedLaneByRunnerId;
 }
 
-function getDisplayLane(baseLane, officialDistance, packedLane, eventConfig) {
-  const startLane = getVisualLane(baseLane, eventConfig.lane_count);
+function getDisplayLane(baseLane, laneOffset, officialDistance, packedLane, eventConfig) {
+  // laneOffset splits shared-lane (waterfall double) runners into inner/outer
+  // sub-positions at the start; it fades out as the field packs onto the rail.
+  const startLane = getVisualLane(baseLane, eventConfig.lane_count) + (laneOffset || 0);
   const mergeProgress = getMergeProgress(officialDistance, eventConfig);
 
   if (mergeProgress === 0) return startLane;
@@ -114,9 +116,87 @@ function buildEventConfig(event) {
   };
 }
 
+// Fraction of headroom above the fastest pace anyone actually ran, to allow
+// for brief, legitimate accelerations (repacking, a finishing kick) without
+// permitting a marker to teleport. 1.25 = "25% faster than the field's best
+// sustained 100m is the ceiling." Tune this knob to taste — see the user
+// contribution note below.
+const FIELD_SURGE_MARGIN = 1.25;
+
+// Reconstruct the distance marks (in meters) that correspond to a runner's
+// cumulative-seconds array. Mirrors getNormalizedSplitMarks in utils.js so the
+// ceiling math agrees with the interpolation math: explicit split_marks_m when
+// present, otherwise an even split of the race distance.
+function getRunnerSegmentMarks(runner, raceDistance) {
+  const marks = runner.splitMarks;
+  if (Array.isArray(marks) && marks.length === runner.splits.length) {
+    return marks;
+  }
+  const segmentCount = Math.max(1, runner.splits.length - 1);
+  const interval = raceDistance / segmentCount;
+  return runner.splits.map((_, index) => index * interval);
+}
+
+// Field-relative speed ceiling: the fastest average pace (m/s) any runner
+// sustained across any single split segment in THIS race, scaled by a surge
+// margin. Because it is derived from the field's own data, a women's WR race
+// caps lower than a men's race automatically — no hardcoded gender or
+// world-record tables. Used by the render layer to bound on-screen speed so no
+// marker moves faster than is humanly possible in this race's context.
+//
+// ── User contribution point ──────────────────────────────────────────────
+// This function encodes the modeling judgment behind the whole feature. The
+// version below takes the field MAX segment pace × FIELD_SURGE_MARGIN. Valid
+// alternatives you may prefer:
+//   • robustness: ignore the single fastest outlier (e.g. take the 2nd-fastest
+//     or a high percentile) so one mis-keyed split can't inflate the ceiling;
+//   • per-phase caps: a higher ceiling over the first segment (start accel)
+//     than over the final segment (fatigue);
+//   • a hard biomechanical floor so a slow heat still can't look frozen.
+// If you want to own this decision, rewrite the loop below and keep the return
+// contract (a single positive number in m/s).
+function computeFieldSpeedCeiling(runners, eventConfig) {
+  let fastestPace = 0;
+
+  for (const runner of runners) {
+    const times = runner.splits;
+    if (!Array.isArray(times) || times.length < 2) continue;
+    const marks = getRunnerSegmentMarks(runner, eventConfig.race_distance_m);
+
+    for (let i = 0; i < times.length - 1; i += 1) {
+      const segmentSeconds = times[i + 1] - times[i];
+      const segmentMeters = marks[i + 1] - marks[i];
+      if (segmentSeconds > 0 && segmentMeters > 0) {
+        fastestPace = Math.max(fastestPace, segmentMeters / segmentSeconds);
+      }
+    }
+  }
+
+  // Fallback for degenerate data (no usable segments): a generic 800m-ish pace
+  // so the governor stays finite rather than freezing every marker.
+  if (fastestPace <= 0) {
+    fastestPace = eventConfig.race_distance_m / 120;
+  }
+
+  return fastestPace * FIELD_SURGE_MARGIN;
+}
+
 export function createRaceModel(event, runners) {
   const eventConfig = buildEventConfig(event);
+  eventConfig.max_plausible_speed_mps = computeFieldSpeedCeiling(runners, eventConfig);
   const runnerMap = new Map(runners.map((runner) => [runner.id, runner]));
+  // The last distance each runner has data for. For a full runner this is the
+  // race distance; for a partial runner (a DNF pacer) it's their drop point.
+  const runnerMaxDistance = new Map(runners.map((runner) => {
+    const marks = getRunnerSegmentMarks(runner, eventConfig.race_distance_m);
+    return [runner.id, marks[marks.length - 1]];
+  }));
+
+  function isDropped(runner, officialDistance) {
+    const maxDistance = runnerMaxDistance.get(runner.id) ?? eventConfig.race_distance_m;
+    return maxDistance < eventConfig.race_distance_m
+      && officialDistance >= maxDistance - 1e-6;
+  }
 
   function getSnapshot(raceTime) {
     const effectiveTime = Math.max(0, raceTime);
@@ -133,12 +213,20 @@ export function createRaceModel(event, runners) {
         runner,
         officialDistance,
         finalTime: runner.finalTime,
+        dropped: isDropped(runner, officialDistance),
       };
     });
 
     const orderedStates = [...baseStates].sort((a, b) => {
+      // Dropped-out runners (a pacer who has stepped off) sort to the back
+      // regardless of distance — they're no longer in the standings. While
+      // still running, a pacer is ordered normally and can legitimately lead.
+      if (a.dropped !== b.dropped) return a.dropped ? 1 : -1;
       const distanceDiff = b.officialDistance - a.officialDistance;
       if (distanceDiff !== 0) return distanceDiff;
+      // Equality check before subtracting guards against Infinity - Infinity
+      // (= NaN) when multiple DNF runners, both with finalTime Infinity, tie.
+      if (a.finalTime === b.finalTime) return 0;
       return a.finalTime - b.finalTime;
     });
 
@@ -153,7 +241,7 @@ export function createRaceModel(event, runners) {
       );
       const distanceIntoLap = baseState.officialDistance % eventConfig.track_length_m;
       const packedLane = packedLaneTargets.get(baseState.id) || 1;
-      const displayLane = getDisplayLane(baseState.runner.lane, baseState.officialDistance, packedLane, eventConfig);
+      const displayLane = getDisplayLane(baseState.runner.lane, baseState.runner.laneOffset, baseState.officialDistance, packedLane, eventConfig);
       const longitudinalOffset = getDisplayStartOffset(baseState.runner.lane, baseState.officialDistance, eventConfig);
       const trackPosition = getTrackCoordinates(baseState.officialDistance, displayLane, {
         lapDistance: eventConfig.track_length_m,
@@ -169,7 +257,7 @@ export function createRaceModel(event, runners) {
         placeIndex,
         lapIndex,
         distanceIntoLap,
-        phase: getRunnerPhase(baseState.officialDistance, eventConfig),
+        phase: baseState.dropped ? "dnf" : getRunnerPhase(baseState.officialDistance, eventConfig),
         packedLane,
         displayLane,
         longitudinalOffset,
@@ -179,8 +267,9 @@ export function createRaceModel(event, runners) {
     });
 
     const leader = runnerStates.find((state) => state.placeIndex === 0) || null;
-    const isComplete = runnerStates.length > 0
-      && runnerStates.every((state) => state.officialDistance >= eventConfig.race_distance_m);
+    const racingStates = runnerStates.filter((state) => state.phase !== "dnf");
+    const isComplete = racingStates.length > 0
+      && racingStates.every((state) => state.officialDistance >= eventConfig.race_distance_m);
 
     return {
       raceTime,
