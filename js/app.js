@@ -128,10 +128,10 @@ function renderRecords() {
   recordsListEl.innerHTML = records.map((record) => `
     <div class="flex items-center justify-between gap-2">
       <span class="inline-flex items-center gap-1.5 min-w-0">
-        <span class="text-[9px] font-bold text-blue-300 bg-blue-900/50 border border-blue-800 rounded px-1 py-0.5">${escapeHtml(record.label)}</span>
-        <span class="text-gray-300 truncate">${escapeHtml(record.athlete)}${record.country ? ` (${escapeHtml(record.country)})` : ""}</span>
+        <span class="text-[9px] font-bold text-blue-300 bg-blue-900/50 border border-blue-800 rounded px-1 py-0.5">${escapeHtml(record.label || "")}</span>
+        <span class="text-gray-300 truncate">${escapeHtml(record.athlete || "")}${record.country ? ` (${escapeHtml(record.country)})` : ""}</span>
       </span>
-      <span class="font-mono text-white flex-shrink-0">${escapeHtml(record.result)}</span>
+      <span class="font-mono text-white flex-shrink-0">${escapeHtml(record.result || "")}</span>
     </div>`).join("");
   recordsCardEl.style.display = "block";
 }
@@ -491,8 +491,8 @@ function updateRunnerPositions(deltaSeconds = 0) {
       // they dropped out, removed from the standings. The dot's CSS transition
       // glides it inward, reading as a veer off the track.
       const dropPosition = getTrackCoordinates(runnerState.officialDistance, 1, geomOptions);
-      const centerX = 175;
-      const centerY = 275; // oval centre in SVG units (topY 175 .. bottomY 375)
+      const centerX = TRACK_CONFIG.svg.centerX;
+      const centerY = (TRACK_CONFIG.svg.topY + TRACK_CONFIG.svg.bottomY) / 2;
       const infieldInset = 0.42;
       dot.style.left = `${dropPosition.x + ((centerX - dropPosition.x) * infieldInset)}px`;
       dot.style.top = `${dropPosition.y + ((centerY - dropPosition.y) * infieldInset)}px`;
@@ -690,6 +690,7 @@ export function resetRace() {
       dot.style.left = `${runnerState.trackPosition.x}px`;
       dot.style.top = `${runnerState.trackPosition.y}px`;
       dot.style.opacity = "1";
+      dot.style.zIndex = runner.highlight ? "50" : "10";
       dot.classList.remove("position-1", "position-2", "position-3", "dnf");
     }
 
