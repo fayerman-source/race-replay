@@ -612,10 +612,13 @@ function updatePositions(timestampMs) {
   }
 
   const leaderDistance = getLeaderDistance();
-  if (leaderDistance >= 400 && state.lastLapBellDistance < 400) {
-    sfxManager.playLapBell();
-  }
-  if (leaderDistance >= 600 && state.lastLapBellDistance < 600) {
+  // Sound the bell once, as the leader enters the final lap — the way a race
+  // official rings it. For an 800m on a 200m track that's at 600m (one lap to
+  // go); derived from the event so it's correct for any distance/track length.
+  const lapLength = state.event?.track_length_m || TRACK_CONFIG.trackLength;
+  const raceDistance = state.event?.race_distance_m || TRACK_CONFIG.raceDistance;
+  const bellDistance = raceDistance - lapLength;
+  if (leaderDistance >= bellDistance && state.lastLapBellDistance < bellDistance) {
     sfxManager.playLapBell();
   }
   state.lastLapBellDistance = leaderDistance;
