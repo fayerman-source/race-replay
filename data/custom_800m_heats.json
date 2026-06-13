@@ -506,7 +506,13 @@
           "World lead 2026 (Hodgkinson): 1:56.33",
           "Meeting record (Mutola, 1998): 1:56.36"
         ],
-        "lane_count": 8,
+        "records": [
+          { "label": "WR", "name": "World Record", "athlete": "Jolanda Čeplak", "country": "SLO", "result": "1:55.82", "venue": "Wien (AUT)", "date": "2002-03-03" },
+          { "label": "WL", "name": "World Lead", "athlete": "Keely Hodgkinson", "country": "GBR", "result": "1:56.33", "venue": "Birmingham (GBR)", "date": "2026-02-14" },
+          { "label": "MR", "name": "Meeting Record", "athlete": "Maria de Lurdes Mutola", "country": "MOZ", "result": "1:56.36", "venue": "Liévin (FRA)", "date": "1998-02-01" }
+        ],
+        "photo_finish": "assets/lievin-2026-w800m-photofinish.jpg",
+        "lane_count": 6,
         "track_length_m": 200,
         "race_distance_m": 800,
         "timing_interval_m": 100,
@@ -541,12 +547,14 @@
             {
               "place": 1,
               "athlete": "Keely Hodgkinson",
-              "lane": 2,
+              "lane": 6,
+              "bib": 8,
               "team": "Great Britain",
               "country": "GBR",
               "result": {
                 "final_time": 114.87,
                 "display_time": "1:54.87",
+                "medal": "Gold",
                 "honors": ["WR", "WL"]
               },
               "career": {
@@ -564,17 +572,19 @@
             {
               "place": 2,
               "athlete": "Audrey Werro",
-              "lane": 3,
+              "lane": 4,
+              "bib": 15,
               "team": "Switzerland",
               "country": "SUI",
               "result": {
                 "final_time": 118.38,
-                "display_time": "1:58.38"
+                "display_time": "1:58.38",
+                "medal": "Silver"
               },
               "career": {
-                "pre_race_pb_indoor": "1:57.49",
-                "pre_race_pb_indoor_seconds": 117.49,
-                "pre_race_sb_indoor": "1:57.49"
+                "pre_race_pb_indoor": "1:57.27",
+                "pre_race_pb_indoor_seconds": 117.27,
+                "pre_race_sb_indoor": "1:57.27"
               },
               "splits": {
                 "cumulative_seconds": [0, 13.34, 26.96, 41.54, 56.26, 71.07, 86.37, 102.20, 118.38],
@@ -586,11 +596,13 @@
               "place": 3,
               "athlete": "Tsige Duguma",
               "lane": 4,
+              "bib": 3,
               "team": "Ethiopia",
               "country": "ETH",
               "result": {
                 "final_time": 118.83,
                 "display_time": "1:58.83",
+                "medal": "Bronze",
                 "honors": ["SB"]
               },
               "career": {
@@ -606,13 +618,19 @@
             {
               "place": 4,
               "athlete": "Nigist Getachew",
-              "lane": 5,
+              "lane": 3,
+              "bib": 6,
               "team": "Ethiopia",
               "country": "ETH",
               "result": {
                 "final_time": 119.54,
                 "display_time": "1:59.54",
                 "honors": ["PB"]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:59.63",
+                "pre_race_pb_indoor_seconds": 119.63,
+                "pre_race_sb_indoor": "1:59.98"
               },
               "splits": {
                 "cumulative_seconds": [0, 13.65, 27.60, 42.28, 57.12, 72.49, 87.99, 103.79, 119.54],
@@ -623,12 +641,18 @@
             {
               "place": 5,
               "athlete": "Clara Liberman",
-              "lane": 6,
+              "lane": 2,
+              "bib": 12,
               "team": "France",
               "country": "FRA",
               "result": {
                 "final_time": 120.61,
                 "display_time": "2:00.61"
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:00.42",
+                "pre_race_pb_indoor_seconds": 120.42,
+                "pre_race_sb_indoor": "2:00.42"
               },
               "splits": {
                 "cumulative_seconds": [0, 14.13, 28.04, 42.78, 57.82, 73.23, 88.94, 104.81, 120.61],
@@ -639,12 +663,17 @@
             {
               "place": 6,
               "athlete": "Anna Wielgosz",
-              "lane": 1,
+              "lane": 2,
+              "bib": 16,
               "team": "Poland",
               "country": "POL",
               "result": {
                 "final_time": 120.70,
                 "display_time": "2:00.70"
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:00.34",
+                "pre_race_pb_indoor_seconds": 120.34
               },
               "splits": {
                 "cumulative_seconds": [0, 14.35, 28.23, 43.15, 58.46, 74.10, 89.79, 105.38, 120.70],
@@ -655,7 +684,8 @@
             {
               "place": 7,
               "athlete": "Charlotte Dumas",
-              "lane": 7,
+              "lane": 1,
+              "bib": 4,
               "team": "France",
               "country": "FRA",
               "result": {
@@ -676,7 +706,8 @@
             {
               "place": null,
               "athlete": "Anna Gryc",
-              "lane": 8,
+              "lane": 5,
+              "bib": 7,
               "team": "Poland",
               "country": "POL",
               "status": "DNF",
