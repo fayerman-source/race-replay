@@ -41,7 +41,7 @@ function getLaneRadiusPx(lane, laneCount = TRACK_CONFIG.laneCount) {
   return trackInnerRadius + (clampLane(lane, laneCount) - 0.5) * getVisualLaneWidthPx(laneCount);
 }
 
-function getLanePathLengthPx(lane, laneCount = TRACK_CONFIG.laneCount) {
+export function getLanePathLengthPx(lane, laneCount = TRACK_CONFIG.laneCount) {
   const radius = getLaneRadiusPx(lane, laneCount);
   return (2 * STRAIGHT_VISUAL_LENGTH) + (2 * Math.PI * radius);
 }
@@ -111,6 +111,58 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
   };
 }
 
+// How far a marker has travelled around the VISIBLE oval, in [0, 1) per lap,
+// measured on a single canonical ruler so runners in different lanes are
+// compared on equal footing. This is deliberately NOT race-meters: the lane
+// paths are non-isometric (each straight is a fixed pixel length, each curve
+// scales with lane radius), so equal race-meters render at different visual
+// positions across lanes. Ranking the position badges by this matches what the
+// viewer actually sees (two radially-aligned runners score equal, a photo-
+// finish "level"); ranking by race-meters does not. Mirrors getTrackCoordinates'
+// segment classification exactly so the value tracks the drawn marker.
+export function getVisualLapPosition(meters, lane = 1, options = {}) {
+  const lapDistance = options.lapDistance ?? TRACK_CONFIG.trackLength;
+  const startOffsetMeters = options.startOffsetMeters ?? 0;
+  const laneCount = options.laneCount ?? TRACK_CONFIG.laneCount;
+  const normalizedMeters = (((meters + startOffsetMeters) % lapDistance) + lapDistance) % lapDistance;
+  const progress = normalizedMeters / lapDistance;
+  const radius = getLaneRadiusPx(lane, laneCount);
+  const totalPath = getLanePathLengthPx(lane, laneCount);
+  const halfCircumference = Math.PI * radius;
+  const finishLinePathDistance = (2 * STRAIGHT_VISUAL_LENGTH) + halfCircumference;
+  const pathDistance = ((progress * totalPath) + finishLinePathDistance) % totalPath;
+
+  // Canonical ruler: real straight length + a constant reference curve length,
+  // identical for every lane. The same (segment, fraction) → the same value
+  // regardless of radius, which is what makes cross-lane ranking fair.
+  const straight = STRAIGHT_VISUAL_LENGTH;
+  const referenceRadius = (TRACK_CONFIG.svg.outerRadius + TRACK_CONFIG.svg.innerRadius) / 2;
+  const curve = Math.PI * referenceRadius;
+  const canonTotal = (2 * straight) + (2 * curve);
+
+  // Travel order from the finish line (progress 0 starts on the top curve):
+  // top curve → left straight → bottom curve → right straight → finish.
+  let canon;
+  if (pathDistance <= straight) {
+    // left straight (2nd segment)
+    canon = curve + ((pathDistance / straight) * straight);
+  } else if (pathDistance <= straight + halfCircumference) {
+    // bottom curve (3rd)
+    const fraction = (pathDistance - straight) / halfCircumference;
+    canon = curve + straight + (fraction * curve);
+  } else if (pathDistance <= (2 * straight) + halfCircumference) {
+    // right straight (4th, runs up to the finish line)
+    const fraction = (pathDistance - straight - halfCircumference) / straight;
+    canon = (2 * curve) + straight + (fraction * straight);
+  } else {
+    // top curve (1st segment after the finish line)
+    const fraction = (pathDistance - (2 * straight) - halfCircumference) / halfCircumference;
+    canon = fraction * curve;
+  }
+
+  return canon / canonTotal;
+}
+
 export function getCheckpointSegment(meters, options = {}) {
   const lapDistance = options.lapDistance ?? TRACK_CONFIG.trackLength;
   const laneCount = options.laneCount ?? TRACK_CONFIG.laneCount;
@@ -140,9 +192,14 @@ function getNormalizedSplitMarks(splits, splitMarks, raceDistance = TRACK_CONFIG
 
 export function getDistanceAtTime(splits, currentTime, splitMarks = null, raceDistance = TRACK_CONFIG.raceDistance) {
   if (currentTime <= 0) return 0;
-  if (currentTime >= splits[splits.length - 1]) return raceDistance;
 
   const normalizedSplitMarks = getNormalizedSplitMarks(splits, splitMarks, raceDistance);
+  // Cap at the runner's LAST recorded mark, not the race distance. For a full
+  // runner that mark IS the finish; for a partial runner (a pacer who steps off
+  // at 400m, status DNF) it pins them at their drop point instead of teleporting
+  // them to the finish line — which is why such runners used to be filtered out.
+  const lastMark = normalizedSplitMarks[normalizedSplitMarks.length - 1];
+  if (currentTime >= splits[splits.length - 1]) return lastMark;
 
   for (let i = 0; i < splits.length - 1; i += 1) {
     if (currentTime >= splits[i] && currentTime < splits[i + 1]) {
@@ -155,7 +212,7 @@ export function getDistanceAtTime(splits, currentTime, splitMarks = null, raceDi
     }
   }
 
-  return raceDistance;
+  return lastMark;
 }
 
 export function getTimeAtDistance(splits, targetDistance, splitMarks = null, raceDistance = TRACK_CONFIG.raceDistance) {

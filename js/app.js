@@ -2,6 +2,7 @@ import {
   TRACK_CONFIG,
   formatTime,
   getCheckpointSegment,
+  getLanePathLengthPx,
   getTrackCoordinates,
   getTrackVisualGeometry,
   escapeHtml,
@@ -55,6 +56,11 @@ const liveLeaderTimeEl = document.getElementById("liveLeaderTime");
 const focusRunnerLabelEl = document.getElementById("focusRunnerLabel");
 const focusRunnerTimeEl = document.getElementById("focusRunnerTime");
 const splitGridEl = document.getElementById("splitGrid");
+const recordsCardEl = document.getElementById("recordsCard");
+const recordsListEl = document.getElementById("recordsList");
+const photoFinishCardEl = document.getElementById("photoFinishCard");
+const photoFinishImgEl = document.getElementById("photoFinishImg");
+const photoFinishCaptionEl = document.getElementById("photoFinishCaption");
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 function getSnapshot() {
@@ -71,12 +77,20 @@ function getLeader() {
   return state.runners.find((runner) => runner.id === snapshot.leaderId) || null;
 }
 
-function getSortedByProgress() {
+// The 1/2/3 badges rank by TRUE race order — distance covered (officialDistance,
+// with finishing time as the tiebreak), which is exactly the official split
+// data. This is the canonical definition of race position, so the badges always
+// reflect the real race (in this WR run, Hodgkinson is 3rd→2nd→1st and never
+// below 3rd). We deliberately do NOT rank by on-screen position: the staggered
+// start and the lane merge decouple the visual order from the real order, so
+// ranking on pixels would drop a runner below her true placing during the merge.
+// Dropped-out runners (a DNF pacer) are excluded — they're out of the standings.
+function getRaceOrderForBadges() {
   const snapshot = getSnapshot();
   if (!snapshot) return [];
   return snapshot.orderedRunnerIds
     .map((id) => state.runners.find((runner) => runner.id === id))
-    .filter(Boolean);
+    .filter((runner) => runner && snapshot.getRunnerState(runner.id)?.phase !== "dnf");
 }
 
 function getSplitSegments(snapshot = getSnapshot()) {
@@ -101,6 +115,37 @@ function renderSplitGrid() {
     cell.innerHTML = `${escapeHtml(label)}<br><span class="text-white" data-role="split-value">--</span>`;
     splitGridEl.appendChild(cell);
   });
+}
+
+function renderRecords() {
+  if (!recordsCardEl || !recordsListEl) return;
+  const records = Array.isArray(state.event?.records) ? state.event.records : [];
+  if (records.length === 0) {
+    recordsCardEl.style.display = "none";
+    return;
+  }
+
+  recordsListEl.innerHTML = records.map((record) => `
+    <div class="flex items-center justify-between gap-2">
+      <span class="inline-flex items-center gap-1.5 min-w-0">
+        <span class="text-[9px] font-bold text-blue-300 bg-blue-900/50 border border-blue-800 rounded px-1 py-0.5">${escapeHtml(record.label)}</span>
+        <span class="text-gray-300 truncate">${escapeHtml(record.athlete)}${record.country ? ` (${escapeHtml(record.country)})` : ""}</span>
+      </span>
+      <span class="font-mono text-white flex-shrink-0">${escapeHtml(record.result)}</span>
+    </div>`).join("");
+  recordsCardEl.style.display = "block";
+}
+
+function revealPhotoFinish() {
+  const src = state.event?.photo_finish;
+  if (!photoFinishCardEl || !photoFinishImgEl || !src) return;
+  if (!photoFinishImgEl.getAttribute("src")) photoFinishImgEl.setAttribute("src", src);
+  if (photoFinishCaptionEl) photoFinishCaptionEl.innerText = state.event?.source?.provider || "";
+  photoFinishCardEl.style.display = "block";
+}
+
+function hidePhotoFinish() {
+  if (photoFinishCardEl) photoFinishCardEl.style.display = "none";
 }
 
 function updateHeatSummary() {
@@ -320,20 +365,26 @@ function initRunners() {
 
     runnersLayer.appendChild(dot);
 
+    const medalIcon = { Gold: "🥇", Silver: "🥈", Bronze: "🥉" }[runner.medal] || "";
+    const subtitleParts = [escapeHtml(runner.team)];
+    if (runner.year) subtitleParts.push(`Year ${escapeHtml(runner.year)}`);
+    subtitleParts.push(`Lane ${runner.lane}`);
+    if (runner.dnf) subtitleParts.push("DNF");
+
     const entry = document.createElement("div");
     entry.className = `flex items-center gap-2 p-1.5 rounded hover:bg-gray-700/50 transition ${
       runner.highlight ? "bg-orange-500/20" : ""
-    }`;
+    }${runner.dnf ? " opacity-60" : ""}`;
     entry.innerHTML = `
-      <div class="w-8 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[9px] font-bold text-white bg-slate-700">
-        L${runner.lane}
+      <div class="w-8 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[9px] font-bold text-white bg-slate-700" title="Bib / hip number">
+        #${escapeHtml(String(runner.bib))}
       </div>
       <div class="flex-grow min-w-0">
-        <div class="font-bold truncate text-white ${runner.highlight ? "text-orange-400" : ""}">${escapeHtml(runner.fullName)}</div>
-        <div class="text-gray-400 truncate text-[10px]">${escapeHtml(runner.team)}${runner.year ? ` | Year ${escapeHtml(runner.year)}` : ""}</div>
+        <div class="font-bold truncate text-white ${runner.highlight ? "text-orange-400" : ""}">${medalIcon ? `${medalIcon} ` : ""}${escapeHtml(runner.fullName)}</div>
+        <div class="text-gray-400 truncate text-[10px]">${subtitleParts.join(" · ")}</div>
       </div>
       <div class="text-right text-gray-500 font-mono text-[10px]">
-        ${runner.displayTime || formatTime(runner.finalTime)}
+        ${escapeHtml(runner.displayTime || formatTime(runner.finalTime))}
       </div>
     `;
 
@@ -363,7 +414,32 @@ function updateLeaderHighlight() {
     dot.classList.remove("position-1", "position-2", "position-3");
   });
 
-  getSortedByProgress().slice(0, 3).forEach((runner, index) => {
+  // Hold the 1/2/3 badges until the field has an officially-timed order to
+  // show: the leader reaching the first split mark. Before that, the gaps are
+  // sub-meter interpolation noise and the lane stagger still places outer-lane
+  // runners visually ahead, so any ranking would contradict what's on screen.
+  // The threshold is the first timing checkpoint, so it self-adjusts to each
+  // replay's interval (100m here, 200m for coarser-timed replays).
+  const snapshot = getSnapshot();
+  const firstSplitMark = snapshot?.event?.split_marks_m?.[0] ?? Infinity;
+  const positionsAvailable = (snapshot?.leaderDistance ?? 0) >= firstSplitMark;
+
+  if (!positionsAvailable) {
+    document.querySelectorAll(".position-badge").forEach((badge) => {
+      badge.style.display = "none";
+    });
+    return;
+  }
+
+  // Hide every badge first, then reveal only the top 3. (Hiding the complement
+  // of the top-3 isn't enough: dropped-out runners are excluded from the render
+  // order entirely, so they'd keep a stale badge from when they were leading.)
+  state.runners.forEach((runner) => {
+    const badge = document.getElementById(`badge-${runner.id}`);
+    if (badge) badge.style.display = "none";
+  });
+
+  getRaceOrderForBadges().slice(0, 3).forEach((runner, index) => {
     const dot = document.getElementById(`runner-${runner.id}`);
     const badge = document.getElementById(`badge-${runner.id}`);
     if (!dot || !badge) return;
@@ -372,11 +448,6 @@ function updateLeaderHighlight() {
     badge.innerText = String(index + 1);
     badge.className = `position-badge ${["gold", "silver", "bronze"][index]}`;
     badge.style.display = "block";
-  });
-
-  getSortedByProgress().slice(3).forEach((runner) => {
-    const badge = document.getElementById(`badge-${runner.id}`);
-    if (badge) badge.style.display = "none";
   });
 }
 
@@ -399,6 +470,15 @@ function updateRunnerPositions(deltaSeconds = 0) {
   const snapshot = getSnapshot();
   if (!snapshot) return finishedCount;
   const laneResponse = 3.2;
+  const lapDistance = snapshot.event.track_length_m;
+  const laneCount = snapshot.event.lane_count;
+  const geomOptions = { lapDistance, laneCount };
+  // Field-relative speed ceiling (m/s) → converted per-runner into a pixel
+  // budget below. race-model.js derives this from the field's own splits.
+  const maxSpeedMps = snapshot.event.max_plausible_speed_mps || Infinity;
+  // Race-seconds elapsed this frame: wall-clock delta scaled by playback speed,
+  // so the cap throttles real running speed, not the user's fast-forward.
+  const raceSecondsThisFrame = Math.max(0, deltaSeconds) * state.speed;
 
   state.runners.forEach((runner) => {
     const runnerState = snapshot.getRunnerState(runner.id);
@@ -406,25 +486,63 @@ function updateRunnerPositions(deltaSeconds = 0) {
 
     if (!dot || !runnerState) return;
 
+    if (runnerState.phase === "dnf") {
+      // Pacer has stepped off — park a dim marker in the infield near where
+      // they dropped out, removed from the standings. The dot's CSS transition
+      // glides it inward, reading as a veer off the track.
+      const dropPosition = getTrackCoordinates(runnerState.officialDistance, 1, geomOptions);
+      const centerX = 175;
+      const centerY = 275; // oval centre in SVG units (topY 175 .. bottomY 375)
+      const infieldInset = 0.42;
+      dot.style.left = `${dropPosition.x + ((centerX - dropPosition.x) * infieldInset)}px`;
+      dot.style.top = `${dropPosition.y + ((centerY - dropPosition.y) * infieldInset)}px`;
+      dot.classList.add("dnf");
+      dot.classList.remove("position-1", "position-2", "position-3");
+      dot.style.zIndex = "5";
+      return;
+    }
+    dot.classList.remove("dnf");
+
+    // 1. Unclamped targets — same intent as before: exponential ease toward the
+    //    model's lane, monotonic (never-backward) forward progress.
     const previousLane = state.renderLaneByRunnerId[runner.id] ?? runnerState.displayLane;
     const targetLane = runnerState.displayLane;
-    const laneDelta = targetLane - previousLane;
     const laneBlend = 1 - Math.exp(-Math.max(0, deltaSeconds) * laneResponse);
-    const smoothedLane = previousLane + (laneDelta * laneBlend);
+    const unclampedLane = previousLane + ((targetLane - previousLane) * laneBlend);
 
     const targetVisualProgress = runnerState.officialDistance + runnerState.longitudinalOffset;
     const previousVisualProgress = state.renderProgressByRunnerId[runner.id] ?? targetVisualProgress;
-    const smoothedVisualProgress = Math.max(previousVisualProgress, targetVisualProgress);
+    const unclampedVisualProgress = Math.max(previousVisualProgress, targetVisualProgress);
 
-    const smoothedPosition = getTrackCoordinates(smoothedVisualProgress, smoothedLane, {
-      lapDistance: snapshot.event.track_length_m,
-      laneCount: snapshot.event.lane_count,
-    });
+    // 2. Speed governor. Measure how far the marker WOULD jump on screen this
+    //    frame (forward + lateral combined), and compare against the pixel
+    //    budget implied by the field ceiling. The budget uses this lane's
+    //    average px-per-meter so the cap means the same physical speed
+    //    regardless of which lane the runner is cutting across.
+    const previousPosition = getTrackCoordinates(previousVisualProgress, previousLane, geomOptions);
+    let nextLane = unclampedLane;
+    let nextVisualProgress = unclampedVisualProgress;
+    let nextPosition = getTrackCoordinates(nextVisualProgress, nextLane, geomOptions);
 
-    state.renderLaneByRunnerId[runner.id] = smoothedLane;
-    state.renderProgressByRunnerId[runner.id] = smoothedVisualProgress;
-    dot.style.left = `${smoothedPosition.x}px`;
-    dot.style.top = `${smoothedPosition.y}px`;
+    const pxPerMeter = getLanePathLengthPx(nextLane, laneCount) / lapDistance;
+    const budgetPx = maxSpeedMps * raceSecondsThisFrame * pxPerMeter;
+    const stepPx = Math.hypot(nextPosition.x - previousPosition.x, nextPosition.y - previousPosition.y);
+
+    if (stepPx > budgetPx && stepPx > 0) {
+      // Too fast: advance only the allowed fraction of the way toward the
+      // target, scaling BOTH progress and lane so the marker stays on its lane
+      // path (no chord-cutting across the infield) and bleeds off the deficit
+      // over the next frames instead of teleporting.
+      const scale = budgetPx / stepPx;
+      nextVisualProgress = previousVisualProgress + ((unclampedVisualProgress - previousVisualProgress) * scale);
+      nextLane = previousLane + ((unclampedLane - previousLane) * scale);
+      nextPosition = getTrackCoordinates(nextVisualProgress, nextLane, geomOptions);
+    }
+
+    state.renderLaneByRunnerId[runner.id] = nextLane;
+    state.renderProgressByRunnerId[runner.id] = nextVisualProgress;
+    dot.style.left = `${nextPosition.x}px`;
+    dot.style.top = `${nextPosition.y}px`;
     dot.style.opacity = runnerState.phase === "finished" ? "0.35" : "1";
     dot.style.zIndex = runner.highlight ? "50" : "10";
 
@@ -504,7 +622,8 @@ function updatePositions(timestampMs) {
     state.finishPlayed = true;
   }
 
-  if (finishedCount === state.runners.length) {
+  if (state.currentSnapshot?.isComplete) {
+    revealPhotoFinish();
     stopRace();
     return;
   }
@@ -546,6 +665,7 @@ export function resetRace() {
 
   timerEl.innerText = "0:00.00";
   lapCounterEl.innerText = "Lap 1 of 4";
+  hidePhotoFinish();
   setButtonToStartResumeState();
 
   document.querySelectorAll(".lap-dot").forEach((dot, index) => {
@@ -570,7 +690,7 @@ export function resetRace() {
       dot.style.left = `${runnerState.trackPosition.x}px`;
       dot.style.top = `${runnerState.trackPosition.y}px`;
       dot.style.opacity = "1";
-      dot.classList.remove("position-1", "position-2", "position-3");
+      dot.classList.remove("position-1", "position-2", "position-3", "dnf");
     }
 
     if (badge) badge.style.display = "none";
@@ -613,6 +733,7 @@ async function init() {
   renderTrackGeometry();
   renderSplitGrid();
   renderCheckpointMarkers();
+  renderRecords();
   initRunners();
   resetRace();
 }

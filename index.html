@@ -90,8 +90,15 @@
             color: white;
             box-shadow: 0 2px 6px rgba(0,0,0,0.5);
             z-index: 10;
-            transition: transform 0.15s linear, box-shadow 0.2s, top 0.1s linear, left 0.1s linear;
+            transition: transform 0.15s linear, box-shadow 0.2s, top 0.1s linear, left 0.1s linear, opacity 0.5s ease, background-color 0.5s ease;
             border: 1.5px solid rgba(255,255,255,0.8);
+        }
+
+        .runner-dot.dnf {
+            background-color: #6B7280 !important;
+            border-color: rgba(255,255,255,0.3);
+            opacity: 0.4;
+            box-shadow: none;
         }
 
         .runner-dot.mentioned {
@@ -306,6 +313,21 @@
                 <div id="commentaryBox" class="text-lg font-medium text-white italic leading-snug min-h-[80px] flex items-center">
                     Runners at the line...
                 </div>
+            </div>
+
+            <!-- 2b. Records (populated by JS when the replay carries them) -->
+            <div class="card" id="recordsCard" style="display:none">
+                <h3 class="text-xs text-gray-400 uppercase font-bold mb-2">Records</h3>
+                <div class="space-y-1 text-xs" id="recordsList"></div>
+            </div>
+
+            <!-- 2c. Photo Finish (revealed at race end) -->
+            <div class="card" id="photoFinishCard" style="display:none">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xs text-gray-400 uppercase font-bold">Photo Finish</h3>
+                    <span class="text-[10px] text-gray-500" id="photoFinishCaption"></span>
+                </div>
+                <img id="photoFinishImg" alt="Race photo finish" class="w-full rounded border border-gray-700" loading="lazy" />
             </div>
 
             <!-- 3. Controls -->
