@@ -188,6 +188,7 @@ export function getTimeAtDistance(splits, targetDistance, splitMarks = null, rac
 }
 
 export function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "—";
   if (seconds < 0) {
     const absSeconds = Math.abs(seconds);
     const s = Math.floor(absSeconds);

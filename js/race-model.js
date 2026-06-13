@@ -224,6 +224,9 @@ export function createRaceModel(event, runners) {
       if (a.dropped !== b.dropped) return a.dropped ? 1 : -1;
       const distanceDiff = b.officialDistance - a.officialDistance;
       if (distanceDiff !== 0) return distanceDiff;
+      // Equality check before subtracting guards against Infinity - Infinity
+      // (= NaN) when multiple DNF runners, both with finalTime Infinity, tie.
+      if (a.finalTime === b.finalTime) return 0;
       return a.finalTime - b.finalTime;
     });
 

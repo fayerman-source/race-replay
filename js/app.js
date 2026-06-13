@@ -88,9 +88,13 @@ function getLeader() {
 function getRaceOrderForBadges() {
   const snapshot = getSnapshot();
   if (!snapshot) return [];
+  const droppedIds = new Set(
+    snapshot.runnerStates.filter((s) => s.phase === "dnf").map((s) => s.id),
+  );
   return snapshot.orderedRunnerIds
+    .filter((id) => !droppedIds.has(id))
     .map((id) => state.runners.find((runner) => runner.id === id))
-    .filter((runner) => runner && snapshot.getRunnerState(runner.id)?.phase !== "dnf");
+    .filter(Boolean);
 }
 
 function getSplitSegments(snapshot = getSnapshot()) {
@@ -125,7 +129,7 @@ function renderRecords() {
     return;
   }
 
-  recordsListEl.innerHTML = records.map((record) => `
+  recordsListEl.innerHTML = records.filter(Boolean).map((record) => `
     <div class="flex items-center justify-between gap-2">
       <span class="inline-flex items-center gap-1.5 min-w-0">
         <span class="text-[9px] font-bold text-blue-300 bg-blue-900/50 border border-blue-800 rounded px-1 py-0.5">${escapeHtml(record.label || "")}</span>
