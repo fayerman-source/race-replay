@@ -65,6 +65,15 @@ export function getVisualLane(lane, laneCount = TRACK_CONFIG.laneCount) {
  * Get track coordinates for a runner on the Ocean Breeze 200m oval.
  * Distance is expressed in race meters; startOffsetMeters places outer lanes
  * farther around the lap so all athletes can be shown from a lane stagger.
+ *
+ * The angular position around the oval is parametrized on a SINGLE reference
+ * geometry (the inner lane), so two runners at the same race distance sit at
+ * the same angle regardless of lane — radially aligned, exactly as a merged
+ * field looks. The runner's own lane radius is used only for the lateral
+ * offset (x on the straights, arc radius on the curves). Parametrizing each
+ * lane on its OWN path length instead put outer lanes angularly ahead for the
+ * same distance (fixed-length straights + radius-scaled curves), which drew a
+ * leader on the rail behind runners packed into outer lanes.
  */
 export function getTrackCoordinates(meters, lane = 1, options = {}) {
   const lapDistance = options.lapDistance ?? TRACK_CONFIG.trackLength;
@@ -73,9 +82,14 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
   const normalizedMeters = (((meters + startOffsetMeters) % lapDistance) + lapDistance) % lapDistance;
   const progress = normalizedMeters / lapDistance;
   const radius = getLaneRadiusPx(lane, laneCount);
-  const totalPath = getLanePathLengthPx(lane, laneCount);
   const { centerX, topY, bottomY } = TRACK_CONFIG.svg;
-  const halfCircumference = Math.PI * radius;
+
+  // Reference (lane-independent) parametrization. Straights are a fixed pixel
+  // length for every lane already; only the curve length needs a shared
+  // reference so equal progress → equal angle in every lane.
+  const referenceRadius = getLaneRadiusPx(1, laneCount);
+  const halfCircumference = Math.PI * referenceRadius;
+  const totalPath = (2 * STRAIGHT_VISUAL_LENGTH) + (2 * halfCircumference);
   const finishLinePathDistance = (2 * STRAIGHT_VISUAL_LENGTH) + halfCircumference;
   const pathDistance = ((progress * totalPath) + finishLinePathDistance) % totalPath;
 
@@ -87,8 +101,8 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
   }
 
   if (pathDistance <= STRAIGHT_VISUAL_LENGTH + halfCircumference) {
-    const arcDistance = pathDistance - STRAIGHT_VISUAL_LENGTH;
-    const angle = Math.PI - (arcDistance / halfCircumference) * Math.PI;
+    const arcFraction = (pathDistance - STRAIGHT_VISUAL_LENGTH) / halfCircumference;
+    const angle = Math.PI - (arcFraction * Math.PI);
     return {
       x: centerX + radius * Math.cos(angle),
       y: bottomY + radius * Math.sin(angle),
@@ -103,8 +117,8 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
     };
   }
 
-  const arcDistance = pathDistance - (2 * STRAIGHT_VISUAL_LENGTH) - halfCircumference;
-  const angle = (arcDistance / halfCircumference) * Math.PI;
+  const arcFraction = (pathDistance - (2 * STRAIGHT_VISUAL_LENGTH) - halfCircumference) / halfCircumference;
+  const angle = arcFraction * Math.PI;
   return {
     x: centerX + radius * Math.cos(angle),
     y: topY - radius * Math.sin(angle),
