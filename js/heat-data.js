@@ -129,18 +129,30 @@ function assignSharedLaneOffsets(runners) {
     byLane.get(runner.lane).push(runner);
   });
 
-  byLane.forEach((laneRunners) => {
+  const maxLane = runners.reduce((max, runner) => Math.max(max, runner.lane), 0);
+
+  byLane.forEach((laneRunners, lane) => {
     if (laneRunners.length < 2) {
       laneRunners.forEach((runner) => { runner.laneOffset = 0; });
       return;
     }
-    // Faster final time first → innermost. DNF/null sort last.
-    const ordered = laneRunners
-      .slice()
-      .sort((a, b) => (a.finalTime ?? Infinity) - (b.finalTime ?? Infinity));
+    // Faster final time first → innermost. Equal/Infinity times (multiple DNFs)
+    // keep a stable order — an explicit equality check avoids the NaN a
+    // comparator would return from Infinity - Infinity.
+    const ordered = laneRunners.slice().sort((a, b) => {
+      const aTime = a.finalTime ?? Infinity;
+      const bTime = b.finalTime ?? Infinity;
+      return aTime === bTime ? 0 : aTime - bTime;
+    });
+    // On the boundary lanes, shift the whole spread inward so no sub-position
+    // lands outside [1, laneCount] where clampLane would collapse it back onto
+    // the edge and re-overlap the pair.
+    let shift = 0;
+    if (lane <= 1) shift = SHARED_LANE_SPREAD;
+    else if (lane >= maxLane) shift = -SHARED_LANE_SPREAD;
     const step = (SHARED_LANE_SPREAD * 2) / (ordered.length - 1);
     ordered.forEach((runner, slot) => {
-      runner.laneOffset = -SHARED_LANE_SPREAD + (slot * step);
+      runner.laneOffset = -SHARED_LANE_SPREAD + (slot * step) + shift;
     });
   });
 
