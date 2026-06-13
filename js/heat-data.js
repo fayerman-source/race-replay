@@ -38,7 +38,12 @@ export function normalizeEntry(entry, index, lane) {
 
   const nameParts = (entry.athlete || "Runner").trim().split(/\s+/);
   const fullName = entry.athlete || "Runner";
-  const finalTime = getDisplayTimeSeconds(entry);
+  // A DNF runner's last split is a PARTIAL time, not a finish. Treat it as
+  // non-competing (Infinity) so finishing-time sorts — winner selection in
+  // updateHeatMeta, field-relative metrics in compare-page.js — never rank a
+  // dropped-out pacer ahead of the actual finishers. Display still uses
+  // displayTime ("DNF"), so the sentinel is never formatted for the UI.
+  const finalTime = entry.status === "DNF" ? Infinity : getDisplayTimeSeconds(entry);
 
   return {
     id: `${entry.athlete || "runner"}-${index}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),

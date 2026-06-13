@@ -488,14 +488,19 @@ function updateRunnerPositions(deltaSeconds = 0) {
 
     if (runnerState.phase === "dnf") {
       // Pacer has stepped off — park a dim marker in the infield near where
-      // they dropped out, removed from the standings. The dot's CSS transition
-      // glides it inward, reading as a veer off the track.
-      const dropPosition = getTrackCoordinates(runnerState.officialDistance, 1, geomOptions);
+      // they dropped out, removed from the standings. Anchor from the runner's
+      // CURRENT render lane (not lane 1) so they veer inward from where they
+      // are rather than jumping laterally first; the CSS transition glides it.
+      const anchorLane = state.renderLaneByRunnerId[runner.id] ?? runnerState.displayLane;
+      const dropPosition = getTrackCoordinates(runnerState.officialDistance, anchorLane, geomOptions);
       const centerX = TRACK_CONFIG.svg.centerX;
       const centerY = (TRACK_CONFIG.svg.topY + TRACK_CONFIG.svg.bottomY) / 2;
       const infieldInset = 0.42;
       dot.style.left = `${dropPosition.x + ((centerX - dropPosition.x) * infieldInset)}px`;
       dot.style.top = `${dropPosition.y + ((centerY - dropPosition.y) * infieldInset)}px`;
+      // Clear the inline opacity set during normal running so the .dnf class's
+      // dimmed opacity actually takes effect (inline would otherwise win).
+      dot.style.opacity = "";
       dot.classList.add("dnf");
       dot.classList.remove("position-1", "position-2", "position-3");
       dot.style.zIndex = "5";
