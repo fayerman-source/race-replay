@@ -251,9 +251,94 @@
             .track-wrapper { height: 700px; min-height: 700px; padding-top: 10px; }
             .oval-track { transform: scale(1.12); margin-top: -10px; }
         }
+
+        /* ===== Gallery (front door) ===== */
+        /* The head-script sets data-view from ?replay=. Baseline hides the
+           gallery so the player never flashes behind it; the gallery rule
+           re-shows it and hides the player when there's no replay param. */
+        #galleryView { display: none; }
+        [data-view="gallery"] #galleryView { display: block; }
+        [data-view="gallery"] .dashboard-grid { display: none; }
+
+        #galleryView { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; }
+        .gallery-header { margin-bottom: 1.75rem; }
+        .gallery-header h1 {
+            font-size: 1.9rem; font-weight: 800; letter-spacing: -0.01em;
+            background: linear-gradient(90deg, #60A5FA, #A78BFA, #F472B6);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .gallery-header p { color: #94A3B8; font-size: 0.9rem; margin-top: 0.35rem; }
+        .gallery-status { display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: #64748B; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+            gap: 1.1rem;
+        }
+
+        .replay-card {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .replay-card:hover {
+            border-color: #3B82F6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+        .replay-card-main { display: block; padding: 1.1rem 1.1rem 0.9rem; color: inherit; text-decoration: none; flex-grow: 1; }
+        .replay-card-top { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.7rem; }
+        .chip {
+            font-size: 0.66rem; font-weight: 700; padding: 0.15rem 0.5rem;
+            border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .chip-distance { background: #1E3A8A; color: #BFDBFE; }
+        .chip-record { background: #FFD700; color: #1E293B; }
+        .replay-card-title { font-size: 1.05rem; font-weight: 700; color: #F1F5F9; line-height: 1.25; }
+        .replay-card-venue { font-size: 0.78rem; color: #94A3B8; margin-top: 0.3rem; }
+        .replay-card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; margin-top: 0.7rem; font-size: 0.72rem; color: #CBD5E1; }
+        .replay-card-meta span::before { content: "● "; color: #475569; font-size: 0.6em; vertical-align: middle; }
+
+        .replay-card-actions { display: flex; border-top: 1px solid #334155; }
+        .replay-card-actions .action {
+            flex: 1; text-align: center; padding: 0.6rem 0.4rem;
+            font-size: 0.74rem; font-weight: 600; color: #CBD5E1; text-decoration: none;
+            transition: background-color 0.15s, color 0.15s;
+        }
+        .replay-card-actions .action + .action { border-left: 1px solid #334155; }
+        .replay-card-actions .action:hover { background: #0F172A; color: #fff; }
+        .replay-card-actions .action-primary { color: #60A5FA; }
+        .replay-card-actions .action-primary:hover { background: #1D4ED8; color: #fff; }
+
+        .gallery-back { display: inline-block; }
     </style>
+    <script>
+        // Routing: ?replay=<id> → player view; no param → gallery (front door).
+        // Runs synchronously before first paint so the correct view shows with
+        // no flash of the wrong one.
+        (function () {
+            // get() (not has()) so an empty ?replay= still routes to the
+            // gallery rather than booting the player with no usable id.
+            var replayId = new URLSearchParams(window.location.search).get("replay");
+            document.documentElement.dataset.view = replayId ? "player" : "gallery";
+        })();
+    </script>
 </head>
 <body>
+
+    <!-- GALLERY: the front door. Shown when there is no ?replay= param. -->
+    <div id="galleryView">
+        <header class="gallery-header">
+            <h1>Race Replay</h1>
+            <p>800m race replays animated from official split data. Pick a race to watch, analyze, or compare.</p>
+            <span id="galleryStatus" class="gallery-status">Loading races…</span>
+        </header>
+        <main id="galleryGrid" class="gallery-grid"></main>
+    </div>
 
     <div class="dashboard-grid">
         <!-- LEFT: Track Visualization -->
@@ -266,7 +351,7 @@
                     <path id="trackInfieldPath" d="M 150 175 L 150 375 A 25 25 0 1 0 200 375 L 200 175 A 25 25 0 1 0 150 175" fill="#1E293B" stroke="white" stroke-width="2"/>
 
                     <!-- Shared start / finish line -->
-                    <line x1="200" y1="175" x2="325" y2="175" class="start-finish-line" />
+                    <line id="startFinishLine" x1="200" y1="175" x2="325" y2="175" class="start-finish-line" />
                     <text x="334" y="172" fill="white" font-size="9" font-weight="bold">STA</text>
                     <text x="334" y="184" fill="white" font-size="9" font-weight="bold">FIN</text>
                     <g id="checkpointMarkers"></g>
@@ -285,7 +370,10 @@
             <!-- 1. Header & Timer -->
             <div class="card text-center relative overflow-hidden shrink-0">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
-                <div class="flex justify-between items-center px-4 pt-4 pb-2">
+                <div class="px-4 pt-3 text-left">
+                    <a href="./index.html" class="gallery-back text-[11px] text-gray-400 hover:text-blue-400 transition">← All races</a>
+                </div>
+                <div class="flex justify-between items-center px-4 pt-1 pb-2">
                     <h1 class="text-lg font-bold text-gray-300" id="eventTitle">800m Heat Replay</h1>
                     <span class="text-[10px] bg-blue-900/50 px-2 py-0.5 rounded text-blue-300 border border-blue-800" id="trackBadge">200m Banked | 4 Laps</span>
                 </div>
@@ -379,6 +467,7 @@
         </div>
     </div>
 
+<script type="module" src="js/gallery.js"></script>
 <script type="module" src="js/app.js"></script>
 
 </body>

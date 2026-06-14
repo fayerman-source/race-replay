@@ -49,6 +49,7 @@ const raceDurationEl = document.getElementById("raceDuration");
 const trackSvgEl = document.getElementById("trackSvg");
 const trackOuterPathEl = document.getElementById("trackOuterPath");
 const trackInfieldPathEl = document.getElementById("trackInfieldPath");
+const startFinishLineEl = document.getElementById("startFinishLine");
 const laneLinesGroupEl = document.getElementById("laneLinesGroup");
 const checkpointMarkersEl = document.getElementById("checkpointMarkers");
 const liveLeaderLabelEl = document.getElementById("liveLeaderLabel");
@@ -237,6 +238,16 @@ function renderTrackGeometry() {
   trackOuterPathEl.setAttribute("class", "track-surface");
   trackInfieldPathEl.setAttribute("d", geometry.infieldPath);
   trackInfieldPathEl.setAttribute("class", "track-infield");
+
+  // Keep the start/finish line spanning only the running band (inner lane edge
+  // → outer edge). Without this it stays at the static 8-lane inner edge and
+  // overhangs into the infield on 6-lane tracks.
+  if (startFinishLineEl) {
+    startFinishLineEl.setAttribute("x1", geometry.startFinish.x1);
+    startFinishLineEl.setAttribute("x2", geometry.startFinish.x2);
+    startFinishLineEl.setAttribute("y1", geometry.startFinish.y);
+    startFinishLineEl.setAttribute("y2", geometry.startFinish.y);
+  }
 
   laneLinesGroupEl.innerHTML = "";
   geometry.lanePaths.forEach((pathData) => {
@@ -751,7 +762,13 @@ async function init() {
   resetRace();
 }
 
-init().catch((error) => {
-  commentaryBoxEl.innerText = `Unable to load heat data: ${error.message}`;
-  console.error(error);
-});
+// Only boot the player when a specific race is requested (?replay=<id>).
+// With no param the page is the gallery (gallery.js handles it) and the player
+// stays dormant — otherwise loadHeatData would fall back to the default replay
+// and render a race behind the gallery.
+if (new URLSearchParams(window.location.search).get("replay")) {
+  init().catch((error) => {
+    commentaryBoxEl.innerText = `Unable to load heat data: ${error.message}`;
+    console.error(error);
+  });
+}
