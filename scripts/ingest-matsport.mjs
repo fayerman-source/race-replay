@@ -284,16 +284,23 @@ function parseArgs(argv) {
   let positional = null;
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
+    // Pull the value for a value-taking flag, failing if it's missing or is
+    // actually the next flag (e.g. `--id --write` or a trailing `--level`).
+    const val = () => {
+      const v = argv[++i];
+      if (v === undefined || v.startsWith("--")) throw new Error(`${a} requires a value`);
+      return v;
+    };
     if (a === "--write") opts.write = true;
     else if (a === "--default") opts.makeDefault = true;
-    else if (a === "--id") opts.id = argv[++i];
-    else if (a === "--title") opts.title = argv[++i];
-    else if (a === "--focus") opts.focus = argv[++i];
-    else if (a === "--level") opts.level = argv[++i];
-    else if (a === "--track") opts.track = Number(argv[++i]);
-    else if (a === "--break") opts.break = Number(argv[++i]);
-    else if (a === "--merge") opts.merge = Number(argv[++i]);
-    else if (a === "--turns") opts.turns = Number(argv[++i]);
+    else if (a === "--id") opts.id = val();
+    else if (a === "--title") opts.title = val();
+    else if (a === "--focus") opts.focus = val();
+    else if (a === "--level") opts.level = val();
+    else if (a === "--track") opts.track = Number(val());
+    else if (a === "--break") opts.break = Number(val());
+    else if (a === "--merge") opts.merge = Number(val());
+    else if (a === "--turns") opts.turns = Number(val());
     else if (!a.startsWith("--")) positional = a;
     else throw new Error(`unknown flag: ${a}`); // fail fast on typos like --foucs
   }
