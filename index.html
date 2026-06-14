@@ -272,7 +272,7 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
             gap: 1.1rem;
         }
 
@@ -321,8 +321,10 @@
         // Runs synchronously before first paint so the correct view shows with
         // no flash of the wrong one.
         (function () {
-            var hasReplay = new URLSearchParams(window.location.search).has("replay");
-            document.documentElement.dataset.view = hasReplay ? "player" : "gallery";
+            // get() (not has()) so an empty ?replay= still routes to the
+            // gallery rather than booting the player with no usable id.
+            var replayId = new URLSearchParams(window.location.search).get("replay");
+            document.documentElement.dataset.view = replayId ? "player" : "gallery";
         })();
     </script>
 </head>

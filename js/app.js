@@ -766,7 +766,7 @@ async function init() {
 // With no param the page is the gallery (gallery.js handles it) and the player
 // stays dormant — otherwise loadHeatData would fall back to the default replay
 // and render a race behind the gallery.
-if (new URLSearchParams(window.location.search).has("replay")) {
+if (new URLSearchParams(window.location.search).get("replay")) {
   init().catch((error) => {
     commentaryBoxEl.innerText = `Unable to load heat data: ${error.message}`;
     console.error(error);

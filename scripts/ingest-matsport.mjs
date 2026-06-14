@@ -24,7 +24,7 @@
 //   node scripts/ingest-matsport.mjs 02514df4-...-d3512c3715e7_ATSTAW008101
 //   node scripts/ingest-matsport.mjs "https://athle-history.matsport.com/events/<ID>/results" --write
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, renameSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -143,8 +143,11 @@ function buildEntry(result, raceDistance, rankAtLastSplit) {
   const role = inferRole(result, lastMark, raceDistance, rankAtLastSplit);
   const country = athlete.country || "";
 
+  // rank 999 is matsport's sentinel for "no place" (DNF/DNS). Normalize to a
+  // number so downstream `place === 1` winner checks never see a string.
+  const rank = Number(result.rank);
   const entry = {
-    place: result.rank && result.rank !== 999 ? result.rank : null,
+    place: Number.isFinite(rank) && rank !== 999 ? rank : null,
     athlete: fullName(athlete),
     lane: numOrNull(result.lane),
     bib: numOrNull(result.bib),
@@ -292,6 +295,7 @@ function parseArgs(argv) {
     else if (a === "--merge") opts.merge = Number(argv[++i]);
     else if (a === "--turns") opts.turns = Number(argv[++i]);
     else if (!a.startsWith("--")) positional = a;
+    else throw new Error(`unknown flag: ${a}`); // fail fast on typos like --foucs
   }
   opts.positional = positional;
   return opts;
@@ -361,7 +365,11 @@ async function main() {
     console.error(`+ appended replay "${replay.replay_id}"`);
   }
   if (opts.makeDefault) doc.default_replay_id = replay.replay_id;
-  writeFileSync(DATA_PATH, JSON.stringify(doc, null, 2) + "\n");
+  // Atomic write: a temp file + rename can't leave the shipped data file
+  // truncated/corrupt if the process is interrupted mid-write.
+  const tmpPath = `${DATA_PATH}.tmp`;
+  writeFileSync(tmpPath, JSON.stringify(doc, null, 2) + "\n");
+  renameSync(tmpPath, DATA_PATH);
   console.error(`✓ wrote ${DATA_PATH}`);
 }
 

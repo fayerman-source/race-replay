@@ -108,9 +108,11 @@ function buildCard(replay) {
     <div class="replay-card-actions">
       <a class="action action-primary" href="./index.html?replay=${id}">▶ Watch replay</a>
       <a class="action" href="./analysis.html?replay=${id}">Analyze</a>
-      <a class="action" href="./compare.html?replay=${id}">Compare</a>
     </div>
   `;
+  // No per-card "Compare": compare.html takes a PAIR (?a=&b=), which a single
+  // race card can't express; linking it with ?replay= would silently fall back
+  // to the default pair.
 
   return card;
 }
