@@ -39,9 +39,26 @@
                 "display_time": "2:45.31"
               },
               "splits": {
-                "cumulative_seconds": [0, 35.89, 75.9, 118.78, 165.31],
-                "segment_seconds": [35.89, 40.02, 42.88, 46.54],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  35.89,
+                  75.9,
+                  118.78,
+                  165.31
+                ],
+                "segment_seconds": [
+                  35.89,
+                  40.02,
+                  42.88,
+                  46.54
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -55,9 +72,26 @@
                 "display_time": "2:54.42"
               },
               "splits": {
-                "cumulative_seconds": [0, 39.35, 85.16, 131.22, 174.42],
-                "segment_seconds": [39.35, 45.82, 46.06, 43.21],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  39.35,
+                  85.16,
+                  131.22,
+                  174.42
+                ],
+                "segment_seconds": [
+                  39.35,
+                  45.82,
+                  46.06,
+                  43.21
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -71,9 +105,26 @@
                 "display_time": "3:01.72"
               },
               "splits": {
-                "cumulative_seconds": [0, 39.12, 86.23, 136.42, 181.72],
-                "segment_seconds": [39.12, 47.12, 50.19, 45.3],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  39.12,
+                  86.23,
+                  136.42,
+                  181.72
+                ],
+                "segment_seconds": [
+                  39.12,
+                  47.12,
+                  50.19,
+                  45.3
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -87,11 +138,30 @@
                 "display_time": "3:02.12"
               },
               "splits": {
-                "cumulative_seconds": [0, 39.96, 85.61, 134.34, 182.12],
-                "segment_seconds": [39.96, 45.66, 48.74, 47.78],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  39.96,
+                  85.61,
+                  134.34,
+                  182.12
+                ],
+                "segment_seconds": [
+                  39.96,
+                  45.66,
+                  48.74,
+                  47.78
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               },
-              "tags": ["focus_runner"]
+              "tags": [
+                "focus_runner"
+              ]
             },
             {
               "place": 5,
@@ -104,9 +174,26 @@
                 "display_time": "3:03.16"
               },
               "splits": {
-                "cumulative_seconds": [0, 38.77, 83.94, 135.07, 183.16],
-                "segment_seconds": [38.77, 45.18, 51.13, 48.1],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  38.77,
+                  83.94,
+                  135.07,
+                  183.16
+                ],
+                "segment_seconds": [
+                  38.77,
+                  45.18,
+                  51.13,
+                  48.1
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -120,9 +207,26 @@
                 "display_time": "3:06.04"
               },
               "splits": {
-                "cumulative_seconds": [0, 39.06, 85.92, 136.76, 186.04],
-                "segment_seconds": [39.06, 46.86, 50.85, 49.29],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  39.06,
+                  85.92,
+                  136.76,
+                  186.04
+                ],
+                "segment_seconds": [
+                  39.06,
+                  46.86,
+                  50.85,
+                  49.29
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -136,9 +240,26 @@
                 "display_time": "3:08.35"
               },
               "splits": {
-                "cumulative_seconds": [0, 37.89, 86.95, 139, 188.35],
-                "segment_seconds": [37.89, 49.06, 52.05, 49.36],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  37.89,
+                  86.95,
+                  139,
+                  188.35
+                ],
+                "segment_seconds": [
+                  37.89,
+                  49.06,
+                  52.05,
+                  49.36
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -152,9 +273,26 @@
                 "display_time": "3:14.40"
               },
               "splits": {
-                "cumulative_seconds": [0, 39.88, 88.36, 142.37, 194.4],
-                "segment_seconds": [39.88, 48.48, 54.02, 52.03],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  39.88,
+                  88.36,
+                  142.37,
+                  194.4
+                ],
+                "segment_seconds": [
+                  39.88,
+                  48.48,
+                  54.02,
+                  52.03
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -205,9 +343,26 @@
                 "display_time": "2:53.13"
               },
               "splits": {
-                "cumulative_seconds": [0, 35.02, 77.31, 127.38, 173.13],
-                "segment_seconds": [35.02, 42.3, 50.07, 45.76],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  35.02,
+                  77.31,
+                  127.38,
+                  173.13
+                ],
+                "segment_seconds": [
+                  35.02,
+                  42.3,
+                  50.07,
+                  45.76
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -220,9 +375,26 @@
                 "display_time": "3:05.80"
               },
               "splits": {
-                "cumulative_seconds": [0, 39.64, 86.45, 136.65, 185.8],
-                "segment_seconds": [39.64, 46.82, 50.2, 49.16],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  39.64,
+                  86.45,
+                  136.65,
+                  185.8
+                ],
+                "segment_seconds": [
+                  39.64,
+                  46.82,
+                  50.2,
+                  49.16
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -235,11 +407,30 @@
                 "display_time": "3:21.70"
               },
               "splits": {
-                "cumulative_seconds": [0, 43.63, 98.21, 153.1, 201.7],
-                "segment_seconds": [43.63, 54.58, 54.9, 48.6],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  43.63,
+                  98.21,
+                  153.1,
+                  201.7
+                ],
+                "segment_seconds": [
+                  43.63,
+                  54.58,
+                  54.9,
+                  48.6
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               },
-              "tags": ["focus_runner"]
+              "tags": [
+                "focus_runner"
+              ]
             },
             {
               "place": 4,
@@ -251,9 +442,26 @@
                 "display_time": "3:21.99"
               },
               "splits": {
-                "cumulative_seconds": [0, 41.67, 94.16, 150.64, 201.99],
-                "segment_seconds": [41.67, 52.5, 56.48, 51.35],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  41.67,
+                  94.16,
+                  150.64,
+                  201.99
+                ],
+                "segment_seconds": [
+                  41.67,
+                  52.5,
+                  56.48,
+                  51.35
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -266,9 +474,26 @@
                 "display_time": "3:22.65"
               },
               "splits": {
-                "cumulative_seconds": [0, 44.89, 98.4, 153.98, 202.65],
-                "segment_seconds": [44.89, 53.51, 55.58, 48.67],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  44.89,
+                  98.4,
+                  153.98,
+                  202.65
+                ],
+                "segment_seconds": [
+                  44.89,
+                  53.51,
+                  55.58,
+                  48.67
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -281,9 +506,26 @@
                 "display_time": "3:29.28"
               },
               "splits": {
-                "cumulative_seconds": [0, 41.23, 96.79, 154.01, 209.28],
-                "segment_seconds": [41.23, 55.56, 57.23, 55.27],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  41.23,
+                  96.79,
+                  154.01,
+                  209.28
+                ],
+                "segment_seconds": [
+                  41.23,
+                  55.56,
+                  57.23,
+                  55.27
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -296,9 +538,26 @@
                 "display_time": "3:38.20"
               },
               "splits": {
-                "cumulative_seconds": [0, 45.43, 100.55, 162.55, 218.2],
-                "segment_seconds": [45.43, 55.13, 62.0, 55.65],
-                "split_marks_m": [0, 200, 400, 600, 800]
+                "cumulative_seconds": [
+                  0,
+                  45.43,
+                  100.55,
+                  162.55,
+                  218.2
+                ],
+                "segment_seconds": [
+                  45.43,
+                  55.13,
+                  62,
+                  55.65
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
               }
             },
             {
@@ -373,7 +632,9 @@
               "result": {
                 "final_time": 115.3,
                 "display_time": "1:55.30",
-                "honors": ["CR"]
+                "honors": [
+                  "CR"
+                ]
               },
               "career": {
                 "pre_race_pb_indoor": "1:54.87",
@@ -381,11 +642,42 @@
                 "pre_race_sb_indoor": "1:54.87"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.39, 27.26, 42.02, 56.95, 71.73, 86.46, 100.65, 115.3],
-                "segment_seconds": [13.39, 13.87, 14.76, 14.93, 14.78, 14.73, 14.19, 14.65],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.39,
+                  27.26,
+                  42.02,
+                  56.95,
+                  71.73,
+                  86.46,
+                  100.65,
+                  115.3
+                ],
+                "segment_seconds": [
+                  13.39,
+                  13.87,
+                  14.76,
+                  14.93,
+                  14.78,
+                  14.73,
+                  14.19,
+                  14.65
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               },
-              "tags": ["focus_runner"]
+              "tags": [
+                "focus_runner"
+              ]
             },
             {
               "place": 2,
@@ -403,9 +695,38 @@
                 "pre_race_sb_indoor": "1:57.49"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.67, 27.3, 42.35, 57.47, 72.38, 87.4, 102.2, 116.64],
-                "segment_seconds": [13.67, 13.63, 15.05, 15.12, 14.91, 15.02, 14.8, 14.44],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.67,
+                  27.3,
+                  42.35,
+                  57.47,
+                  72.38,
+                  87.4,
+                  102.2,
+                  116.64
+                ],
+                "segment_seconds": [
+                  13.67,
+                  13.63,
+                  15.05,
+                  15.12,
+                  14.91,
+                  15.02,
+                  14.8,
+                  14.44
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -417,7 +738,9 @@
               "result": {
                 "final_time": 118.36,
                 "display_time": "1:58.36",
-                "honors": ["PB"]
+                "honors": [
+                  "PB"
+                ]
               },
               "career": {
                 "pre_race_pb_indoor": "1:59.43",
@@ -425,9 +748,38 @@
                 "pre_race_sb_indoor": "1:59.43"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.73, 27.63, 42.53, 57.63, 72.53, 87.64, 102.67, 118.36],
-                "segment_seconds": [13.73, 13.9, 14.9, 15.1, 14.9, 15.11, 15.03, 15.69],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.73,
+                  27.63,
+                  42.53,
+                  57.63,
+                  72.53,
+                  87.64,
+                  102.67,
+                  118.36
+                ],
+                "segment_seconds": [
+                  13.73,
+                  13.9,
+                  14.9,
+                  15.1,
+                  14.9,
+                  15.11,
+                  15.03,
+                  15.69
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -441,9 +793,38 @@
                 "display_time": "1:59.73"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.68, 27.31, 42.25, 57.21, 72.14, 87.35, 102.79, 119.73],
-                "segment_seconds": [13.68, 13.63, 14.94, 14.96, 14.93, 15.21, 15.44, 16.94],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.68,
+                  27.31,
+                  42.25,
+                  57.21,
+                  72.14,
+                  87.35,
+                  102.79,
+                  119.73
+                ],
+                "segment_seconds": [
+                  13.68,
+                  13.63,
+                  14.94,
+                  14.96,
+                  14.93,
+                  15.21,
+                  15.44,
+                  16.94
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -462,9 +843,38 @@
                 "pre_race_sb_indoor": "1:59.22"
               },
               "splits": {
-                "cumulative_seconds": [0, 14.14, 28.39, 43.46, 58.91, 74.39, 90.14, 105.49, 120.5],
-                "segment_seconds": [14.14, 14.25, 15.07, 15.45, 15.48, 15.75, 15.35, 15.01],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  14.14,
+                  28.39,
+                  43.46,
+                  58.91,
+                  74.39,
+                  90.14,
+                  105.49,
+                  120.5
+                ],
+                "segment_seconds": [
+                  14.14,
+                  14.25,
+                  15.07,
+                  15.45,
+                  15.48,
+                  15.75,
+                  15.35,
+                  15.01
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -479,13 +889,42 @@
               },
               "career": {
                 "pre_race_pb_indoor": "1:59.50",
-                "pre_race_pb_indoor_seconds": 119.50,
+                "pre_race_pb_indoor_seconds": 119.5,
                 "pre_race_sb_indoor": "1:59.50"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.99, 28.02, 42.96, 58.38, 73.96, 90.36, 106.72, 123.3],
-                "segment_seconds": [13.99, 14.03, 14.94, 15.42, 15.58, 16.4, 16.36, 16.58],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.99,
+                  28.02,
+                  42.96,
+                  58.38,
+                  73.96,
+                  90.36,
+                  106.72,
+                  123.3
+                ],
+                "segment_seconds": [
+                  13.99,
+                  14.03,
+                  14.94,
+                  15.42,
+                  15.58,
+                  16.4,
+                  16.36,
+                  16.58
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             }
           ]
@@ -507,9 +946,33 @@
           "Meeting record (Mutola, 1998): 1:56.36"
         ],
         "records": [
-          { "label": "WR", "name": "World Record", "athlete": "Jolanda Čeplak", "country": "SLO", "result": "1:55.82", "venue": "Wien (AUT)", "date": "2002-03-03" },
-          { "label": "WL", "name": "World Lead", "athlete": "Keely Hodgkinson", "country": "GBR", "result": "1:56.33", "venue": "Birmingham (GBR)", "date": "2026-02-14" },
-          { "label": "MR", "name": "Meeting Record", "athlete": "Maria de Lurdes Mutola", "country": "MOZ", "result": "1:56.36", "venue": "Liévin (FRA)", "date": "1998-02-01" }
+          {
+            "label": "WR",
+            "name": "World Record",
+            "athlete": "Jolanda Čeplak",
+            "country": "SLO",
+            "result": "1:55.82",
+            "venue": "Wien (AUT)",
+            "date": "2002-03-03"
+          },
+          {
+            "label": "WL",
+            "name": "World Lead",
+            "athlete": "Keely Hodgkinson",
+            "country": "GBR",
+            "result": "1:56.33",
+            "venue": "Birmingham (GBR)",
+            "date": "2026-02-14"
+          },
+          {
+            "label": "MR",
+            "name": "Meeting Record",
+            "athlete": "Maria de Lurdes Mutola",
+            "country": "MOZ",
+            "result": "1:56.36",
+            "venue": "Liévin (FRA)",
+            "date": "1998-02-01"
+          }
         ],
         "photo_finish": "assets/lievin-2026-w800m-photofinish.jpg",
         "lane_count": 6,
@@ -555,7 +1018,10 @@
                 "final_time": 114.87,
                 "display_time": "1:54.87",
                 "medal": "Gold",
-                "honors": ["WR", "WL"]
+                "honors": [
+                  "WR",
+                  "WL"
+                ]
               },
               "career": {
                 "pre_race_pb_indoor": "1:56.33",
@@ -563,11 +1029,42 @@
                 "pre_race_sb_indoor": "1:56.33"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.52, 26.80, 41.30, 56.01, 70.55, 85.06, 99.67, 114.87],
-                "segment_seconds": [13.52, 13.28, 14.50, 14.71, 14.54, 14.51, 14.61, 15.20],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.52,
+                  26.8,
+                  41.3,
+                  56.01,
+                  70.55,
+                  85.06,
+                  99.67,
+                  114.87
+                ],
+                "segment_seconds": [
+                  13.52,
+                  13.28,
+                  14.5,
+                  14.71,
+                  14.54,
+                  14.51,
+                  14.61,
+                  15.2
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               },
-              "tags": ["focus_runner"]
+              "tags": [
+                "focus_runner"
+              ]
             },
             {
               "place": 2,
@@ -587,9 +1084,38 @@
                 "pre_race_sb_indoor": "1:57.27"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.34, 26.96, 41.54, 56.26, 71.07, 86.37, 102.20, 118.38],
-                "segment_seconds": [13.34, 13.62, 14.58, 14.72, 14.81, 15.30, 15.83, 16.18],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.34,
+                  26.96,
+                  41.54,
+                  56.26,
+                  71.07,
+                  86.37,
+                  102.2,
+                  118.38
+                ],
+                "segment_seconds": [
+                  13.34,
+                  13.62,
+                  14.58,
+                  14.72,
+                  14.81,
+                  15.3,
+                  15.83,
+                  16.18
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -603,16 +1129,47 @@
                 "final_time": 118.83,
                 "display_time": "1:58.83",
                 "medal": "Bronze",
-                "honors": ["SB"]
+                "honors": [
+                  "SB"
+                ]
               },
               "career": {
                 "pre_race_pb_indoor": "1:58.35",
                 "pre_race_pb_indoor_seconds": 118.35
               },
               "splits": {
-                "cumulative_seconds": [0, 14.07, 27.79, 42.47, 57.32, 72.67, 88.07, 103.55, 118.83],
-                "segment_seconds": [14.07, 13.72, 14.68, 14.85, 15.35, 15.40, 15.48, 15.28],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  14.07,
+                  27.79,
+                  42.47,
+                  57.32,
+                  72.67,
+                  88.07,
+                  103.55,
+                  118.83
+                ],
+                "segment_seconds": [
+                  14.07,
+                  13.72,
+                  14.68,
+                  14.85,
+                  15.35,
+                  15.4,
+                  15.48,
+                  15.28
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -625,7 +1182,9 @@
               "result": {
                 "final_time": 119.54,
                 "display_time": "1:59.54",
-                "honors": ["PB"]
+                "honors": [
+                  "PB"
+                ]
               },
               "career": {
                 "pre_race_pb_indoor": "1:59.63",
@@ -633,9 +1192,38 @@
                 "pre_race_sb_indoor": "1:59.98"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.65, 27.60, 42.28, 57.12, 72.49, 87.99, 103.79, 119.54],
-                "segment_seconds": [13.65, 13.95, 14.68, 14.84, 15.37, 15.50, 15.80, 15.75],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  13.65,
+                  27.6,
+                  42.28,
+                  57.12,
+                  72.49,
+                  87.99,
+                  103.79,
+                  119.54
+                ],
+                "segment_seconds": [
+                  13.65,
+                  13.95,
+                  14.68,
+                  14.84,
+                  15.37,
+                  15.5,
+                  15.8,
+                  15.75
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -655,9 +1243,38 @@
                 "pre_race_sb_indoor": "2:00.42"
               },
               "splits": {
-                "cumulative_seconds": [0, 14.13, 28.04, 42.78, 57.82, 73.23, 88.94, 104.81, 120.61],
-                "segment_seconds": [14.13, 13.91, 14.74, 15.04, 15.41, 15.71, 15.87, 15.80],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  14.13,
+                  28.04,
+                  42.78,
+                  57.82,
+                  73.23,
+                  88.94,
+                  104.81,
+                  120.61
+                ],
+                "segment_seconds": [
+                  14.13,
+                  13.91,
+                  14.74,
+                  15.04,
+                  15.41,
+                  15.71,
+                  15.87,
+                  15.8
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -668,7 +1285,7 @@
               "team": "Poland",
               "country": "POL",
               "result": {
-                "final_time": 120.70,
+                "final_time": 120.7,
                 "display_time": "2:00.70"
               },
               "career": {
@@ -676,9 +1293,38 @@
                 "pre_race_pb_indoor_seconds": 120.34
               },
               "splits": {
-                "cumulative_seconds": [0, 14.35, 28.23, 43.15, 58.46, 74.10, 89.79, 105.38, 120.70],
-                "segment_seconds": [14.35, 13.88, 14.92, 15.31, 15.64, 15.69, 15.59, 15.32],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  14.35,
+                  28.23,
+                  43.15,
+                  58.46,
+                  74.1,
+                  89.79,
+                  105.38,
+                  120.7
+                ],
+                "segment_seconds": [
+                  14.35,
+                  13.88,
+                  14.92,
+                  15.31,
+                  15.64,
+                  15.69,
+                  15.59,
+                  15.32
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -698,9 +1344,38 @@
                 "pre_race_sb_indoor": "2:00.26"
               },
               "splits": {
-                "cumulative_seconds": [0, 14.57, 28.87, 43.55, 58.89, 74.56, 90.09, 105.50, 121.47],
-                "segment_seconds": [14.57, 14.30, 14.68, 15.34, 15.67, 15.53, 15.41, 15.97],
-                "split_marks_m": [0, 100, 200, 300, 400, 500, 600, 700, 800]
+                "cumulative_seconds": [
+                  0,
+                  14.57,
+                  28.87,
+                  43.55,
+                  58.89,
+                  74.56,
+                  90.09,
+                  105.5,
+                  121.47
+                ],
+                "segment_seconds": [
+                  14.57,
+                  14.3,
+                  14.68,
+                  15.34,
+                  15.67,
+                  15.53,
+                  15.41,
+                  15.97
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
               }
             },
             {
@@ -717,9 +1392,2041 @@
                 "display_time": "DNF"
               },
               "splits": {
-                "cumulative_seconds": [0, 13.16, 26.50, 40.97, 55.58],
-                "segment_seconds": [13.16, 13.34, 14.47, 14.61],
-                "split_marks_m": [0, 100, 200, 300, 400]
+                "cumulative_seconds": [
+                  0,
+                  13.16,
+                  26.5,
+                  40.97,
+                  55.58
+                ],
+                "segment_seconds": [
+                  13.16,
+                  13.34,
+                  14.47,
+                  14.61
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "lievin-2026-mens-800m",
+      "title": "Liévin 2026 – Men's 800m Final",
+      "event": {
+        "name": "Men's 800m Final A",
+        "venue": "Crédit Mutuel - Meeting Hauts-de-France Pas-de-Calais Trophée EDF, Lievin",
+        "date": "2026-02-19",
+        "records": [
+          {
+            "label": "WR",
+            "athlete": "Josh Hoey",
+            "result": "1:42.50",
+            "year": "2026"
+          },
+          {
+            "label": "WL",
+            "athlete": "Josh Hoey",
+            "result": "1:42.50",
+            "year": "2026"
+          },
+          {
+            "label": "MR",
+            "athlete": "Adam Kszczot",
+            "result": "1:44.57",
+            "year": "2012"
+          }
+        ],
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 100,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_m",
+        "active_heat_id": "Final A",
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://api-history.athle.matsport.com/events/02514df4-15d1-4e7c-8519-d3512c3715e7_ATSTAM008101",
+          "event_id": "02514df4-15d1-4e7c-8519-d3512c3715e7_ATSTAM008101"
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final A",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Eliott Crestan",
+              "lane": 5,
+              "bib": 5,
+              "team": "Belgium",
+              "country": "BEL",
+              "result": {
+                "final_time": 103.91,
+                "display_time": "1:43.91",
+                "medal": "Gold",
+                "honors": [
+                  "MR"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:43.83",
+                "pre_race_pb_indoor_seconds": 103.83,
+                "pre_race_sb_indoor": "1:43.83"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.51,
+                  24.11,
+                  37.21,
+                  50.49,
+                  63.68,
+                  77.36,
+                  90.57,
+                  103.91
+                ],
+                "segment_seconds": [
+                  12.51,
+                  11.6,
+                  13.1,
+                  13.28,
+                  13.19,
+                  13.68,
+                  13.21,
+                  13.34
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Maciej Wyderka",
+              "lane": 6,
+              "bib": 16,
+              "team": "Poland",
+              "country": "POL",
+              "result": {
+                "final_time": 104.64,
+                "display_time": "1:44.64",
+                "medal": "Silver"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:44.07",
+                "pre_race_pb_indoor_seconds": 104.07,
+                "pre_race_sb_indoor": "1:44.07"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.78,
+                  24.2,
+                  37.38,
+                  50.68,
+                  63.9,
+                  77.54,
+                  90.83,
+                  104.64
+                ],
+                "segment_seconds": [
+                  12.78,
+                  11.42,
+                  13.18,
+                  13.3,
+                  13.22,
+                  13.64,
+                  13.29,
+                  13.81
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Slimane Moula",
+              "lane": 4,
+              "bib": 10,
+              "team": "ALG",
+              "country": "ALG",
+              "result": {
+                "final_time": 104.8,
+                "display_time": "1:44.80",
+                "medal": "Bronze",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:45.11",
+                "pre_race_pb_indoor_seconds": 105.11,
+                "pre_race_sb_indoor": "1:45.48"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.39,
+                  24.28,
+                  37.59,
+                  51.13,
+                  64.28,
+                  77.91,
+                  91.33,
+                  104.8
+                ],
+                "segment_seconds": [
+                  12.39,
+                  11.89,
+                  13.31,
+                  13.54,
+                  13.15,
+                  13.63,
+                  13.42,
+                  13.47
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Mohamed Ali Gouaned",
+              "lane": 3,
+              "bib": 6,
+              "team": "ALG",
+              "country": "ALG",
+              "result": {
+                "final_time": 104.92,
+                "display_time": "1:44.92"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:44.67",
+                "pre_race_pb_indoor_seconds": 104.67,
+                "pre_race_sb_indoor": "1:44.67"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.67,
+                  24.19,
+                  37.48,
+                  50.99,
+                  64.09,
+                  77.83,
+                  90.88,
+                  104.92
+                ],
+                "segment_seconds": [
+                  12.67,
+                  11.52,
+                  13.29,
+                  13.51,
+                  13.1,
+                  13.74,
+                  13.05,
+                  14.04
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Samuel Chapple",
+              "lane": 4,
+              "bib": 3,
+              "team": "Netherlands",
+              "country": "NED",
+              "result": {
+                "final_time": 105.37,
+                "display_time": "1:45.37"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:44.75",
+                "pre_race_pb_indoor_seconds": 104.75,
+                "pre_race_sb_indoor": "1:44.75"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.79,
+                  24.51,
+                  37.9,
+                  51.43,
+                  64.62,
+                  78.11,
+                  91.71,
+                  105.37
+                ],
+                "segment_seconds": [
+                  12.79,
+                  11.72,
+                  13.39,
+                  13.53,
+                  13.19,
+                  13.49,
+                  13.6,
+                  13.66
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Ryan Clarke",
+              "lane": 2,
+              "bib": 4,
+              "team": "Netherlands",
+              "country": "NED",
+              "result": {
+                "final_time": 106.72,
+                "display_time": "1:46.72"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:44.72",
+                "pre_race_pb_indoor_seconds": 104.72,
+                "pre_race_sb_indoor": "1:44.72"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.76,
+                  24.48,
+                  37.66,
+                  51.18,
+                  64.29,
+                  77.99,
+                  91.89,
+                  106.72
+                ],
+                "segment_seconds": [
+                  12.76,
+                  11.72,
+                  13.18,
+                  13.52,
+                  13.11,
+                  13.7,
+                  13.9,
+                  14.83
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Patryk Sieradzki",
+              "lane": 6,
+              "bib": 12,
+              "team": "Poland",
+              "country": "POL",
+              "status": "DNF",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.32",
+                "pre_race_pb_indoor_seconds": 106.32,
+                "pre_race_sb_indoor": "1:47.09"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  12.59,
+                  24,
+                  37,
+                  50.17,
+                  63.44,
+                  109.9
+                ],
+                "segment_seconds": [
+                  12.59,
+                  11.41,
+                  13,
+                  13.17,
+                  13.27,
+                  46.46
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "metz-2026-womens-800m",
+      "title": "Metz 2026 – Women's 800m Final",
+      "event": {
+        "name": "Women's 800m Finale A",
+        "venue": "Meeting Metz Moselle Athlélor Crédit Mutuel, Metz",
+        "date": "2026-02-08",
+        "records": [
+          {
+            "label": "WR",
+            "athlete": "Jolanda Ceplak",
+            "result": "1:55.82",
+            "year": "2002"
+          },
+          {
+            "label": "WL",
+            "athlete": "Isabelle Boffey",
+            "result": "1:57.43",
+            "year": "2026"
+          },
+          {
+            "label": "MR",
+            "athlete": "Tsige Duguma",
+            "result": "1:58.97",
+            "year": "2025"
+          }
+        ],
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 800,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_w",
+        "active_heat_id": "Finale A",
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://api-history.athle.matsport.com/events/fb9ee1b7-eae0-4d0f-b4a9-f4db056e4594_ATSTAW008101",
+          "event_id": "fb9ee1b7-eae0-4d0f-b4a9-f4db056e4594_ATSTAW008101"
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Finale A",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Femke Bol",
+              "lane": 5,
+              "bib": 800,
+              "team": "Netherlands",
+              "country": "NED",
+              "result": {
+                "final_time": 119.07,
+                "display_time": "1:59.07",
+                "medal": "Or",
+                "honors": [
+                  "NR"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  119.07
+                ],
+                "segment_seconds": [
+                  119.07
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Valentina Rosamilia",
+              "lane": 4,
+              "bib": 4,
+              "team": "Switzerland",
+              "country": "SUI",
+              "result": {
+                "final_time": 119.9,
+                "display_time": "1:59.90",
+                "medal": "Argent",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:00.78",
+                "pre_race_pb_indoor_seconds": 120.78,
+                "pre_race_sb_indoor": "2:00.78"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  119.9
+                ],
+                "segment_seconds": [
+                  119.9
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Lore Hoffman",
+              "lane": 3,
+              "bib": 3,
+              "team": "Switzerland",
+              "country": "SUI",
+              "result": {
+                "final_time": 119.91,
+                "display_time": "1:59.91",
+                "medal": "Bronze",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:00.06",
+                "pre_race_pb_indoor_seconds": 120.06,
+                "pre_race_sb_indoor": "2:00.69"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  119.91
+                ],
+                "segment_seconds": [
+                  119.91
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Smilla Kolbe",
+              "lane": 1,
+              "bib": 5,
+              "team": "Germany",
+              "country": "GER",
+              "result": {
+                "final_time": 121.75,
+                "display_time": "2:01.75",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:01.44",
+                "pre_race_pb_indoor_seconds": 121.44
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  121.75
+                ],
+                "segment_seconds": [
+                  121.75
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Marta Zenoni",
+              "lane": 2,
+              "bib": 6,
+              "team": "Italy",
+              "country": "ITA",
+              "result": {
+                "final_time": 125.35,
+                "display_time": "2:05.35",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "2:03.88",
+                "pre_race_pb_indoor_seconds": 123.88
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  125.35
+                ],
+                "segment_seconds": [
+                  125.35
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Anna Gryc",
+              "lane": 6,
+              "bib": 324,
+              "team": "Poland",
+              "country": "POL",
+              "result": {
+                "final_time": null,
+                "display_time": null
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "metz-2026-mens-800m",
+      "title": "Metz 2026 – Men's 800m Final",
+      "event": {
+        "name": "Men's 800m Finale A",
+        "venue": "Meeting Metz Moselle Athlélor Crédit Mutuel, Metz",
+        "date": "2026-02-08",
+        "records": [
+          {
+            "label": "WR",
+            "athlete": "Josh Hoey",
+            "result": "1:42.50",
+            "year": "2026"
+          },
+          {
+            "label": "WL",
+            "athlete": "Josh Hoey",
+            "result": "1:42.50",
+            "year": "2026"
+          },
+          {
+            "label": "MR",
+            "athlete": "Slimane Moula",
+            "result": "1:45.11",
+            "year": "2025"
+          }
+        ],
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 800,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_m",
+        "active_heat_id": "Finale A",
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://api-history.athle.matsport.com/events/fb9ee1b7-eae0-4d0f-b4a9-f4db056e4594_ATSTAM008101",
+          "event_id": "fb9ee1b7-eae0-4d0f-b4a9-f4db056e4594_ATSTAM008101"
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Finale A",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Mohamed Ali Gouaned",
+              "lane": 5,
+              "bib": 215,
+              "team": "ALG",
+              "country": "ALG",
+              "result": {
+                "final_time": 104.67,
+                "display_time": "1:44.67",
+                "medal": "Or",
+                "honors": [
+                  "MR"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:45.10",
+                "pre_race_pb_indoor_seconds": 105.1,
+                "pre_race_sb_indoor": "1:45.10"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  104.67
+                ],
+                "segment_seconds": [
+                  104.67
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Jordan Terrasse",
+              "lane": 1,
+              "bib": 216,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 105.57,
+                "display_time": "1:45.57",
+                "medal": "Argent",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.80",
+                "pre_race_pb_indoor_seconds": 106.8,
+                "pre_race_sb_indoor": "1:46.80"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.57
+                ],
+                "segment_seconds": [
+                  105.57
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Louey Ouerrat",
+              "lane": 4,
+              "bib": 221,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 105.69,
+                "display_time": "1:45.69",
+                "medal": "Bronze",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.08",
+                "pre_race_pb_indoor_seconds": 106.08
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.69
+                ],
+                "segment_seconds": [
+                  105.69
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Corentin Le Clezio",
+              "lane": 4,
+              "bib": 218,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 105.87,
+                "display_time": "1:45.87",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.71",
+                "pre_race_pb_indoor_seconds": 106.71,
+                "pre_race_sb_indoor": "1:46.90"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.87
+                ],
+                "segment_seconds": [
+                  105.87
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Ryan Clarke",
+              "lane": 6,
+              "bib": 220,
+              "team": "Netherlands",
+              "country": "NED",
+              "result": {
+                "final_time": 106.54,
+                "display_time": "1:46.54"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:44.72",
+                "pre_race_pb_indoor_seconds": 104.72,
+                "pre_race_sb_indoor": "1:44.72"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  106.54
+                ],
+                "segment_seconds": [
+                  106.54
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Abdelati El Guesse",
+              "lane": 3,
+              "bib": 217,
+              "team": "MAR",
+              "country": "MAR",
+              "result": {
+                "final_time": 106.74,
+                "display_time": "1:46.74"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:45.21",
+                "pre_race_pb_indoor_seconds": 105.21,
+                "pre_race_sb_indoor": "1:46.62"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  106.74
+                ],
+                "segment_seconds": [
+                  106.74
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Elvin Josue Canales",
+              "lane": 2,
+              "bib": 219,
+              "team": "Spain",
+              "country": "ESP",
+              "result": {
+                "final_time": 106.86,
+                "display_time": "1:46.86",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:44.65",
+                "pre_race_pb_indoor_seconds": 104.65
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  106.86
+                ],
+                "segment_seconds": [
+                  106.86
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Khaled Benmahdi",
+              "lane": 6,
+              "bib": 222,
+              "team": "ALG",
+              "country": "ALG",
+              "result": {
+                "final_time": null,
+                "display_time": null
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "metz-2024-mens-800m",
+      "title": "Metz 2024 – Men's 800m Final",
+      "event": {
+        "name": "Men's 800m Final A",
+        "venue": "Meeting Metz Moselle Athlélor, Metz",
+        "date": "2024-02-03",
+        "records": [
+          {
+            "label": "WR",
+            "athlete": "Wilson Kipketer",
+            "result": "1:42.67",
+            "year": "1997"
+          },
+          {
+            "label": "WL",
+            "athlete": "Marco Arop",
+            "result": "1:45.50",
+            "year": "2024"
+          },
+          {
+            "label": "MR",
+            "athlete": "Noah Kibet",
+            "result": "1:46.06",
+            "year": "2022"
+          }
+        ],
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 800,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_m",
+        "active_heat_id": "Final A",
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://api-history.athle.matsport.com/events/b50c7bc4-b75e-45e4-86d2-fc5d48fed9a3_ATSTAM008101",
+          "event_id": "b50c7bc4-b75e-45e4-86d2-fc5d48fed9a3_ATSTAM008101"
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final A",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Tshepiso Masalela",
+              "lane": 6,
+              "bib": 183,
+              "team": "BOT",
+              "country": "BOT",
+              "result": {
+                "final_time": 105.56,
+                "display_time": "1:45.56",
+                "medal": "Gold",
+                "honors": [
+                  "MR"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.41",
+                "pre_race_pb_indoor_seconds": 106.41,
+                "pre_race_sb_indoor": "1:46.41"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.56
+                ],
+                "segment_seconds": [
+                  105.56
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Mohamed Ali Gouaned",
+              "lane": 3,
+              "bib": 402,
+              "team": "ALG",
+              "country": "ALG",
+              "result": {
+                "final_time": 106.34,
+                "display_time": "1:46.34",
+                "medal": "Silver",
+                "honors": [
+                  "NR"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.44",
+                "pre_race_pb_indoor_seconds": 108.44,
+                "pre_race_sb_indoor": "1:48.44"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  106.34
+                ],
+                "segment_seconds": [
+                  106.34
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Tony Van Diepen",
+              "lane": 5,
+              "bib": 184,
+              "team": "Netherlands",
+              "country": "NED",
+              "result": {
+                "final_time": 106.87,
+                "display_time": "1:46.87",
+                "medal": "Bronze",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.36",
+                "pre_race_pb_indoor_seconds": 106.36
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  106.87
+                ],
+                "segment_seconds": [
+                  106.87
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Mohamed Attaoui",
+              "lane": 4,
+              "bib": 185,
+              "team": "Spain",
+              "country": "ESP",
+              "result": {
+                "final_time": 107.35,
+                "display_time": "1:47.35",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:52.20",
+                "pre_race_pb_indoor_seconds": 112.2
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.35
+                ],
+                "segment_seconds": [
+                  107.35
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Corentin Le Clezio",
+              "lane": 1,
+              "bib": 190,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 107.78,
+                "display_time": "1:47.78",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.25",
+                "pre_race_pb_indoor_seconds": 108.25,
+                "pre_race_sb_indoor": "1:48.25"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.78
+                ],
+                "segment_seconds": [
+                  107.78
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Baptiste Mischler",
+              "lane": 3,
+              "bib": 186,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 107.88,
+                "display_time": "1:47.88",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.51",
+                "pre_race_pb_indoor_seconds": 106.51
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.88
+                ],
+                "segment_seconds": [
+                  107.88
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Patryk Sieradzki",
+              "lane": 6,
+              "bib": 189,
+              "team": "Poland",
+              "country": "POL",
+              "status": "DNF",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.00",
+                "pre_race_pb_indoor_seconds": 108
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Paul Anselmini",
+              "lane": 2,
+              "bib": 187,
+              "team": "France",
+              "country": "FRA",
+              "status": "DNS",
+              "result": {
+                "final_time": null,
+                "display_time": "DNS"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.25",
+                "pre_race_pb_indoor_seconds": 108.25,
+                "pre_race_sb_indoor": "1:48.25"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "lyon-2024-mens-800m",
+      "title": "Lyon 2024 – Men's 800m Final",
+      "event": {
+        "name": "Men's 800m Final A",
+        "venue": "Meeting Indoor de Lyon, Lyon",
+        "date": "2024-02-09",
+        "records": [
+          {
+            "label": "WR",
+            "athlete": "Wilson Kipketer",
+            "result": "1:42.67",
+            "year": "1997"
+          },
+          {
+            "label": "WL",
+            "athlete": "Marco Arop",
+            "result": "1:45.50",
+            "year": "2024"
+          },
+          {
+            "label": "MR",
+            "athlete": "Abdelati El Guesse",
+            "result": "1:46.36",
+            "year": "2023"
+          }
+        ],
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 800,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_m",
+        "active_heat_id": "Final A",
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://api-history.athle.matsport.com/events/f4882755-8828-43fd-810c-ee113e3f1ce6_ATSTAM008101",
+          "event_id": "f4882755-8828-43fd-810c-ee113e3f1ce6_ATSTAM008101"
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final A",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Abdelati El Guesse",
+              "lane": 6,
+              "bib": 148,
+              "team": "MAR",
+              "country": "MAR",
+              "result": {
+                "final_time": 105.28,
+                "display_time": "1:45.28",
+                "medal": "Gold",
+                "honors": [
+                  "WL"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:45.95",
+                "pre_race_pb_indoor_seconds": 105.95,
+                "pre_race_sb_indoor": "1:45.95"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.28
+                ],
+                "segment_seconds": [
+                  105.28
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Mohamed Attaoui",
+              "lane": 4,
+              "bib": 81,
+              "team": "Spain",
+              "country": "ESP",
+              "result": {
+                "final_time": 105.49,
+                "display_time": "1:45.49",
+                "medal": "Silver",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:47.35",
+                "pre_race_pb_indoor_seconds": 107.35,
+                "pre_race_sb_indoor": "1:47.35"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.49
+                ],
+                "segment_seconds": [
+                  105.49
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Alvaro De Arriba",
+              "lane": 5,
+              "bib": 74,
+              "team": "Spain",
+              "country": "ESP",
+              "result": {
+                "final_time": 107.05,
+                "display_time": "1:47.05",
+                "medal": "Bronze",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:45.43",
+                "pre_race_pb_indoor_seconds": 105.43
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.05
+                ],
+                "segment_seconds": [
+                  107.05
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Jakub Dudycha",
+              "lane": 1,
+              "bib": 77,
+              "team": "CZE",
+              "country": "CZE",
+              "result": {
+                "final_time": 107.12,
+                "display_time": "1:47.12",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:47.42",
+                "pre_race_pb_indoor_seconds": 107.42,
+                "pre_race_sb_indoor": "1:47.42"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.12
+                ],
+                "segment_seconds": [
+                  107.12
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Corentin Le Clezio",
+              "lane": 3,
+              "bib": 73,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 107.48,
+                "display_time": "1:47.48",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:47.78",
+                "pre_race_pb_indoor_seconds": 107.78,
+                "pre_race_sb_indoor": "1:47.78"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.48
+                ],
+                "segment_seconds": [
+                  107.48
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Paul Anselmini",
+              "lane": 5,
+              "bib": 71,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 107.82,
+                "display_time": "1:47.82",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.25",
+                "pre_race_pb_indoor_seconds": 108.25,
+                "pre_race_sb_indoor": "1:48.25"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  107.82
+                ],
+                "segment_seconds": [
+                  107.82
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Hugo Houyez",
+              "lane": 4,
+              "bib": 80,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 108.28,
+                "display_time": "1:48.28",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.15",
+                "pre_race_pb_indoor_seconds": 108.15,
+                "pre_race_sb_indoor": "1:49.00"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  108.28
+                ],
+                "segment_seconds": [
+                  108.28
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 8,
+              "athlete": "Moad Zahafi",
+              "lane": 3,
+              "bib": 76,
+              "team": "MAR",
+              "country": "MAR",
+              "result": {
+                "final_time": 108.5,
+                "display_time": "1:48.50"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.29",
+                "pre_race_pb_indoor_seconds": 106.29,
+                "pre_race_sb_indoor": "1:48.00"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  108.5
+                ],
+                "segment_seconds": [
+                  108.5
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Ludovic Le Meur",
+              "lane": 6,
+              "bib": 75,
+              "team": "France",
+              "country": "FRA",
+              "status": "DNF",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:50.64",
+                "pre_race_pb_indoor_seconds": 110.64
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "John Fitzsimons",
+              "lane": 2,
+              "bib": 72,
+              "team": "Ireland",
+              "country": "IRL",
+              "status": "DNS",
+              "result": {
+                "final_time": null,
+                "display_time": "DNS"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:47.80",
+                "pre_race_pb_indoor_seconds": 107.8,
+                "pre_race_sb_indoor": "1:47.88"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Francesco Pernici",
+              "lane": 2,
+              "bib": 78,
+              "team": "Italy",
+              "country": "ITA",
+              "status": "DNS",
+              "result": {
+                "final_time": null,
+                "display_time": "DNS"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:50.20",
+                "pre_race_pb_indoor_seconds": 110.2
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "replay_id": "nantes-2024-mens-800m",
+      "title": "Nantes 2024 – Men's 800m Final",
+      "event": {
+        "name": "Men's 800m Final",
+        "venue": "Meeting de Nantes, Nantes",
+        "date": "2024-01-27",
+        "records": [
+          {
+            "label": "WR",
+            "athlete": "Wilson Kipketer",
+            "result": "1:42.67",
+            "year": "1997"
+          },
+          {
+            "label": "WL",
+            "athlete": "Robert Farken",
+            "result": "1:47.00",
+            "year": "2024"
+          },
+          {
+            "label": "MR",
+            "athlete": "Ramzi Abdenouz",
+            "result": "1:48.03",
+            "year": "2022"
+          }
+        ],
+        "lane_count": 6,
+        "track_length_m": 200,
+        "race_distance_m": 800,
+        "timing_interval_m": 800,
+        "start_offset_turns": 2,
+        "break_distance_m": 160,
+        "merge_complete_distance_m": 180,
+        "competition_level": "world_indoor_m",
+        "active_heat_id": "Final",
+        "source": {
+          "provider": "matsport.com",
+          "meet_url": "https://api-history.athle.matsport.com/events/6c5ef9da-37f0-4266-9544-6e93c91c491f_ATSTAM008101",
+          "event_id": "6c5ef9da-37f0-4266-9544-6e93c91c491f_ATSTAM008101"
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Eliott Crestan",
+              "lane": 5,
+              "bib": 54,
+              "team": "Belgium",
+              "country": "BEL",
+              "result": {
+                "final_time": 105.96,
+                "display_time": "1:45.96",
+                "honors": [
+                  "WL"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.11",
+                "pre_race_pb_indoor_seconds": 106.11
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  105.96
+                ],
+                "segment_seconds": [
+                  105.96
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Moad Zahafi",
+              "lane": 6,
+              "bib": 69,
+              "team": "MAR",
+              "country": "MAR",
+              "result": {
+                "final_time": 108,
+                "display_time": "1:48.00",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:46.29",
+                "pre_race_pb_indoor_seconds": 106.29
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  108
+                ],
+                "segment_seconds": [
+                  108
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Corentin Le Clezio",
+              "lane": 4,
+              "bib": 110,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 108.25,
+                "display_time": "1:48.25",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.82",
+                "pre_race_pb_indoor_seconds": 108.82,
+                "pre_race_sb_indoor": "1:48.82"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  108.25
+                ],
+                "segment_seconds": [
+                  108.25
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Mostafa Smaili",
+              "lane": 6,
+              "bib": 60,
+              "team": "MAR",
+              "country": "MAR",
+              "result": {
+                "final_time": 108.83,
+                "display_time": "1:48.83",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:45.96",
+                "pre_race_pb_indoor_seconds": 105.96
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  108.83
+                ],
+                "segment_seconds": [
+                  108.83
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Joonas Rinne",
+              "lane": 2,
+              "bib": 23,
+              "team": "FIN",
+              "country": "FIN",
+              "result": {
+                "final_time": 108.88,
+                "display_time": "1:48.88",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:47.96",
+                "pre_race_pb_indoor_seconds": 107.96
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  108.88
+                ],
+                "segment_seconds": [
+                  108.88
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Hugo Houyez",
+              "lane": 1,
+              "bib": 56,
+              "team": "France",
+              "country": "FRA",
+              "result": {
+                "final_time": 109,
+                "display_time": "1:49.00"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.15",
+                "pre_race_pb_indoor_seconds": 108.15,
+                "pre_race_sb_indoor": "1:48.15"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  109
+                ],
+                "segment_seconds": [
+                  109
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Daniel Kotyza",
+              "lane": 3,
+              "bib": 71,
+              "team": "CZE",
+              "country": "CZE",
+              "result": {
+                "final_time": 109.04,
+                "display_time": "1:49.04",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:47.66",
+                "pre_race_pb_indoor_seconds": 107.66
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  109.04
+                ],
+                "segment_seconds": [
+                  109.04
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 8,
+              "athlete": "Mikuto Kaneko",
+              "lane": 4,
+              "bib": 120,
+              "team": "JPN",
+              "country": "JPN",
+              "result": {
+                "final_time": 110.53,
+                "display_time": "1:50.53",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.97",
+                "pre_race_pb_indoor_seconds": 108.97
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  110.53
+                ],
+                "segment_seconds": [
+                  110.53
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 9,
+              "athlete": "Daniel Huller",
+              "lane": 3,
+              "bib": 63,
+              "team": "HUN",
+              "country": "HUN",
+              "result": {
+                "final_time": 112.23,
+                "display_time": "1:52.23",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:48.15",
+                "pre_race_pb_indoor_seconds": 108.15
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0,
+                  112.23
+                ],
+                "segment_seconds": [
+                  112.23
+                ],
+                "split_marks_m": [
+                  0,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Simon Deschamps",
+              "lane": 1,
+              "bib": 128,
+              "team": "France",
+              "country": "FRA",
+              "status": "DNF",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "career": {
+                "pre_race_pb_indoor": "1:55.21",
+                "pre_race_pb_indoor_seconds": 115.21,
+                "pre_race_sb_indoor": "1:55.21"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0
+                ],
+                "segment_seconds": [],
+                "split_marks_m": [
+                  0
+                ]
               }
             }
           ]

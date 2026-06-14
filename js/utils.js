@@ -257,9 +257,18 @@ export function getTrackVisualGeometry(laneCount = TRACK_CONFIG.laneCount) {
     return outerRadius - ((index + 1) * laneWidthPx);
   });
 
+  // The start/finish line crosses the home (top-right) straight, spanning the
+  // running band from the innermost lane edge to the outer edge. Both must
+  // track laneCount: with fewer lanes the infield is larger, so a line fixed at
+  // the 8-lane inner edge would overhang into the infield. Deriving it here
+  // keeps it in sync with infieldPath (single source of truth for geometry).
+  const { centerX, topY } = TRACK_CONFIG.svg;
   return {
     outerPath: buildOvalPath(outerRadius),
     lanePaths: laneRadii.map((radius) => buildOvalPath(radius)),
     infieldPath: buildOvalPath(innerRadius),
+    innerRadius,
+    outerRadius,
+    startFinish: { x1: centerX + innerRadius, x2: centerX + outerRadius, y: topY },
   };
 }
