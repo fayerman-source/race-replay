@@ -64,6 +64,14 @@ function parseDistance(label) {
   return m ? Number(m[1]) : null;
 }
 
+// Number or null — distinct from `Number(v) || null`, which would discard a
+// legitimate 0 (lane/bib). Empty/blank/non-numeric → null; "0" → 0.
+function numOrNull(v) {
+  if (v === "" || v == null) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
 function slug(text) {
   return String(text || "")
     .toLowerCase()
@@ -138,8 +146,8 @@ function buildEntry(result, raceDistance, rankAtLastSplit) {
   const entry = {
     place: result.rank && result.rank !== 999 ? result.rank : null,
     athlete: fullName(athlete),
-    lane: Number(result.lane) || null,
-    bib: Number(result.bib) || null,
+    lane: numOrNull(result.lane),
+    bib: numOrNull(result.bib),
     team: IOC[country] || country || "Unattached",
     country,
   };
@@ -182,11 +190,12 @@ function rankAtLastSplitFor(result, allResults) {
   const timed = allResults
     .map((r) => {
       const s = (r.splits || []).find((x) => x.distance === mark);
-      return s ? { id: r.bib, t: parseClock(s.time) } : null;
+      return s ? { r, t: parseClock(s.time) } : null;
     })
     .filter((x) => x && x.t != null)
     .sort((a, b) => a.t - b.t);
-  const idx = timed.findIndex((x) => x.id === result.bib);
+  // Identify the runner by object reference, not bib (bibs can be missing/dup).
+  const idx = timed.findIndex((x) => x.r === result);
   return idx === -1 ? null : idx + 1;
 }
 

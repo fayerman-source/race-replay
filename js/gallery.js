@@ -70,7 +70,9 @@ function getRecordHeadline(event, runners) {
   );
   if (!Number.isFinite(winnerTime)) return null;
 
-  return winnerTime < wrSeconds ? "World Record" : null;
+  // <= so a race that SET the record (feeds that list the post-race mark, where
+  // winnerTime === wrSeconds) or exactly equalled it still earns the pill.
+  return winnerTime <= wrSeconds ? "World Record" : null;
 }
 
 function buildCard(replay) {
@@ -122,7 +124,7 @@ async function renderGallery() {
     const response = await fetch("./data/custom_800m_heats.json");
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
-    const allReplays = Array.isArray(payload.replays) ? payload.replays : [];
+    const allReplays = payload && Array.isArray(payload.replays) ? payload.replays : [];
     const replays = allReplays.filter(isGalleryVisible);
 
     if (!replays.length) {
@@ -131,12 +133,16 @@ async function renderGallery() {
     }
 
     // Default replay first, then the rest — the headline race leads the grid.
+    // Comparator returns 0 for equal elements (strict weak ordering).
+    const defaultId = payload.default_replay_id;
     const ordered = replays.slice().sort((a, b) => {
-      if (a.replay_id === payload.default_replay_id) return -1;
-      if (b.replay_id === payload.default_replay_id) return 1;
-      return 0;
+      const aDef = a.replay_id === defaultId ? 1 : 0;
+      const bDef = b.replay_id === defaultId ? 1 : 0;
+      return bDef - aDef;
     });
 
+    // Clear first so a re-render can't duplicate cards.
+    grid.replaceChildren();
     const fragment = document.createDocumentFragment();
     ordered.forEach((replay) => fragment.appendChild(buildCard(replay)));
     grid.appendChild(fragment);
