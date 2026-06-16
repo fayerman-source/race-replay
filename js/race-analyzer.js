@@ -22,6 +22,11 @@ import { TRACK_CONFIG } from "./utils.js";
 export const PAR_TIMES = {
   "world_indoor_w": { opener_200m: 27.5, total_seconds: 117.0 },
   "world_indoor_m": { opener_200m: 24.5, total_seconds: 104.0 },
+  // Diamond League outdoor 800m. Par ≈ a typical DL final (women won ~1:56–1:58,
+  // men ~1:43–1:45); without this key the new replay falls back to
+  // no_par_table_entry and race-shape classification is silently disabled.
+  "diamond_league_w": { opener_200m: 27.5, total_seconds: 117.5 },
+  "diamond_league_m": { opener_200m: 24.5, total_seconds: 104.5 },
   "hs_varsity_w":   { opener_200m: 29.0, total_seconds: 130.0 },
   "hs_varsity_m":   { opener_200m: 26.0, total_seconds: 115.0 },
   "youth_u12_w":    { opener_200m: 35.0, total_seconds: 170.0 },
@@ -156,7 +161,13 @@ function getSplitClass(runner) {
   if (firstHalf === 0) return null;
   const diffPct = ((secondHalf - firstHalf) / firstHalf) * 100;
   let label;
-  if (diffPct < SPLIT_CLASS_BANDS.negative_max_pct) label = "negative_splitter";
+  if (runner.role === "pacer") {
+    // A pacemaker is contracted to tow the field through the early laps and step
+    // off — by design they never run a second half. The positive/negative-split
+    // verdict (and especially "blow_up" / "faded badly") is a category error and
+    // unfair to them, so label it honestly while keeping the raw differential.
+    label = "pacer";
+  } else if (diffPct < SPLIT_CLASS_BANDS.negative_max_pct) label = "negative_splitter";
   else if (diffPct < SPLIT_CLASS_BANDS.even_max_pct) label = "even";
   else if (diffPct < SPLIT_CLASS_BANDS.textbook_max_pct) label = "textbook_positive";
   else if (diffPct < SPLIT_CLASS_BANDS.aggressive_max_pct) label = "aggressive_front";

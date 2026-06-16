@@ -1,4 +1,16 @@
-// Track dimensions and utilities for a 200m indoor oval
+// Track dimensions and utilities. The default oval is a stylised 200m indoor
+// track; configureTrackGeometry() reshapes svg{} per-replay so a 400m outdoor
+// track is drawn with realistic long straights and a wide infield.
+
+// Stylised indoor layout — the historical default. Outdoor profiles are scaled
+// from real metric dimensions instead (see configureTrackGeometry).
+const DEFAULT_SVG = {
+  centerX: 175,
+  topY: 175,
+  bottomY: 375,
+  outerRadius: 150,
+  innerRadius: 25,
+};
 
 export const TRACK_CONFIG = {
   laneCount: 8,
@@ -8,19 +20,65 @@ export const TRACK_CONFIG = {
   straightLengthMeters: 36.5,
   startType: "lanes-and-break",
   breakDistanceMeters: 100,
-  svg: {
-    centerX: 175,
-    topY: 175,
-    bottomY: 375,
-    outerRadius: 150,
-    innerRadius: 25,
-  },
+  svg: { ...DEFAULT_SVG },
 };
 
-const STRAIGHT_VISUAL_LENGTH = TRACK_CONFIG.svg.bottomY - TRACK_CONFIG.svg.topY;
-const BASE_VISUAL_LANE_WIDTH = (
-  TRACK_CONFIG.svg.outerRadius - TRACK_CONFIG.svg.innerRadius
-) / TRACK_CONFIG.laneCount;
+// Real-world reference dimensions (metres) used to draw a metrically-faithful
+// oval. The 200m indoor oval keeps its stylised look (no profile → DEFAULT_SVG).
+const VIEWBOX = { width: 350, height: 550, pad: 16 };
+const TRACK_PROFILES = {
+  // Standard IAAF 400m track: 84.39m straights, 36.50m lane-1 turn radius.
+  outdoor_400: { straightM: 84.39, turnRadiusM: 36.5, laneWidthM: 1.22 },
+};
+
+// The visual straight length and base lane width are derived live from svg{} so
+// they pick up whatever shape configureTrackGeometry installed for this replay.
+function straightVisualLength() {
+  return TRACK_CONFIG.svg.bottomY - TRACK_CONFIG.svg.topY;
+}
+function baseVisualLaneWidth() {
+  return (TRACK_CONFIG.svg.outerRadius - TRACK_CONFIG.svg.innerRadius) / TRACK_CONFIG.laneCount;
+}
+
+// Reshape the SVG oval for the active event. Outdoor 400m tracks are scaled from
+// real metric proportions (long straights, generous infield) to fit the viewBox;
+// everything else falls back to the stylised indoor oval. Idempotent — safe to
+// call on every replay load, including switching between indoor and outdoor.
+export function configureTrackGeometry(event = {}) {
+  const trackLength = event.track_length_m || TRACK_CONFIG.trackLength;
+  const profile = trackLength >= 400 ? TRACK_PROFILES.outdoor_400 : null;
+
+  if (!profile) {
+    Object.assign(TRACK_CONFIG.svg, DEFAULT_SVG);
+    return TRACK_CONFIG.svg;
+  }
+
+  const laneCount = event.lane_count || TRACK_CONFIG.laneCount;
+  const railM = profile.turnRadiusM;
+  const outerM = railM + (laneCount * profile.laneWidthM);
+  const ovalWidthM = 2 * outerM;
+  const ovalHeightM = profile.straightM + (2 * outerM);
+
+  // Single scale preserves the real aspect ratio; fit to the tighter of the two
+  // viewBox dimensions so the whole oval stays on screen with padding.
+  const usableW = VIEWBOX.width - (2 * VIEWBOX.pad);
+  const usableH = VIEWBOX.height - (2 * VIEWBOX.pad);
+  const scale = Math.min(usableW / ovalWidthM, usableH / ovalHeightM);
+
+  const outerRadius = outerM * scale;
+  const innerRadius = railM * scale;
+  const straightPx = profile.straightM * scale;
+  const topY = ((VIEWBOX.height - (straightPx + (2 * outerRadius))) / 2) + outerRadius;
+
+  Object.assign(TRACK_CONFIG.svg, {
+    centerX: VIEWBOX.width / 2,
+    topY,
+    bottomY: topY + straightPx,
+    outerRadius,
+    innerRadius,
+  });
+  return TRACK_CONFIG.svg;
+}
 
 // How far the angular parametrization leans toward each runner's own lane
 // radius (see getTrackCoordinates). 0 = fully lane-fair (drawn order exactly
@@ -32,7 +90,7 @@ const BASE_VISUAL_LANE_WIDTH = (
 const LANE_FAIR_BLEND = 0.4;
 
 function getVisualLaneWidthPx(laneCount = TRACK_CONFIG.laneCount) {
-  return BASE_VISUAL_LANE_WIDTH;
+  return baseVisualLaneWidth();
 }
 
 function getTrackInnerRadiusPx(laneCount = TRACK_CONFIG.laneCount) {
@@ -52,7 +110,7 @@ function getLaneRadiusPx(lane, laneCount = TRACK_CONFIG.laneCount) {
 
 export function getLanePathLengthPx(lane, laneCount = TRACK_CONFIG.laneCount) {
   const radius = getLaneRadiusPx(lane, laneCount);
-  return (2 * STRAIGHT_VISUAL_LENGTH) + (2 * Math.PI * radius);
+  return (2 * straightVisualLength()) + (2 * Math.PI * radius);
 }
 
 export function getLaneStartOffsetMeters(
@@ -101,19 +159,20 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
   const innerRadius = getLaneRadiusPx(1, laneCount);
   const referenceRadius = innerRadius + (LANE_FAIR_BLEND * (radius - innerRadius));
   const halfCircumference = Math.PI * referenceRadius;
-  const totalPath = (2 * STRAIGHT_VISUAL_LENGTH) + (2 * halfCircumference);
-  const finishLinePathDistance = (2 * STRAIGHT_VISUAL_LENGTH) + halfCircumference;
+  const straightLen = straightVisualLength();
+  const totalPath = (2 * straightLen) + (2 * halfCircumference);
+  const finishLinePathDistance = (2 * straightLen) + halfCircumference;
   const pathDistance = ((progress * totalPath) + finishLinePathDistance) % totalPath;
 
-  if (pathDistance <= STRAIGHT_VISUAL_LENGTH) {
+  if (pathDistance <= straightLen) {
     return {
       x: centerX - radius,
       y: topY + pathDistance,
     };
   }
 
-  if (pathDistance <= STRAIGHT_VISUAL_LENGTH + halfCircumference) {
-    const arcFraction = (pathDistance - STRAIGHT_VISUAL_LENGTH) / halfCircumference;
+  if (pathDistance <= straightLen + halfCircumference) {
+    const arcFraction = (pathDistance - straightLen) / halfCircumference;
     const angle = Math.PI - (arcFraction * Math.PI);
     return {
       x: centerX + radius * Math.cos(angle),
@@ -121,15 +180,15 @@ export function getTrackCoordinates(meters, lane = 1, options = {}) {
     };
   }
 
-  if (pathDistance <= (2 * STRAIGHT_VISUAL_LENGTH) + halfCircumference) {
-    const straightDistance = pathDistance - STRAIGHT_VISUAL_LENGTH - halfCircumference;
+  if (pathDistance <= (2 * straightLen) + halfCircumference) {
+    const straightDistance = pathDistance - straightLen - halfCircumference;
     return {
       x: centerX + radius,
       y: bottomY - straightDistance,
     };
   }
 
-  const arcFraction = (pathDistance - (2 * STRAIGHT_VISUAL_LENGTH) - halfCircumference) / halfCircumference;
+  const arcFraction = (pathDistance - (2 * straightLen) - halfCircumference) / halfCircumference;
   const angle = arcFraction * Math.PI;
   return {
     x: centerX + radius * Math.cos(angle),

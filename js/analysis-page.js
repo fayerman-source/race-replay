@@ -29,6 +29,7 @@ const SPLIT_CLASS_GLOSSARY = {
   "textbook_positive":  "First half faster by 1–4%. Elite world-record pattern (Rudisha, Kipketer).",
   "aggressive_front":   "First half faster by 4–8%. Bold front-running with real fade risk.",
   "blow_up":            "First half faster by 8%+. Paid for the opening, faded badly.",
+  "pacer":              "Pacemaker — towed the field through the early laps and stepped off by design. Not a full-race split shape.",
 };
 
 const RACE_SHAPE_GLOSSARY = {
@@ -50,6 +51,7 @@ const PACE_PRESSURE_GLOSSARY = {
 const HONORS_GLOSSARY = {
   "WR": "World Record — best time ever recorded for this event.",
   "WL": "World Lead — fastest time recorded so far in the current year.",
+  "DLR": "Diamond League Record — best time in Diamond League history for this event.",
   "CR": "Championship Record — best time in this specific championship's history.",
   "MR": "Meeting Record — best time ever at this specific meet.",
   "NR": "National Record — best time ever for this athlete's country.",
