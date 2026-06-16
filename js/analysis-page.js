@@ -51,6 +51,7 @@ const PACE_PRESSURE_GLOSSARY = {
 const HONORS_GLOSSARY = {
   "WR": "World Record — best time ever recorded for this event.",
   "WL": "World Lead — fastest time recorded so far in the current year.",
+  "DLR": "Diamond League Record — best time in Diamond League history for this event.",
   "CR": "Championship Record — best time in this specific championship's history.",
   "MR": "Meeting Record — best time ever at this specific meet.",
   "NR": "National Record — best time ever for this athlete's country.",

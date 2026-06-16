@@ -223,11 +223,13 @@ function updateHeatSummary() {
 function updateHeatMeta() {
   const leader = [...state.runners].sort((a, b) => a.finalTime - b.finalTime)[0];
 
-  eventTitleEl.innerText = state.replayTitle || `${state.event.name} ${state.activeHeat.heat_id}`;
+  eventTitleEl.innerText = state.replayTitle || `${state.event?.name || "800m"} ${state.activeHeat?.heat_id || ""}`.trim();
   // 200m indoor ovals are banked; 400m outdoor tracks are flat. Drive the label
   // off the lap length so an outdoor race isn't mislabelled "Banked".
-  const trackSurface = state.event.track_length_m <= 200 ? "Banked" : "Outdoor";
-  trackBadgeEl.innerText = `${state.event.track_length_m}m ${trackSurface} | ${state.event.lane_count} Lanes | ${getTotalLaps()} Laps`;
+  const trackLength = state.event?.track_length_m || TRACK_CONFIG.trackLength;
+  const laneCount = state.event?.lane_count || TRACK_CONFIG.laneCount;
+  const trackSurface = trackLength <= 200 ? "Banked" : "Outdoor";
+  trackBadgeEl.innerText = `${trackLength}m ${trackSurface} | ${laneCount} Lanes | ${getTotalLaps()} Laps`;
   raceDurationEl.innerText = leader ? formatTime(leader.finalTime) : "--:--";
   document.title = `${eventTitleEl.innerText} | Race Replay`;
 }
