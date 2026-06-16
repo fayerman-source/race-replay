@@ -29,6 +29,7 @@ const SPLIT_CLASS_GLOSSARY = {
   "textbook_positive":  "First half faster by 1–4%. Elite world-record pattern (Rudisha, Kipketer).",
   "aggressive_front":   "First half faster by 4–8%. Bold front-running with real fade risk.",
   "blow_up":            "First half faster by 8%+. Paid for the opening, faded badly.",
+  "pacer":              "Pacemaker — towed the field through the early laps and stepped off by design. Not a full-race split shape.",
 };
 
 const RACE_SHAPE_GLOSSARY = {

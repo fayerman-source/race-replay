@@ -3432,6 +3432,678 @@
           ]
         }
       ]
+    },
+    {
+      "replay_id": "stockholm-2026-womens-800m",
+      "title": "Stockholm 2026 – Werro Diamond League Record 800m",
+      "short_label": "Stockholm DL",
+      "date_label": "7 Jun 2026",
+      "event": {
+        "name": "Women's 800m",
+        "venue": "Olympic Stadium, Stockholm",
+        "date": "2026-06-07",
+        "pre_race_records": [
+          "World Record (Kratochvílová, 1983): 1:53.28",
+          "Diamond League Record (Semenya, 2018): 1:54.25",
+          "Meeting Record (Almanza, 2021): 1:56.28",
+          "World Lead 2026 (Hodgkinson): 1:54.87"
+        ],
+        "records": [
+          {
+            "label": "WR",
+            "name": "World Record",
+            "athlete": "Jarmila Kratochvílová",
+            "country": "TCH",
+            "result": "1:53.28",
+            "venue": "München (GER)",
+            "date": "1983-07-26"
+          },
+          {
+            "label": "AR",
+            "name": "Area Record (Africa)",
+            "athlete": "Pamela Jelimo",
+            "country": "KEN",
+            "result": "1:54.01",
+            "venue": "Zürich (SUI)",
+            "date": "2008-08-29"
+          },
+          {
+            "label": "DLR",
+            "name": "Diamond League Record",
+            "athlete": "Caster Semenya",
+            "country": "RSA",
+            "result": "1:54.25",
+            "venue": "Paris (FRA)",
+            "date": "2018-06-30"
+          },
+          {
+            "label": "MR",
+            "name": "Meeting Record",
+            "athlete": "Rose Mary Almanza",
+            "country": "CUB",
+            "result": "1:56.28",
+            "venue": "Stockholm (SWE)",
+            "date": "2021-07-04"
+          },
+          {
+            "label": "WL",
+            "name": "World Lead",
+            "athlete": "Keely Hodgkinson",
+            "country": "GBR",
+            "result": "1:54.87",
+            "venue": "Liévin (FRA)",
+            "date": "2026-02-19"
+          }
+        ],
+        "lane_count": 8,
+        "track_length_m": 400,
+        "race_distance_m": 800,
+        "timing_interval_m": 100,
+        "start_offset_turns": 1,
+        "break_distance_m": 100,
+        "merge_complete_distance_m": 130,
+        "competition_level": "diamond_league_w",
+        "active_heat_id": "Final",
+        "commentary": {
+          "pre_start": "BAUHAUS-galan, the Wanda Diamond League in Stockholm. Pacemaker Rachel Klopfenstein will tow the field at a 1:54 target. Keely Hodgkinson, the world lead at 1:54.87, headlines; Audrey Werro sits behind her.",
+          "opening": "Klopfenstein takes them out hard — 26.7 at 200m. Hodgkinson settles second, Werro tucked in just behind.",
+          "through_200": "27.0 for Werro at 200m, 27.2 for Hodgkinson. The pace is genuinely fast.",
+          "through_400": "Klopfenstein through 400m in 55.6 and steps off. Hodgkinson and Werro inherit the lead at 56-flat — on world-record schedule.",
+          "through_600": "1:25.3 at 600m, Hodgkinson fractionally ahead of Werro. The rest of the field is already detached.",
+          "closing": "Hodgkinson kicks off the final bend and leads into the straight — but Werro is coming.",
+          "finish": "Werro storms past — 1:53.98! Diamond League record, meeting record, the third-fastest 800m in history and the first woman under 1:54 in 43 years. Hodgkinson 1:54.33 for a British record in second."
+        },
+        "source": {
+          "provider": "Wanda Diamond League / Swiss Timing (OMEGA)",
+          "meet_url": "https://stockholm.diamondleague.com/programme-results/",
+          "notes": [
+            "Outdoor 400m track — 2 laps. All other replays to date are 200m indoor ovals.",
+            "Per-athlete 100m splits taken from the official Swiss Timing 'Race analysis' PDF.",
+            "Two-group waterfall start (lane-group in the PDF, e.g. 1-1 vs 1-2) mapped onto 8 lanes; shared lanes auto-split inner/outer by finish time.",
+            "Pacemaker Rachel Klopfenstein led through 500m (1:10.6) then dropped out (DNF).",
+            "Werro 1:53.98 broke Semenya's DL record (1:54.25) and Almanza's meeting record (1:56.28)."
+          ]
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final",
+          "status": "official_results_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Audrey Werro",
+              "lane": 6,
+              "team": "Switzerland",
+              "country": "SUI",
+              "date_of_birth": "2004-03-27",
+              "result": {
+                "final_time": 113.98,
+                "display_time": "1:53.98",
+                "medal": "Gold",
+                "honors": [
+                  "DLR",
+                  "MR",
+                  "WL"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  13.7,
+                  27.0,
+                  41.2,
+                  55.8,
+                  70.8,
+                  85.6,
+                  99.7,
+                  113.98
+                ],
+                "segment_seconds": [
+                  13.7,
+                  13.3,
+                  14.2,
+                  14.6,
+                  15.0,
+                  14.8,
+                  14.1,
+                  14.28
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Keely Hodgkinson",
+              "lane": 7,
+              "team": "Great Britain",
+              "country": "GBR",
+              "date_of_birth": "2002-03-03",
+              "result": {
+                "final_time": 114.33,
+                "display_time": "1:54.33",
+                "medal": "Silver",
+                "honors": [
+                  "NR"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  13.9,
+                  27.2,
+                  41.5,
+                  56.2,
+                  70.7,
+                  85.3,
+                  99.6,
+                  114.33
+                ],
+                "segment_seconds": [
+                  13.9,
+                  13.3,
+                  14.3,
+                  14.7,
+                  14.5,
+                  14.6,
+                  14.3,
+                  14.73
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Roisin Willis",
+              "lane": 1,
+              "team": "United States",
+              "country": "USA",
+              "date_of_birth": "2004-08-06",
+              "result": {
+                "final_time": 117.56,
+                "display_time": "1:57.56",
+                "medal": "Bronze",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  13.8,
+                  27.6,
+                  42.3,
+                  57.1,
+                  72.4,
+                  87.8,
+                  103.1,
+                  117.56
+                ],
+                "segment_seconds": [
+                  13.8,
+                  13.8,
+                  14.7,
+                  14.8,
+                  15.3,
+                  15.4,
+                  15.3,
+                  14.46
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Anaïs Bourgoin",
+              "lane": 5,
+              "team": "France",
+              "country": "FRA",
+              "date_of_birth": "1996-10-03",
+              "result": {
+                "final_time": 117.68,
+                "display_time": "1:57.68"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  14.2,
+                  27.6,
+                  42.1,
+                  56.9,
+                  72.0,
+                  87.0,
+                  102.1,
+                  117.68
+                ],
+                "segment_seconds": [
+                  14.2,
+                  13.4,
+                  14.5,
+                  14.8,
+                  15.1,
+                  15.0,
+                  15.1,
+                  15.58
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Prudence Sekgodiso",
+              "lane": 4,
+              "team": "South Africa",
+              "country": "RSA",
+              "date_of_birth": "2002-01-05",
+              "result": {
+                "final_time": 117.7,
+                "display_time": "1:57.70"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  13.7,
+                  27.5,
+                  42.1,
+                  56.7,
+                  71.8,
+                  86.6,
+                  102.0,
+                  117.7
+                ],
+                "segment_seconds": [
+                  13.7,
+                  13.8,
+                  14.6,
+                  14.6,
+                  15.1,
+                  14.8,
+                  15.4,
+                  15.7
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Anna Wielgosz",
+              "lane": 8,
+              "team": "Poland",
+              "country": "POL",
+              "date_of_birth": "1993-11-09",
+              "result": {
+                "final_time": 117.92,
+                "display_time": "1:57.92",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  14.4,
+                  27.8,
+                  42.4,
+                  57.0,
+                  72.2,
+                  87.3,
+                  102.4,
+                  117.92
+                ],
+                "segment_seconds": [
+                  14.4,
+                  13.4,
+                  14.6,
+                  14.6,
+                  15.2,
+                  15.1,
+                  15.1,
+                  15.52
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Raevyn Rogers",
+              "lane": 2,
+              "team": "United States",
+              "country": "USA",
+              "date_of_birth": "1996-09-07",
+              "result": {
+                "final_time": 117.94,
+                "display_time": "1:57.94",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  14.2,
+                  28.0,
+                  42.6,
+                  57.4,
+                  72.5,
+                  87.6,
+                  102.8,
+                  117.94
+                ],
+                "segment_seconds": [
+                  14.2,
+                  13.8,
+                  14.6,
+                  14.8,
+                  15.1,
+                  15.1,
+                  15.2,
+                  15.14
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 8,
+              "athlete": "Sage Hurta-Klecker",
+              "lane": 3,
+              "team": "United States",
+              "country": "USA",
+              "date_of_birth": "1998-06-23",
+              "result": {
+                "final_time": 118.26,
+                "display_time": "1:58.26"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  14.2,
+                  28.0,
+                  42.8,
+                  57.3,
+                  72.6,
+                  87.4,
+                  102.5,
+                  118.26
+                ],
+                "segment_seconds": [
+                  14.2,
+                  13.8,
+                  14.8,
+                  14.5,
+                  15.3,
+                  14.8,
+                  15.1,
+                  15.76
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 9,
+              "athlete": "Nigist Getachew",
+              "lane": 4,
+              "team": "Ethiopia",
+              "country": "ETH",
+              "date_of_birth": "2002-02-28",
+              "result": {
+                "final_time": 118.59,
+                "display_time": "1:58.59"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  13.7,
+                  27.4,
+                  41.9,
+                  56.6,
+                  71.7,
+                  86.8,
+                  102.4,
+                  118.59
+                ],
+                "segment_seconds": [
+                  13.7,
+                  13.7,
+                  14.5,
+                  14.7,
+                  15.1,
+                  15.1,
+                  15.6,
+                  16.19
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 10,
+              "athlete": "Pernille Karlsen Antonsen",
+              "lane": 1,
+              "team": "Norway",
+              "country": "NOR",
+              "date_of_birth": "2002-12-13",
+              "result": {
+                "final_time": 118.82,
+                "display_time": "1:58.82",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  14.1,
+                  27.8,
+                  42.5,
+                  57.2,
+                  72.4,
+                  87.6,
+                  102.8,
+                  118.82
+                ],
+                "segment_seconds": [
+                  14.1,
+                  13.7,
+                  14.7,
+                  14.7,
+                  15.2,
+                  15.2,
+                  15.2,
+                  16.02
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 11,
+              "athlete": "Gabriela Gajanová",
+              "lane": 3,
+              "team": "Slovakia",
+              "country": "SVK",
+              "date_of_birth": "1999-10-12",
+              "result": {
+                "final_time": 122.88,
+                "display_time": "2:02.88"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  14.3,
+                  28.3,
+                  43.0,
+                  58.4,
+                  74.0,
+                  90.3,
+                  106.8,
+                  122.88
+                ],
+                "segment_seconds": [
+                  14.3,
+                  14.0,
+                  14.7,
+                  15.4,
+                  15.6,
+                  16.3,
+                  16.5,
+                  16.08
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500,
+                  600,
+                  700,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Rachel Klopfenstein",
+              "lane": 8,
+              "team": "Mauritius",
+              "country": "MRI",
+              "date_of_birth": "1995-03-08",
+              "status": "DNF",
+              "role": "pacer",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  13.6,
+                  26.7,
+                  41.1,
+                  55.6,
+                  70.6
+                ],
+                "segment_seconds": [
+                  13.6,
+                  13.1,
+                  14.4,
+                  14.5,
+                  15.0
+                ],
+                "split_marks_m": [
+                  0,
+                  100,
+                  200,
+                  300,
+                  400,
+                  500
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

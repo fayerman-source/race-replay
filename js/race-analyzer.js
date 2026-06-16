@@ -156,7 +156,13 @@ function getSplitClass(runner) {
   if (firstHalf === 0) return null;
   const diffPct = ((secondHalf - firstHalf) / firstHalf) * 100;
   let label;
-  if (diffPct < SPLIT_CLASS_BANDS.negative_max_pct) label = "negative_splitter";
+  if (runner.role === "pacer") {
+    // A pacemaker is contracted to tow the field through the early laps and step
+    // off — by design they never run a second half. The positive/negative-split
+    // verdict (and especially "blow_up" / "faded badly") is a category error and
+    // unfair to them, so label it honestly while keeping the raw differential.
+    label = "pacer";
+  } else if (diffPct < SPLIT_CLASS_BANDS.negative_max_pct) label = "negative_splitter";
   else if (diffPct < SPLIT_CLASS_BANDS.even_max_pct) label = "even";
   else if (diffPct < SPLIT_CLASS_BANDS.textbook_max_pct) label = "textbook_positive";
   else if (diffPct < SPLIT_CLASS_BANDS.aggressive_max_pct) label = "aggressive_front";

@@ -1,5 +1,6 @@
 import {
   TRACK_CONFIG,
+  configureTrackGeometry,
   formatTime,
   getCheckpointSegment,
   getLanePathLengthPx,
@@ -223,7 +224,10 @@ function updateHeatMeta() {
   const leader = [...state.runners].sort((a, b) => a.finalTime - b.finalTime)[0];
 
   eventTitleEl.innerText = state.replayTitle || `${state.event.name} ${state.activeHeat.heat_id}`;
-  trackBadgeEl.innerText = `${state.event.track_length_m}m Banked | ${state.event.lane_count} Lanes | ${state.event.race_distance_m / state.event.track_length_m} Laps`;
+  // 200m indoor ovals are banked; 400m outdoor tracks are flat. Drive the label
+  // off the lap length so an outdoor race isn't mislabelled "Banked".
+  const trackSurface = state.event.track_length_m <= 200 ? "Banked" : "Outdoor";
+  trackBadgeEl.innerText = `${state.event.track_length_m}m ${trackSurface} | ${state.event.lane_count} Lanes | ${getTotalLaps()} Laps`;
   raceDurationEl.innerText = leader ? formatTime(leader.finalTime) : "--:--";
   document.title = `${eventTitleEl.innerText} | Race Replay`;
 }
@@ -247,6 +251,18 @@ function renderTrackGeometry() {
     startFinishLineEl.setAttribute("x2", geometry.startFinish.x2);
     startFinishLineEl.setAttribute("y1", geometry.startFinish.y);
     startFinishLineEl.setAttribute("y2", geometry.startFinish.y);
+  }
+
+  // Pin the STA/FIN labels just outside the line's outer end so they follow the
+  // oval whatever shape configureTrackGeometry installed (the line moves with it).
+  const staLabelEl = document.getElementById("staLabel");
+  const finLabelEl = document.getElementById("finLabel");
+  if (staLabelEl && finLabelEl) {
+    const labelX = (geometry.startFinish.x2 + 6).toFixed(2);
+    staLabelEl.setAttribute("x", labelX);
+    staLabelEl.setAttribute("y", (geometry.startFinish.y - 3).toFixed(2));
+    finLabelEl.setAttribute("x", labelX);
+    finLabelEl.setAttribute("y", (geometry.startFinish.y + 9).toFixed(2));
   }
 
   laneLinesGroupEl.innerHTML = "";
@@ -407,6 +423,28 @@ function initRunners() {
   });
 }
 
+// Laps = race distance / lap length (4 for indoor 800m on a 200m oval, 2 for
+// an outdoor 800m on a 400m track). Rounded so float division never yields 1.9999.
+function getTotalLaps() {
+  const lapLength = state.event?.track_length_m || TRACK_CONFIG.trackLength;
+  const raceDistance = state.event?.race_distance_m || TRACK_CONFIG.raceDistance;
+  return Math.max(1, Math.round(raceDistance / lapLength));
+}
+
+// The lap-progress dots are markup, but the count is race-dependent, so rebuild
+// them to match getTotalLaps() whenever a replay loads.
+function renderLapDots() {
+  const container = document.getElementById("lapDots");
+  if (!container) return;
+  const total = getTotalLaps();
+  container.replaceChildren();
+  for (let i = 0; i < total; i += 1) {
+    const dot = document.createElement("div");
+    dot.className = i === 0 ? "lap-dot active" : "lap-dot";
+    container.appendChild(dot);
+  }
+}
+
 function updateLapUI() {
   const snapshot = getSnapshot();
   const focusRunner = getFocusRunner();
@@ -414,9 +452,10 @@ function updateLapUI() {
 
   if (!focusRunner) return;
 
+  const totalLaps = getTotalLaps();
   const focusState = snapshot?.getRunnerState(focusRunner.id);
-  const currentLap = Math.min(4, (focusState?.lapIndex || 0) + 1);
-  lapCounterEl.innerText = `Lap ${currentLap} of 4`;
+  const currentLap = Math.min(totalLaps, (focusState?.lapIndex || 0) + 1);
+  lapCounterEl.innerText = `Lap ${currentLap} of ${totalLaps}`;
 
   lapDots.forEach((dot, index) => {
     if (index < currentLap) dot.classList.add("active");
@@ -687,7 +726,7 @@ export function resetRace() {
   state.renderProgressByRunnerId = {};
 
   timerEl.innerText = "0:00.00";
-  lapCounterEl.innerText = "Lap 1 of 4";
+  lapCounterEl.innerText = `Lap 1 of ${getTotalLaps()}`;
   hidePhotoFinish();
   setButtonToStartResumeState();
 
@@ -750,11 +789,16 @@ async function init() {
   state.event = replayData.event;
   state.activeHeat = replayData.activeHeat;
   state.runners = replayData.runners;
+  // Reshape the oval before anything reads its geometry (the snapshot positions
+  // runners, the outline/markers are drawn from svg{}). Outdoor 400m → realistic
+  // long-straight oval; indoor 200m → unchanged stylised oval.
+  configureTrackGeometry(state.event);
   state.raceModel = createRaceModel(state.event, state.runners);
   state.currentSnapshot = state.raceModel.getSnapshot(0);
 
   updateHeatMeta();
   renderTrackGeometry();
+  renderLapDots();
   renderSplitGrid();
   renderCheckpointMarkers();
   renderRecords();
