@@ -28,7 +28,16 @@ export const TRACK_CONFIG = {
 const VIEWBOX = { width: 350, height: 550, pad: 16 };
 const TRACK_PROFILES = {
   // Standard IAAF 400m track: 84.39m straights, 36.50m lane-1 turn radius.
-  outdoor_400: { straightM: 84.39, turnRadiusM: 36.5, laneWidthM: 1.22 },
+  // These are STYLISED for legibility, not metric truth. A real 400m oval has a
+  // 36.5m turn radius and 1.22m lanes, which draws a thin ribbon of running
+  // surface around a vast empty infield. We shrink the infield (turnRadiusM)
+  // and fatten the lanes (laneWidthM) so the running band reads as a bold ring,
+  // and foreshorten the drawn straights (straightDrawScale <1) so the oval fills
+  // the frame instead of reading tall-and-skinny. All three are purely cosmetic:
+  // runner positions and lap marks map onto whatever path svg{} defines, and the
+  // lane stagger uses the metric TRACK_CONFIG.laneWidthMeters, so race fidelity
+  // is unchanged. For a metrically-faithful oval use 36.5 / 1.22 / 1.0.
+  outdoor_400: { straightM: 84.39, turnRadiusM: 20, laneWidthM: 2.0, straightDrawScale: 0.6 },
 };
 
 // The visual straight length and base lane width are derived live from svg{} so
@@ -56,22 +65,31 @@ export function configureTrackGeometry(event = {}) {
   const laneCount = event.lane_count || TRACK_CONFIG.laneCount;
   const railM = profile.turnRadiusM;
   const outerM = railM + (laneCount * profile.laneWidthM);
+  // Foreshorten the drawn straight (cosmetic) while keeping true turn geometry
+  // for the bends, so the oval fills the frame instead of reading skinny.
+  const drawnStraightM = profile.straightM * (profile.straightDrawScale ?? 1);
   const ovalWidthM = 2 * outerM;
-  const ovalHeightM = profile.straightM + (2 * outerM);
+  const ovalHeightM = drawnStraightM + (2 * outerM);
 
-  // Single scale preserves the real aspect ratio; fit to the tighter of the two
-  // viewBox dimensions so the whole oval stays on screen with padding.
-  const usableW = VIEWBOX.width - (2 * VIEWBOX.pad);
+  // Single scale preserves the bend aspect ratio; fit to the tighter of the two
+  // viewBox dimensions so the whole oval stays on screen with padding. The home
+  // straight's STA/FIN labels sit just outside the oval's right edge, so reserve
+  // a gutter there (app.js pins them to outerRadius + ~6px) — without it a
+  // frame-filling oval shoves the labels past the viewBox and clips them.
+  const LABEL_GUTTER = 30;
+  const usableW = VIEWBOX.width - VIEWBOX.pad - LABEL_GUTTER;
   const usableH = VIEWBOX.height - (2 * VIEWBOX.pad);
   const scale = Math.min(usableW / ovalWidthM, usableH / ovalHeightM);
 
   const outerRadius = outerM * scale;
   const innerRadius = railM * scale;
-  const straightPx = profile.straightM * scale;
+  const straightPx = drawnStraightM * scale;
   const topY = ((VIEWBOX.height - (straightPx + (2 * outerRadius))) / 2) + outerRadius;
 
   Object.assign(TRACK_CONFIG.svg, {
-    centerX: VIEWBOX.width / 2,
+    // Centre the oval in the band left of the label gutter, not the whole
+    // viewBox, so the bend + labels both fit. Everything reads svg.centerX.
+    centerX: VIEWBOX.pad + (usableW / 2),
     topY,
     bottomY: topY + straightPx,
     outerRadius,

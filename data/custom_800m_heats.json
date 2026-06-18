@@ -4104,6 +4104,488 @@
           ]
         }
       ]
+    },
+    {
+      "replay_id": "ostrava-2026-womens-800m",
+      "title": "Ostrava 2026 – Werro Golden Spike Meeting Record 800m",
+      "short_label": "Ostrava Golden Spike",
+      "date_label": "16 Jun 2026",
+      "event": {
+        "name": "Women's 800m",
+        "venue": "Městský stadion, Ostrava",
+        "date": "2026-06-16",
+        "pre_race_records": [
+          "World Record (Kratochvílová, 1983): 1:53.28",
+          "World Lead 2026 (Werro, Stockholm): 1:53.98",
+          "Meeting Record: broken tonight by Werro (previous mark not captured in source data)"
+        ],
+        "records": [
+          {
+            "label": "WR",
+            "name": "World Record",
+            "athlete": "Jarmila Kratochvílová",
+            "country": "TCH",
+            "result": "1:53.28",
+            "venue": "München (GER)",
+            "date": "1983-07-26"
+          },
+          {
+            "label": "MR",
+            "name": "Meeting Record",
+            "athlete": "Audrey Werro",
+            "country": "SUI",
+            "result": "1:54.45",
+            "venue": "Ostrava (CZE)",
+            "date": "2026-06-16"
+          }
+        ],
+        "lane_count": 8,
+        "track_length_m": 400,
+        "race_distance_m": 800,
+        "timing_interval_m": 200,
+        "start_offset_turns": 1,
+        "break_distance_m": 100,
+        "merge_complete_distance_m": 130,
+        "competition_level": "continental_tour_gold_w",
+        "active_heat_id": "Final",
+        "commentary": {
+          "pre_start": "The 65th Golden Spike in Ostrava, World Athletics Continental Tour Gold. Pacemaker Nikola Bisová will tow a 1:54 target. Audrey Werro, fresh off 1:53.98 in Stockholm, headlines; Femke Broeders-Bol contests her first outdoor 800m.",
+          "opening": "Bisová takes them out hard from the outer group, Werro tucked onto her shoulder.",
+          "through_400": "Bisová through 400m in 55.83 — right on a 1:54 schedule — and the field is still tightly strung behind Werro.",
+          "through_600": "1:25.73 at 600m as Bisová steps off and Werro inherits the lead, already clear of the chase.",
+          "closing": "Werro opens daylight down the back straight; Broeders-Bol leads the pursuit but the gap is enormous.",
+          "finish": "Werro wins in 1:54.45 — a Golden Spike meeting record, the eighth-fastest 800m in history, by nearly three seconds. Broeders-Bol 1:57.13 for a big outdoor PB, Coiro third in 1:58.59."
+        },
+        "source": {
+          "provider": "OnlineSystem.cz (official Golden Spike timing) / Czech Athletic Federation",
+          "meet_url": "https://results.onlinesystem.cz/ResultsAthletic?idk=87005&discType=110",
+          "results_url": "https://results.onlinesystem.cz/ResultsAthletic/DisciplineResults?idk=87005&type=resultlist&disciplineId=3376958",
+          "notes": [
+            "Outdoor 400m track — 2 laps, two-group waterfall start (official 'Dráha'/lane values used verbatim, incl. shared lanes 2/3/8; heat-data.js auto-splits co-lane runners inner/outer by seed).",
+            "Final times, lane draw, birth years and PB/SB/MR/NR flags are official (OnlineSystem.cz result list + Excel export).",
+            "Only intermediate splits recorded officially are the LEADER/pace splits: 400m 55.83 and 600m 1:25.73 (Bisová paced). Per-athlete 100m race-analysis is not published for Continental Tour Gold.",
+            "Per-runner 200/400/600 splits are MODELLED from the official final times and the real leader pace shape (field towed tight through 400m, gaps opening over the last 200m). Only the 800m finish and the leader 400m/600m are measured.",
+            "Pacemaker Nikola Bisová (CZE) led through 600m then stepped off (DNF) — a designed pacer, not a true retirement.",
+            "Previous women's 800m meeting record value was not present in the available timing documents; pre_race_records notes this rather than asserting an unverified figure."
+          ]
+        }
+      },
+      "heats": [
+        {
+          "heat_id": "Final",
+          "status": "official_results_import",
+          "entries": [
+            {
+              "place": 1,
+              "athlete": "Audrey Werro",
+              "lane": 7,
+              "bib": 528,
+              "team": "Switzerland",
+              "country": "SUI",
+              "date_of_birth": "2004-03-27",
+              "result": {
+                "final_time": 114.45,
+                "display_time": "1:54.45",
+                "medal": "Gold",
+                "honors": [
+                  "MR"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.5,
+                  56.0,
+                  85.85,
+                  114.45
+                ],
+                "segment_seconds": [
+                  27.5,
+                  28.5,
+                  29.85,
+                  28.6
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              },
+              "tags": [
+                "focus_runner"
+              ]
+            },
+            {
+              "place": 2,
+              "athlete": "Femke Broeders-Bol",
+              "lane": 6,
+              "bib": 527,
+              "team": "Netherlands",
+              "country": "NED",
+              "date_of_birth": "2000-02-23",
+              "result": {
+                "final_time": 117.13,
+                "display_time": "1:57.13",
+                "medal": "Silver",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.73,
+                  56.46,
+                  87.19,
+                  117.13
+                ],
+                "segment_seconds": [
+                  27.73,
+                  28.73,
+                  30.73,
+                  29.94
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 3,
+              "athlete": "Eloisa Coiro",
+              "lane": 4,
+              "bib": 525,
+              "team": "Italy",
+              "country": "ITA",
+              "result": {
+                "final_time": 118.59,
+                "display_time": "1:58.59",
+                "medal": "Bronze"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.85,
+                  56.7,
+                  87.92,
+                  118.59
+                ],
+                "segment_seconds": [
+                  27.85,
+                  28.85,
+                  31.22,
+                  30.67
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 4,
+              "athlete": "Rachel Klopfenstein",
+              "lane": 3,
+              "bib": 523,
+              "team": "Mauritius",
+              "country": "MRI",
+              "date_of_birth": "1995-03-08",
+              "result": {
+                "final_time": 118.73,
+                "display_time": "1:58.73",
+                "honors": [
+                  "NR"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.86,
+                  56.73,
+                  87.99,
+                  118.73
+                ],
+                "segment_seconds": [
+                  27.86,
+                  28.87,
+                  31.26,
+                  30.74
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 5,
+              "athlete": "Pernille Karlsen Antonsen",
+              "lane": 2,
+              "bib": 521,
+              "team": "Norway",
+              "country": "NOR",
+              "date_of_birth": "2002-12-13",
+              "result": {
+                "final_time": 118.82,
+                "display_time": "1:58.82",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.87,
+                  56.74,
+                  88.03,
+                  118.82
+                ],
+                "segment_seconds": [
+                  27.87,
+                  28.87,
+                  31.29,
+                  30.79
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 6,
+              "athlete": "Gabriela Gajanová",
+              "lane": 5,
+              "bib": 526,
+              "team": "Slovakia",
+              "country": "SVK",
+              "date_of_birth": "1999-10-12",
+              "result": {
+                "final_time": 119.05,
+                "display_time": "1:59.05",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.89,
+                  56.78,
+                  88.15,
+                  119.05
+                ],
+                "segment_seconds": [
+                  27.89,
+                  28.89,
+                  31.37,
+                  30.9
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 7,
+              "athlete": "Caroline Bredlinger",
+              "lane": 1,
+              "bib": 520,
+              "team": "Austria",
+              "country": "AUT",
+              "result": {
+                "final_time": 119.36,
+                "display_time": "1:59.36",
+                "honors": [
+                  "SB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.92,
+                  56.83,
+                  88.3,
+                  119.36
+                ],
+                "segment_seconds": [
+                  27.92,
+                  28.91,
+                  31.47,
+                  31.06
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 8,
+              "athlete": "Pavla Štoudková",
+              "lane": 2,
+              "bib": 522,
+              "team": "Czech Republic",
+              "country": "CZE",
+              "result": {
+                "final_time": 119.72,
+                "display_time": "1:59.72",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.95,
+                  56.9,
+                  88.48,
+                  119.72
+                ],
+                "segment_seconds": [
+                  27.95,
+                  28.95,
+                  31.58,
+                  31.24
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 9,
+              "athlete": "Emma Moore",
+              "lane": 8,
+              "bib": 529,
+              "team": "Ireland",
+              "country": "IRL",
+              "result": {
+                "final_time": 120.71,
+                "display_time": "2:00.71",
+                "honors": [
+                  "PB"
+                ]
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  28.03,
+                  57.06,
+                  88.98,
+                  120.71
+                ],
+                "segment_seconds": [
+                  28.03,
+                  29.03,
+                  31.92,
+                  31.73
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": 10,
+              "athlete": "Aleksandra Formella",
+              "lane": 3,
+              "bib": 524,
+              "team": "Poland",
+              "country": "POL",
+              "result": {
+                "final_time": 121.8,
+                "display_time": "2:01.80"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  28.12,
+                  57.25,
+                  89.52,
+                  121.8
+                ],
+                "segment_seconds": [
+                  28.12,
+                  29.13,
+                  32.27,
+                  32.28
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600,
+                  800
+                ]
+              }
+            },
+            {
+              "place": null,
+              "athlete": "Nikola Bisová",
+              "lane": 8,
+              "bib": 530,
+              "team": "Czech Republic",
+              "country": "CZE",
+              "status": "DNF",
+              "role": "pacer",
+              "result": {
+                "final_time": null,
+                "display_time": "DNF"
+              },
+              "splits": {
+                "cumulative_seconds": [
+                  0.0,
+                  27.3,
+                  55.83,
+                  85.73
+                ],
+                "segment_seconds": [
+                  27.3,
+                  28.53,
+                  29.9
+                ],
+                "split_marks_m": [
+                  0,
+                  200,
+                  400,
+                  600
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
